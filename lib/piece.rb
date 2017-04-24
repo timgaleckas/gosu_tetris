@@ -4,13 +4,11 @@ class Piece
   end
 
   def rotated_right
-    new_squares = Marshal.load(Marshal.dump(@squares))
-    Piece.new(new_squares.transpose.map(&:reverse))
+    Piece.new(@squares.transpose.map(&:reverse))
   end
 
   def rotated_left
-    new_squares = Marshal.load(Marshal.dump(@squares))
-    Piece.new(new_squares.map(&:reverse).transpose)
+    Piece.new(@squares.map(&:reverse).transpose)
   end
 
   def width
@@ -37,6 +35,10 @@ class Piece
         end
       end
     end
+  end
+
+  def _squares
+    @squares
   end
 
   Q = new([
