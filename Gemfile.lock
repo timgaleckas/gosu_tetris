@@ -1,0 +1,17 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    chipmunk (6.1.3.4)
+    gosu (0.11.3.1)
+    rmagick (2.16.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  chipmunk
+  gosu
+  rmagick
+
+BUNDLED WITH
+   1.14.6
