@@ -8,15 +8,13 @@ class TetrisWindow < Gosu::Window
 
     @background = Gosu::Image.new('assets/Bck.png')
     @next_piece = NextPiece.new(200,200)
-    @main_board = MainBoard.new
+    @main_board = MainBoard.new(17,0,274,592)
     @main_board.current_piece = @next_piece.pop
   end
 
   def draw
     @background.draw(0,0,0)
-    Gosu.translate(19,0) do
-      @main_board.draw
-    end
+    @main_board.draw
     Gosu.translate(296,337) do
       Gosu.scale(0.5,0.5) do
         @next_piece.draw
@@ -45,7 +43,16 @@ class TetrisWindow < Gosu::Window
     when Gosu::KB_UP
       @main_board.rotate_piece
     when Gosu::KB_DOWN
-      @main_board.move_piece_down
+      @main_board.pressing_down = true
+    else
+      super
+    end
+  end
+
+  def button_up(id)
+    case id
+    when Gosu::KB_DOWN
+      @main_board.pressing_down = false
     else
       super
     end

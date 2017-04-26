@@ -1,81 +1,239 @@
 class Piece
-  def initialize(squares)
-    @squares = squares
+  def initialize(positions, color_index=0, rotation=0)
+    @positions = positions
+    @color_index = color_index
+    @rotation = rotation
   end
 
   def rotated_right
-    Piece.new(@squares.transpose.map(&:reverse))
+    r = dup
+    r._rotation += 1
+    r
   end
 
   def rotated_left
-    Piece.new(@squares.map(&:reverse).transpose)
+    r = dup
+    r._rotation -= 1
+    r
   end
 
-  def width
-    squares_wide * Square.width
-  end
-
-  def height
-    squares_high * Square.height
-  end
-
-  def squares_wide
-    @squares.first.size
-  end
-
-  def squares_high
-    @squares.size
-  end
-
-  def draw(x,y,z)
-    @squares.each_with_index do |row, row_index|
-      row.each_with_index do |square, square_index|
+  def squares_with_coordinates(cursor_x, cursor_y)
+    ret = []
+    @positions[@rotation].each_with_index do |row, row_index|
+      row.each_with_index do |square, column_index|
         if square
-          Sprites::SQUARES[0].draw(x+square_index*Square.width, y+row_index*Square.height, z)
+          square_x = cursor_x + (column_index*Square.width)
+          square_y = cursor_y + (row_index*Square.height)
+          ret << [Sprites::SQUARES[@color_index % Sprites::SQUARES.size], square_x, square_y]
         end
       end
     end
+    ret
   end
 
-  def _squares
-    @squares
+  def _rotation
+    @rotation
   end
 
-  Q = new([
-    [1,1],
-    [1,1]
-  ])
+  def _rotation=(number)
+    @rotation = number % @positions.size
+  end
 
-  Z = new([
-    [nil,1,1],
-    [1,1,nil]
-  ])
+  _ = nil
 
-  S = new([
-    [1,1,nil],
-    [nil,1,1]
-  ])
+  Q_POSITIONS = [
+    [
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,1,1,_],
+      [_,1,1,_]
+    ],[
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,1,1,_],
+      [_,1,1,_]
+    ],[
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,1,1,_],
+      [_,1,1,_]
+    ],[
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,1,1,_],
+      [_,1,1,_]
+    ]
+  ]
 
-  T = new([
-    [nil,1,nil],
-    [1,1,1]
-  ])
+  Z_POSITIONS = [
+    [
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,1,1,_],
+      [_,_,1,1]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,_,1],
+      [_,_,1,1],
+      [_,_,1,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,1,1,_],
+      [_,_,1,1]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,_,1],
+      [_,_,1,1],
+      [_,_,1,_]
+    ]
+  ]
 
-  I = new([
-    [1,1,1,1]
-  ])
+  S_POSITIONS = [
+    [
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,_,1,1],
+      [_,1,1,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,1,_],
+      [_,_,1,1],
+      [_,_,_,1]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,_,1,1],
+      [_,1,1,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,1,_],
+      [_,_,1,1],
+      [_,_,_,1]
+    ]
+  ]
 
-  L = new([
-    [1,1],
-    [1,nil],
-    [1,nil]
-  ])
+  I_POSITIONS = [
+    [
+      [_,_,_,_],
+      [_,_,_,_],
+      [1,1,1,1],
+      [_,_,_,_]
+    ],
+    [
+      [_,_,1,_],
+      [_,_,1,_],
+      [_,_,1,_],
+      [_,_,1,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,_,_],
+      [1,1,1,1],
+      [_,_,_,_]
+    ],
+    [
+      [_,_,1,_],
+      [_,_,1,_],
+      [_,_,1,_],
+      [_,_,1,_]
+    ]
+  ]
 
-  J = new([
-    [1,1],
-    [nil,1],
-    [nil,1]
-  ])
+  T_POSITIONS = [
+    [
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,1,1,1],
+      [_,_,1,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,1,_],
+      [_,1,1,_],
+      [_,_,1,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,1,_],
+      [_,1,1,1],
+      [_,_,_,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,1,_],
+      [_,_,1,1],
+      [_,_,1,_]
+    ]
+  ]
+
+  L_POSITIONS = [
+    [
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,1,1,1],
+      [_,1,_,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,1,1,_],
+      [_,_,1,_],
+      [_,_,1,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,_,1],
+      [_,1,1,1],
+      [_,_,_,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,1,_],
+      [_,_,1,_],
+      [_,_,1,1]
+    ]
+  ]
+
+  J_POSITIONS = [
+    [
+      [_,_,_,_],
+      [_,_,_,_],
+      [_,1,1,1],
+      [_,_,_,1]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,1,_],
+      [_,_,1,_],
+      [_,1,1,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,1,_,_],
+      [_,1,1,1],
+      [_,_,_,_]
+    ],
+    [
+      [_,_,_,_],
+      [_,_,1,1],
+      [_,_,1,_],
+      [_,_,1,_]
+    ]
+  ]
+
+  Q = new(Q_POSITIONS,0)
+  Z = new(Z_POSITIONS,1)
+  S = new(S_POSITIONS,2)
+  T = new(T_POSITIONS,3)
+  I = new(I_POSITIONS,4)
+  L = new(L_POSITIONS,5)
+  J = new(J_POSITIONS,6)
 
   ALL = [Q,Z,S,T,I,L,J]
 end

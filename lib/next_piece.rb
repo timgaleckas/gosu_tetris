@@ -1,21 +1,21 @@
 class NextPiece
-  def initialize(width, height)
+  def initialize(width, height, current=nil)
     @width, @height = width, height
-    pop
+    @current = current
+    pop unless @current
   end
 
   def draw
-    x = @width/2 - @current.width/2
-    y = @height/2 - @current.height/2
-    @current.draw(x,y,1)
+    cursor_x = (@width/2) - (Square.width*2)
+    cursor_y = (@height/2) - (Square.height*3)
+    @current.squares_with_coordinates(cursor_x,cursor_y).each do |(square, x, y)|
+      square.draw(x,y,2)
+    end
   end
 
   def pop
     last = @current
     @current = Piece::ALL.sample
-    0.upto(3).to_a.sample.times do
-      @current = @current.rotated_right
-    end
     last
   end
 end
