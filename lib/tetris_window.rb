@@ -8,13 +8,15 @@ class TetrisWindow < Gosu::Window
 
     @background = Gosu::Image.new('assets/Bck.png')
     @next_piece = NextPiece.new(200,200)
-    @main_board = MainBoard.new(17,0,274,592)
+    @main_board = MainBoard.new(274,592)
     @main_board.current_piece = @next_piece.pop
   end
 
   def draw
     @background.draw(0,0,0)
-    @main_board.draw
+    Gosu.translate(17,0) do
+      @main_board.draw
+    end
     Gosu.translate(296,337) do
       Gosu.scale(0.5,0.5) do
         @next_piece.draw

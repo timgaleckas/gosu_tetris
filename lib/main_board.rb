@@ -2,15 +2,14 @@ class MainBoard
   attr_reader :current_piece
   attr_accessor :pressing_down
 
-  def initialize(widget_x,widget_y,widget_width,widget_height)
-    @widget_x, @widget_y, @widget_width, @widget_height =
-      widget_x, widget_y, widget_width, widget_height
+  def initialize(widget_width,widget_height, speed = 1)
+    @widget_width, @widget_height =
+      widget_width, widget_height
 
     @squares_wide = @widget_width / Square.width
     @width = @squares_wide * Square.width
 
-    x_padding = (@widget_width % Square.width) / 2
-    @x = @widget_x + x_padding
+    @x = (@widget_width % Square.width) / 2
 
     @squares_high = (@widget_height / Square.height) + 1
 
@@ -19,18 +18,18 @@ class MainBoard
     @y = @widget_height - @height
 
     @rows = 0.upto(@squares_high).map{|_|[nil]*@squares_wide}
-    @speed = 1
+    @speed = speed
   end
 
   def current_piece=(piece)
     @current_piece = piece
-    @cursor_x = (@squares_wide / 2) * Square.width
+    @cursor_x = ((@squares_wide / 2) - 1) * Square.width
     @cursor_y = -(Square.height*2)
   end
 
   def draw
-    Gosu.clip_to(@widget_x, @widget_y, @widget_width, @widget_height) do
-      Gosu.translate(@x,@y) do
+    Gosu.clip_to(0, 0, @widget_width, @widget_height) do
+      Gosu.translate(@x, @y) do
         @rows.each_with_index do |row, row_index|
           row.each_with_index do |square, square_index|
             square && square.draw(square_index * Square.width, row_index * Square.height, 1)
