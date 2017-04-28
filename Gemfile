@@ -7,3 +7,5 @@ gem "chipmunk"
 gem "rake"
 
 gem "minitest"
+
+gem "activesupport"

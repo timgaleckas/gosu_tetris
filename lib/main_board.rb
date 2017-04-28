@@ -1,6 +1,10 @@
 class MainBoard
+  include Pausable
+
   attr_reader :current_piece
   attr_accessor :pressing_down
+
+  pausable :pressing_down=
 
   def initialize(widget_width, widget_height, game_state)
     @widget_width, @widget_height =
@@ -22,7 +26,7 @@ class MainBoard
     @rows = 0.upto(@squares_high).map{|_|[nil]*@squares_wide}
   end
 
-  def current_piece=(piece)
+  pausable def current_piece=(piece)
     @current_piece = piece
     @cursor_x = ((@squares_wide / 2) - 1) * Square.width
     @cursor_y = -(Square.height*2)
@@ -43,29 +47,29 @@ class MainBoard
     end
   end
 
-  def move_piece_left
+  pausable def move_piece_left
     @cursor_x -= Square.width unless _collision_detected?(@current_piece, @cursor_x - Square.width, @cursor_y)
   end
 
-  def move_piece_right
+  pausable def move_piece_right
     @cursor_x += Square.width unless _collision_detected?(@current_piece, @cursor_x + Square.width, @cursor_y)
   end
 
-  def rotate_piece
+  pausable def rotate_piece
     @current_piece = @current_piece.rotated_right unless _collision_detected?(@current_piece.rotated_right, @cursor_x, @cursor_y)
   end
 
-  def pressing_left=(pressing_left)
+  pausable def pressing_left=(pressing_left)
     @pressing_left = pressing_left
     @pressing_left_time = 0
   end
 
-  def pressing_right=(pressing_right)
+  pausable def pressing_right=(pressing_right)
     @pressing_right = pressing_right
     @pressing_right_time = 0
   end
 
-  def update
+  pausable def update
     @cursor_y += Tunables.speed_for_level(@game_state.level)
     @cursor_y += Tunables.down_speed if pressing_down && !_collision_detected?(@current_piece, @cursor_x, @cursor_y + 5)
     if @pressing_right

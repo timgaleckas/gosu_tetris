@@ -1,4 +1,6 @@
 class NextPiece
+  include Pausable
+
   def initialize(width, height, game_state, current=nil)
     @width, @height = width, height
     @game_state = game_state
@@ -14,7 +16,7 @@ class NextPiece
     end
   end
 
-  def pop
+  pausable def pop
     last = @current
     @current = Piece::ALL.sample.with_game_state(@game_state)
     last

@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative '../app'
+require_relative '../lib/app'
 
 class TestWindow < Gosu::Window
   def initialize(width, height, widgets, time_between_widgets, &block)

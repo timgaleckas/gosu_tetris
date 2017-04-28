@@ -47,6 +47,8 @@ class TetrisWindow < Gosu::Window
       @main_board.rotate_piece
     when Gosu::KB_DOWN
       @main_board.pressing_down = true
+    when Gosu::KB_RETURN
+      @game_state.paused = !@game_state.paused
     else
       super
     end
