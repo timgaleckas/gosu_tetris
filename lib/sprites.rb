@@ -8,5 +8,7 @@ class Sprites
       SPRITE_SHEET.subimage(SQUARE_WIDTH*column,SQUARE_HEIGHT*row,SQUARE_WIDTH,SQUARE_HEIGHT)
     end
   end
+
+  PAUSE_ICON = Gosu::Image.new('./assets/Pause.png')
 end
 

@@ -10,6 +10,7 @@ class TetrisWindow < Gosu::Window
     @background = Gosu::Image.new('assets/Bck.png')
     @next_piece = NextPiece.new(200,200, @game_state)
     @main_board = MainBoard.new(274,592, @game_state)
+    @pause_screen = PauseScreen.new(400,600, @game_state)
     @main_board.current_piece = @next_piece.pop
   end
 
@@ -23,6 +24,7 @@ class TetrisWindow < Gosu::Window
         @next_piece.draw
       end
     end
+    @pause_screen.draw
   end
 
   def update
