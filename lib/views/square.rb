@@ -1,11 +1,42 @@
 class Square
+  attr_reader :color_index
+  attr_accessor :parent
+  attr_reader :left, :right, :up, :down
+
   def initialize(color_index, game_state)
     @color_index = color_index % Sprites::SQUARES.first.size
     @game_state = game_state
+    @parent = parent
+  end
+
+  def right=(square, doubly_link=true)
+    @right.try(:left=,nil,false) if doubly_link
+    square.try(:left=,self,false) if doubly_link
+    @right=square
+  end
+
+  def left=(square, doubly_link=true)
+    @left.try(:right=,nil,false) if doubly_link
+    square.try(:right=,self,false) if doubly_link
+    @left=square
+  end
+
+  def up=(square, doubly_link=true)
+    @up.try(:down=,nil,false) if doubly_link
+    square.try(:down=,self,false) if doubly_link
+    @up=square
+  end
+
+  def down=(square, doubly_link=true)
+    @down.try(:up=,nil,false) if doubly_link
+    square.try(:up=,self,false) if doubly_link
+    @down=square
   end
 
   def draw(x, y, z)
     Sprites::SQUARES[@game_state ? @game_state.level : 0][@color_index].draw(x, y, z)
+    Sprites::STITCHES.draw(x,y,z+1) if color_index == right.try(:color_index)
+    Sprites::STITCHES.draw_rot(x,y,z+1,90.0,0,1) if color_index == down.try(:color_index)
   end
 
   def self.height

@@ -9,6 +9,8 @@ class Sprites
     end
   end
 
+  STITCHES = Gosu::Image.new('./assets/stitches.png')
+
   PAUSE_ICON = Gosu::Image.new('./assets/Pause.png')
 end
 

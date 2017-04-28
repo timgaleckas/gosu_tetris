@@ -24,17 +24,23 @@ class Piece
   end
 
   def squares_with_coordinates(cursor_x, cursor_y)
-    ret = []
+    ret = {}
     @positions[@rotation].each_with_index do |row, row_index|
       row.each_with_index do |square, column_index|
         if square
           square_x = cursor_x + (column_index*Square.width)
           square_y = cursor_y + (row_index*Square.height)
-          ret << [Square.new(@color_index, @game_state), square_x, square_y]
+          ret[[row_index,column_index]] = [Square.new(@color_index, @game_state), square_x, square_y]
         end
       end
     end
-    ret
+    1.upto(@positions[@rotation].size - 1) do |row_index|
+      1.upto(@positions[@rotation][row_index].size - 1) do |column_index|
+        ret[[row_index,column_index]].try(:first).try(:left=, ret[[row_index,column_index-1]].try(:first))
+        ret[[row_index,column_index]].try(:first).try(:up=, ret[[row_index-1,column_index]].try(:first))
+      end
+    end
+    ret.values
   end
 
   def _rotation

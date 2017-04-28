@@ -37,7 +37,9 @@ class MainBoard
       Gosu.translate(@x, @y) do
         @rows.each_with_index do |row, row_index|
           row.each_with_index do |square, square_index|
-            square && square.draw(square_index * Square.width, row_index * Square.height, 1)
+            if square
+              square.draw(square_index * Square.width, row_index * Square.height, 1)
+            end
           end
         end
         _current_piece_squares_with_coordinates.each do |(square, x, y)|
@@ -85,6 +87,7 @@ class MainBoard
     @rows.reject!{|r|r.all?{|s|s} && rows_cleared += 1}
     @game_state.register_cleared_rows(rows_cleared)
     @rows.size.upto(@squares_high){ @rows.unshift [nil]*@squares_wide}
+    _relink_squares
   end
 
   def _collision_detected?(piece, cursor_x, cursor_y)
@@ -106,9 +109,26 @@ class MainBoard
 
   def _place_piece
     _current_piece_squares_with_coordinates.each do |(square, x, y)|
-      @rows[y/Square.height][x/Square.width]=square
+      row = y/Square.height
+      column = x/Square.width
+      @rows[row][column]=square
     end
+    _relink_squares
     @current_piece = nil
+  end
+
+  def _relink_squares
+    @rows.each_with_index do |row, row_index|
+      row.each_with_index do |square, column_index|
+        if square
+          square.left = @rows[row_index][column_index - 1]
+          square.up = @rows[row_index - 1][column_index]
+        else
+          @rows[row_index][column_index - 1].try(:right=, nil)
+          @rows[row_index - 1][column_index].try(:down=, nil)
+        end
+      end
+    end
   end
 
   def _square_at?(x,y)

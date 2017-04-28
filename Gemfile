@@ -9,3 +9,5 @@ gem "rake"
 gem "minitest"
 
 gem "activesupport"
+
+gem "pry"
