@@ -6,9 +6,10 @@ class TetrisWindow < Gosu::Window
 
     self.caption = "Tetris"
 
+    @game_state = GameState.new
     @background = Gosu::Image.new('assets/Bck.png')
-    @next_piece = NextPiece.new(200,200)
-    @main_board = MainBoard.new(274,592)
+    @next_piece = NextPiece.new(200,200, @game_state)
+    @main_board = MainBoard.new(274,592, @game_state)
     @main_board.current_piece = @next_piece.pop
   end
 
@@ -39,9 +40,9 @@ class TetrisWindow < Gosu::Window
       @next_piece.pop
     when Gosu::KB_B
     when Gosu::KB_LEFT
-      @main_board.move_piece_left
+      @main_board.pressing_left = true
     when Gosu::KB_RIGHT
-      @main_board.move_piece_right
+      @main_board.pressing_right = true
     when Gosu::KB_UP
       @main_board.rotate_piece
     when Gosu::KB_DOWN
@@ -53,6 +54,10 @@ class TetrisWindow < Gosu::Window
 
   def button_up(id)
     case id
+    when Gosu::KB_LEFT
+      @main_board.pressing_left = false
+    when Gosu::KB_RIGHT
+      @main_board.pressing_right = false
     when Gosu::KB_DOWN
       @main_board.pressing_down = false
     else

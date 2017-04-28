@@ -2,9 +2,11 @@ class MainBoard
   attr_reader :current_piece
   attr_accessor :pressing_down
 
-  def initialize(widget_width,widget_height, speed = 1)
+  def initialize(widget_width, widget_height, game_state)
     @widget_width, @widget_height =
       widget_width, widget_height
+
+    @game_state = game_state
 
     @squares_wide = @widget_width / Square.width
     @width = @squares_wide * Square.width
@@ -18,7 +20,6 @@ class MainBoard
     @y = @widget_height - @height
 
     @rows = 0.upto(@squares_high).map{|_|[nil]*@squares_wide}
-    @speed = speed
   end
 
   def current_piece=(piece)
@@ -54,11 +55,31 @@ class MainBoard
     @current_piece = @current_piece.rotated_right unless _collision_detected?(@current_piece.rotated_right, @cursor_x, @cursor_y)
   end
 
+  def pressing_left=(pressing_left)
+    @pressing_left = pressing_left
+    @pressing_left_time = 0
+  end
+
+  def pressing_right=(pressing_right)
+    @pressing_right = pressing_right
+    @pressing_right_time = 0
+  end
+
   def update
-    @cursor_y += @speed
-    @cursor_y += 5 if pressing_down && !_collision_detected?(@current_piece, @cursor_x, @cursor_y + 5)
+    @cursor_y += Tunables.speed_for_level(@game_state.level)
+    @cursor_y += Tunables.down_speed if pressing_down && !_collision_detected?(@current_piece, @cursor_x, @cursor_y + 5)
+    if @pressing_right
+      move_piece_right if (@pressing_right_time % Tunables.rotate_repeat) == 0
+      @pressing_right_time += 1
+    end
+    if @pressing_left
+      move_piece_left if (@pressing_left_time % Tunables.rotate_repeat) == 0
+      @pressing_left_time += 1
+    end
     _place_piece if _collision_detected?(@current_piece, @cursor_x, @cursor_y)
-    @rows.reject!{|r|r&&r.all?{|s|s}}
+    rows_cleared = 0
+    @rows.reject!{|r|r.all?{|s|s} && rows_cleared += 1}
+    @game_state.register_cleared_rows(rows_cleared)
     @rows.size.upto(@squares_high){ @rows.unshift [nil]*@squares_wide}
   end
 
@@ -66,7 +87,7 @@ class MainBoard
     return false unless piece
     piece.squares_with_coordinates(cursor_x, cursor_y).find do |(_, x, y)|
       _out_of_bounds?(x,y) || _out_of_bounds?(x+Square.width,y+Square.height) ||
-      _square_at?(x+1,y+1) || _square_at?(x-1+Square.width,y-1+Square.height)
+      _square_at?(x,y+Tunables.slide_buffer) || _square_at?(x-1+Square.width,y+Square.height-1-Tunables.slide_buffer)
     end
   end
 

@@ -5,7 +5,7 @@ describe NextPiece do
     widgets = Piece::ALL.map do |piece|
       [piece, piece = piece.rotated_right, piece = piece.rotated_right, piece.rotated_right]
     end.flatten.map do |piece|
-      NextPiece.new(200,200,piece)
+      NextPiece.new(200,200,nil,piece)
     end
     TestWindow.new(200,200,widgets, 25).show
   end

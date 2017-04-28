@@ -17,6 +17,12 @@ class Piece
     r
   end
 
+  def with_game_state(game_state)
+    p = self.dup
+    p.instance_variable_set('@game_state', game_state)
+    p
+  end
+
   def squares_with_coordinates(cursor_x, cursor_y)
     ret = []
     @positions[@rotation].each_with_index do |row, row_index|
@@ -24,7 +30,7 @@ class Piece
         if square
           square_x = cursor_x + (column_index*Square.width)
           square_y = cursor_y + (row_index*Square.height)
-          ret << [Sprites::SQUARES[@color_index % Sprites::SQUARES.size], square_x, square_y]
+          ret << [Square.new(@color_index, @game_state), square_x, square_y]
         end
       end
     end

@@ -1,6 +1,7 @@
 class NextPiece
-  def initialize(width, height, current=nil)
+  def initialize(width, height, game_state, current=nil)
     @width, @height = width, height
+    @game_state = game_state
     @current = current
     pop unless @current
   end
@@ -15,7 +16,7 @@ class NextPiece
 
   def pop
     last = @current
-    @current = Piece::ALL.sample
+    @current = Piece::ALL.sample.with_game_state(@game_state)
     last
   end
 end

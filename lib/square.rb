@@ -1,14 +1,11 @@
 class Square
-  def initialize(color_index)
-    @image = Sprites::SQUARES[color_index] if color_index
-  end
-
-  def blank?
-    !!@image
+  def initialize(color_index, game_state)
+    @color_index = color_index % Sprites::SQUARES.first.size
+    @game_state = game_state
   end
 
   def draw(x, y, z)
-    @image.draw(x, y, z) if @image
+    Sprites::SQUARES[@game_state ? @game_state.level : 0][@color_index].draw(x, y, z)
   end
 
   def self.height
