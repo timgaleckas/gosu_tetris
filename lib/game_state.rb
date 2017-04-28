@@ -10,7 +10,8 @@ class GameState
 
   def register_cleared_rows(number_of_rows)
     @rows_cleared += number_of_rows
-    @level = @rows_cleared / 10 + 1
+    level_from_rows = @rows_cleared / 10 + 1
+    @level = [@level, level_from_rows].max
   end
 
   def paused?

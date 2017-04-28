@@ -1,4 +1,4 @@
-class PauseScreen
+class PauseOverlay
   def initialize(width, height, game_state)
     @width, @height = width, height
     @game_state = game_state

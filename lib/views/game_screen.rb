@@ -1,30 +1,29 @@
-class TetrisWindow < Gosu::Window
-  WIDTH, HEIGHT = 400, 600
+class GameScreen < Screen
+  def initialize(width, height, game_state)
+    super(width, height)
 
-  def initialize
-    super WIDTH, HEIGHT
+    @game_state = game_state
 
-    self.caption = "Tetris"
-
-    @game_state = GameState.new
     @background = Gosu::Image.new('assets/Bck.png')
     @next_piece = NextPiece.new(200,200, @game_state)
     @main_board = MainBoard.new(274,592, @game_state)
-    @pause_screen = PauseScreen.new(400,600, @game_state)
+    @pause_overlay = PauseOverlay.new(400,600, @game_state)
     @main_board.current_piece = @next_piece.pop
   end
 
   def draw
-    @background.draw(0,0,0)
-    Gosu.translate(17,0) do
-      @main_board.draw
-    end
-    Gosu.translate(296,337) do
-      Gosu.scale(0.5,0.5) do
-        @next_piece.draw
+    Gosu.clip_to(0,0,@width,@height) do
+      @background.draw(0,0,0)
+      Gosu.translate(17,0) do
+        @main_board.draw
       end
+      Gosu.translate(296,337) do
+        Gosu.scale(0.5,0.5) do
+          @next_piece.draw
+        end
+      end
+      @pause_overlay.draw
     end
-    @pause_screen.draw
   end
 
   def update
@@ -36,8 +35,6 @@ class TetrisWindow < Gosu::Window
 
   def button_down(id)
     case id
-    when Gosu::KB_ESCAPE
-      close
     when Gosu::KB_A
       @next_piece.pop
     when Gosu::KB_B
@@ -52,7 +49,7 @@ class TetrisWindow < Gosu::Window
     when Gosu::KB_RETURN
       @game_state.paused = !@game_state.paused
     else
-      super
+      :super
     end
   end
 
@@ -65,7 +62,8 @@ class TetrisWindow < Gosu::Window
     when Gosu::KB_DOWN
       @main_board.pressing_down = false
     else
-      super
+      :super
     end
   end
 end
+
