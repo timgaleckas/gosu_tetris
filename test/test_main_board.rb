@@ -20,7 +20,7 @@ describe MainBoard do
     g.level = 5
     m = MainBoard.new(291,592,g)
     m.current_piece = Piece::Q.with_game_state(g)
-    test_window = TestWindow.new(274+17,592,[m],650) do |current_widget, current_time|
+    test_window = TestWindow.new([m],650) do |current_widget, current_time|
       case current_time
       when 5,10,15,20,140,145
         m.move_piece_left
@@ -42,5 +42,91 @@ describe MainBoard do
     end
     test_window.show
   end
-end
 
+  describe "#_apply_gravity" do
+    it "drops 1 square correctly" do
+      g = GameState.new
+      m = MainBoard.new(65,119,g)
+      s = Square.new(1,g)
+      m._rows[0][0] = s
+      m._animation_pending = :apply_gravity
+      test_window = TestWindow.new([m],10) do |current_widget, current_time|
+        if !current_widget._animation_pending
+          current_widget._rows.last[0].must_equal s
+          test_window.close
+        end
+      end
+      test_window.show
+    end
+
+    it "drops a 2 square vertical piece correctly" do
+      g = GameState.new
+      m = MainBoard.new(65,119,g)
+      s1 = Square.new(1,g)
+      s2 = Square.new(1,g)
+      s1.down = s2
+      m._rows[0][0] = s1
+      m._rows[1][0] = s2
+      m._animation_pending = :apply_gravity
+      test_window = TestWindow.new([m],10) do |current_widget, current_time|
+        if !current_widget._animation_pending
+          current_widget._rows[-2][0].must_equal s1
+          current_widget._rows[-1][0].must_equal s2
+          test_window.close
+        end
+      end
+      test_window.show
+    end
+
+    it "drops a 3 square J correctly" do
+      g = GameState.new
+      m = MainBoard.new(95,119,g)
+      s1 = Square.new(1,g)
+      s2 = Square.new(1,g)
+      s3 = Square.new(1,g)
+      s1.right = s2
+      s2.down = s3
+
+      m._rows[0][0] = s1
+      m._rows[0][1] = s2
+      m._rows[1][1] = s3
+      m._animation_pending = :apply_gravity
+      test_window = TestWindow.new([m],10) do |current_widget, current_time|
+        if !current_widget._animation_pending
+          current_widget._rows[-2][0].must_equal s1
+          current_widget._rows[-2][1].must_equal s2
+          current_widget._rows[-1][1].must_equal s3
+          test_window.close
+        end
+      end
+      test_window.show
+    end
+
+    it "drops past squares of the same color and only comes to rest at the bottom" do
+      g = GameState.new
+      m = MainBoard.new(125,149,g)
+
+      m._rows[2][2] = Square.new(1,g)
+      m._rows[3][2] = Square.new(1,g)
+
+
+      m._rows[0][0] = s1 = Square.new(1,g)
+      m._rows[0][1] = s2 = Square.new(1,g)
+      m._rows[1][1] = s3 = Square.new(1,g)
+
+      m._relink_and_relock_squares
+
+      m._animation_pending = :apply_gravity
+      test_window = TestWindow.new([m],10) do |current_widget, current_time|
+        sleep 1
+        if !current_widget._animation_pending
+          current_widget._rows[-2][0].must_equal s1
+          current_widget._rows[-2][1].must_equal s2
+          current_widget._rows[-1][1].must_equal s3
+          test_window.close
+        end
+      end
+      test_window.show
+    end
+  end
+end

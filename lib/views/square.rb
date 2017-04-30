@@ -33,6 +33,24 @@ class Square
     @down=square
   end
 
+  def lock
+    unless @locked
+      @locked = true
+      @up.try(:lock)
+      @down.try(:lock) if @down.try(:color_index) == color_index
+      @left.try(:lock) if @left.try(:color_index) == color_index
+      @right.try(:lock) if @right.try(:color_index) == color_index
+    end
+  end
+
+  def unlock
+    @locked = false
+  end
+
+  def locked?
+    !!@locked
+  end
+
   def draw(x, y, z)
     Sprites::SQUARES[@game_state ? @game_state.level : 0][@color_index].draw(x, y, z)
     Sprites::STITCHES.draw(x,y,z+1) if color_index == right.try(:color_index)

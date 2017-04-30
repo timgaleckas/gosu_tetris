@@ -7,7 +7,7 @@ describe NextPiece do
     end.flatten.map do |piece|
       NextPiece.new(200,200,nil,piece)
     end
-    TestWindow.new(200,200,widgets, 25).show
+    TestWindow.new(widgets, 25).show
   end
 end
 

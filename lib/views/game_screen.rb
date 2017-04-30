@@ -27,9 +27,9 @@ class GameScreen < Screen
   end
 
   def update
-    @main_board.update
-    unless @main_board.current_piece
-      @main_board.current_piece = @next_piece.pop
+    unless @game_state.ended?
+      @main_board.update
+      @main_board.current_piece = @next_piece.pop if @main_board.needs_next_piece?
     end
   end
 

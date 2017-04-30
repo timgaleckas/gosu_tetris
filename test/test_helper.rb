@@ -2,8 +2,8 @@ require 'minitest/autorun'
 require_relative '../lib/app'
 
 class TestWindow < Gosu::Window
-  def initialize(width, height, widgets, time_between_widgets, &block)
-    super(width, height)
+  def initialize(widgets, time_between_widgets, &block)
+    super(1,1)
     @widgets = widgets
     @time_between_widgets = time_between_widgets
     @current_time = 0
@@ -11,6 +11,9 @@ class TestWindow < Gosu::Window
   end
 
   def draw
+    current_widget, *args = current_widget_and_args
+    self.width = current_widget ? current_widget.width : 1
+    self.height = current_widget ? current_widget.height : 1
     Gosu.draw_rect(0,0,width,height,Gosu::Color::WHITE)
     line_x = (width % Square.width) / 2
     while line_x < width
@@ -22,7 +25,6 @@ class TestWindow < Gosu::Window
       Gosu.draw_line(0,line_y,Gosu::Color::BLACK,width,line_y,Gosu::Color::BLACK,1)
       line_y += Square.height
     end
-    current_widget, *args = current_widget_and_args
     current_widget_and_args && current_widget.draw(*args)
   end
 

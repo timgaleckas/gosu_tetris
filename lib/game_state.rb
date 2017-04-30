@@ -1,6 +1,7 @@
 class GameState
   attr_accessor :level
   attr_accessor :paused
+  attr_accessor :ended
 
   def initialize
     @level = 1
@@ -16,5 +17,9 @@ class GameState
 
   def paused?
     !!@paused
+  end
+
+  def ended?
+    !!@ended
   end
 end

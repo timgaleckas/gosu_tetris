@@ -1,39 +1,48 @@
-class MainBoard
-  include Pausable
+class MainBoard < Widget
+  include Suspendable
+  def suspended?
+    @game_state.paused? || @game_state.ended?
+  end
 
   attr_reader :current_piece
   attr_accessor :pressing_down
 
-  pausable :pressing_down=
+  suspendable :pressing_down=
 
   def initialize(widget_width, widget_height, game_state)
-    @widget_width, @widget_height =
-      widget_width, widget_height
+    super(widget_width, widget_height)
 
     @game_state = game_state
 
-    @squares_wide = @widget_width / Square.width
-    @width = @squares_wide * Square.width
+    @squares_wide = @width / Square.width
+    @board_width = @squares_wide * Square.width
 
-    @x = (@widget_width % Square.width) / 2
+    @x = (@width % Square.width) / 2
 
-    @squares_high = (@widget_height / Square.height) + 1
+    @squares_high = (@height / Square.height) + 1
 
-    @height = @squares_high * Square.height
+    @board_height = @squares_high * Square.height
 
-    @y = @widget_height - @height
+    @y = @height - @board_height
 
-    @rows = 0.upto(@squares_high).map{|_|[nil]*@squares_wide}
+    @rows = 0.upto(@squares_high - 1).map{|_|[nil]*@squares_wide}
+
+    @current_piece_resting_for = 0
+
+    @moves_with_current_piece = 0
+
+    @animation_pending = false
   end
 
-  pausable def current_piece=(piece)
+  suspendable def current_piece=(piece)
     @current_piece = piece
     @cursor_x = ((@squares_wide / 2) - 1) * Square.width
     @cursor_y = -(Square.height*2)
+    @moves_with_current_piece = 0
   end
 
   def draw
-    Gosu.clip_to(0, 0, @widget_width, @widget_height) do
+    Gosu.clip_to(0, 0, width, height) do
       Gosu.translate(@x, @y) do
         @rows.each_with_index do |row, row_index|
           row.each_with_index do |square, square_index|
@@ -49,57 +58,154 @@ class MainBoard
     end
   end
 
-  pausable def move_piece_left
-    @cursor_x -= Square.width unless _collision_detected?(@current_piece, @cursor_x - Square.width, @cursor_y)
+  suspendable def move_piece_left
+    unless _collision_detected?(@current_piece, @cursor_x - Square.width, _cursor_y, Tunables.slide_buffer)
+      @cursor_x -= Square.width
+      @moves_with_current_piece += 1
+    end
   end
 
-  pausable def move_piece_right
-    @cursor_x += Square.width unless _collision_detected?(@current_piece, @cursor_x + Square.width, @cursor_y)
+  suspendable def move_piece_right
+    unless _collision_detected?(@current_piece, @cursor_x + Square.width, _cursor_y, Tunables.slide_buffer)
+      @cursor_x += Square.width
+      @moves_with_current_piece += 1
+    end
   end
 
-  pausable def rotate_piece
-    @current_piece = @current_piece.rotated_right unless _collision_detected?(@current_piece.rotated_right, @cursor_x, @cursor_y)
+  def needs_next_piece?
+    @current_piece.nil?
   end
 
-  pausable def pressing_left=(pressing_left)
+  suspendable def rotate_piece
+    unless _collision_detected?(@current_piece.rotated_right, @cursor_x, _cursor_y, Tunables.slide_buffer)
+      @current_piece = @current_piece.rotated_right
+      @moves_with_current_piece += 1
+    end
+  end
+
+  suspendable def pressing_left=(pressing_left)
     @pressing_left = pressing_left
     @pressing_left_time = 0
   end
 
-  pausable def pressing_right=(pressing_right)
+  suspendable def pressing_right=(pressing_right)
     @pressing_right = pressing_right
     @pressing_right_time = 0
   end
 
-  pausable def update
-    @cursor_y += Tunables.speed_for_level(@game_state.level)
-    @cursor_y += Tunables.down_speed if pressing_down && !_collision_detected?(@current_piece, @cursor_x, @cursor_y + 5)
-    if @pressing_right
-      move_piece_right if (@pressing_right_time % Tunables.rotate_repeat) == 0
-      @pressing_right_time += 1
+  suspendable def update
+    case @animation_pending
+    when :clear_rows
+      _clear_rows
+    when :apply_gravity
+      _apply_gravity
+    else
+      _update_current_piece if @current_piece
     end
-    if @pressing_left
-      move_piece_left if (@pressing_left_time % Tunables.rotate_repeat) == 0
-      @pressing_left_time += 1
-    end
-    _place_piece if _collision_detected?(@current_piece, @cursor_x, @cursor_y)
-    rows_cleared = 0
-    @rows.reject!{|r|r.all?{|s|s} && rows_cleared += 1}
-    @game_state.register_cleared_rows(rows_cleared)
-    @rows.size.upto(@squares_high){ @rows.unshift [nil]*@squares_wide}
-    _relink_squares
   end
 
-  def _collision_detected?(piece, cursor_x, cursor_y)
+  def _animation_pending
+    @animation_pending
+  end
+
+  def _animation_pending=(animation_pending)
+    @animation_pending = animation_pending
+  end
+
+  def _apply_gravity
+    changed_this_frame = []
+    (@rows.size-2).downto(0).each do |row_index|
+      @rows[row_index].each_with_index do |square, column_index|
+        if square && !square.locked? && !_square_at_index(column_index, row_index+1)
+          @rows[row_index+1][column_index]=square
+          @rows[row_index][column_index]=nil
+          changed_this_frame << [column_index, row_index+1]
+          @gravity_happened = true
+        end
+      end
+    end
+    if !changed_this_frame.empty?
+      changed_this_frame.each do |x,y|
+        _square_at_index(x,y).lock if _index_out_of_bounds?(x,y+1) || _square_at_index(x,y+1).try(:locked?)
+      end
+      @animation_pending = :apply_gravity
+    elsif @gravity_happened
+      _relink_and_relock_squares
+      @animation_pending = :clear_rows
+      @gravity_happened = false
+    else
+      @animation_pending = false
+    end
+  end
+
+  def _clear_rows
+    rows_cleared = 0
+    @rows.reject! do |r|
+      if r.all?{|s|s}
+        rows_cleared += 1
+        r.each{|s| s.left = s.right = s.up = s.down = nil }
+        true
+      else
+        false
+      end
+    end
+    @game_state.register_cleared_rows(rows_cleared)
+    @rows.size.upto(@squares_high - 1){ @rows.unshift [nil]*@squares_wide}
+    @rows.each_with_index do |row, row_index|
+      row.each_with_index do |square, column_index|
+        if square
+          if column_index > 0
+            square.left = @rows[row_index][column_index - 1]
+          else
+            square.left = nil
+          end
+          if row_index > 0
+            square.up = @rows[row_index - 1][column_index]
+          else
+            square.up = nil
+          end
+          if row_index == @rows.size - 1
+            square.down = nil
+          end
+          square.unlock
+        else
+          @rows[row_index][column_index - 1].try(:right=, nil) if column_index > 0
+          @rows[row_index - 1][column_index].try(:down=, nil) if row_index > 0
+        end
+      end
+    end
+    @rows.last.each do |square|
+      square.try(:lock)
+    end
+
+    if rows_cleared > 0
+      @animation_pending = :apply_gravity
+    else
+      _apply_gravity
+    end
+  end
+
+  def _collision_detected?(piece, cursor_x, cursor_y, buffer=0)
     return false unless piece
     piece.squares_with_coordinates(cursor_x, cursor_y).find do |(_, x, y)|
       _out_of_bounds?(x,y) || _out_of_bounds?(x+Square.width,y+Square.height) ||
-      _square_at?(x,y+Tunables.slide_buffer) || _square_at?(x-1+Square.width,y+Square.height-1-Tunables.slide_buffer)
+      _square_at?(x,y+buffer) || _square_at?(x-1+Square.width,y+Square.height-1-buffer)
     end
   end
 
   def _current_piece_squares_with_coordinates
-    @current_piece ? @current_piece.squares_with_coordinates(@cursor_x, @cursor_y) : []
+    @current_piece ? @current_piece.squares_with_coordinates(@cursor_x, _cursor_y) : []
+  end
+
+  def _cursor_y
+    @cursor_y.to_i
+  end
+
+  def _end_game
+  end
+
+  def _index_out_of_bounds?(x,y)
+    x < 0 || y < 0 || x >= @squares_wide || y >= @squares_high
   end
 
   def _out_of_bounds?(x,y)
@@ -113,27 +219,36 @@ class MainBoard
       column = x/Square.width
       @rows[row][column]=square
     end
-    _relink_squares
     @current_piece = nil
+    @animation_pending = :clear_rows
   end
 
-  def _relink_squares
+  def _relink_and_relock_squares
     @rows.each_with_index do |row, row_index|
       row.each_with_index do |square, column_index|
-        if square
-          square.left = @rows[row_index][column_index - 1]
-          square.up = @rows[row_index - 1][column_index]
-        else
-          @rows[row_index][column_index - 1].try(:right=, nil)
-          @rows[row_index - 1][column_index].try(:down=, nil)
-        end
+        square.try(:unlock)
+        square.try(:up=,    _index_out_of_bounds?(column_index, row_index - 1) ? nil : _square_at_index(column_index, row_index - 1), false)
+        square.try(:down=,  _index_out_of_bounds?(column_index, row_index + 1) ? nil : _square_at_index(column_index, row_index + 1), false)
+        square.try(:left=,  _index_out_of_bounds?(column_index - 1, row_index) ? nil : _square_at_index(column_index - 1, row_index), false)
+        square.try(:right=, _index_out_of_bounds?(column_index + 1, row_index) ? nil : _square_at_index(column_index + 1, row_index), false)
       end
     end
+    @rows.last.each{|s|s.try(:lock)}
+  end
+
+  def _rows
+    @rows
   end
 
   def _square_at?(x,y)
     return nil if _out_of_bounds?(x,y)
+    return nil if y < 0
     @rows[y/Square.height][x/Square.width]
+  end
+
+  def _square_at_index(x,y)
+    raise "out of bounds" if _index_out_of_bounds?(x,y)
+    @rows[y][x]
   end
 
   def _squares_high
@@ -142,6 +257,37 @@ class MainBoard
 
   def _squares_wide
     @squares_wide
+  end
+
+  def _update_current_piece
+    if @pressing_right
+      move_piece_right if (@pressing_right_time % Tunables.rotate_repeat) == 0
+      @pressing_right_time += 1
+    end
+    if @pressing_left
+      move_piece_left if (@pressing_left_time % Tunables.rotate_repeat) == 0
+      @pressing_left_time += 1
+    end
+
+    move_down_amount = Tunables.speed_for_level(@game_state.level) + (pressing_down ? Tunables.down_speed : 0)
+    if _collision_detected?(@current_piece, @cursor_x, _cursor_y + move_down_amount)
+      until _collision_detected?(@current_piece, @cursor_x, _cursor_y + 1)
+        @cursor_y += 1
+      end
+
+      @current_piece_resting_for += 1
+      if @current_piece_resting_for >= Tunables.lock_delay
+        if @moves_with_current_piece == 0
+          _end_game
+        else
+          _place_piece
+        end
+      end
+    else
+      @cursor_y += move_down_amount
+      @current_piece_resting_for = 0
+      @moves_with_current_piece += 1
+    end
   end
 
   def _x

@@ -14,6 +14,7 @@ class SplashScreen < Screen
   end
 
   def next_screen
-    @time_remaining <= 0 && GameScreen.new(@width, @height, GameState.new)
+    game_state = GameState.new
+    @time_remaining <= 0 && GameScreen.new(@width, @height, game_state)
   end
 end

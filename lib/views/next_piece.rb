@@ -1,8 +1,12 @@
-class NextPiece
-  include Pausable
+class NextPiece < Widget
+  include Suspendable
+  def suspended?
+    @game_state.paused? || @game_state.ended?
+  end
 
   def initialize(width, height, game_state, current=nil)
-    @width, @height = width, height
+    super(width, height)
+
     @game_state = game_state
     @current = current
     pop unless @current
@@ -16,7 +20,7 @@ class NextPiece
     end
   end
 
-  pausable def pop
+  suspendable def pop
     last = @current
     @current = Piece::ALL.sample.with_game_state(@game_state)
     last
