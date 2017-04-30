@@ -53,5 +53,22 @@ describe Square do
     assert_nil d1.up
     d2.up.must_equal u
   end
+
+  describe "drawing" do
+    it "can be drawn for 100 levels and 9 colors" do
+      squares = []
+      0.upto(100) do |level|
+        g = GameState.new
+        g.level = level
+        0.upto(9) do |color|
+          squares << [Square.new(color,g), 0,0,1]
+        end
+      end
+      test_window = TestWindow.new(squares,2) do |current_widget, current_time|
+
+      end
+      test_window.show
+    end
+  end
 end
 

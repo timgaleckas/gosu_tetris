@@ -27,7 +27,7 @@ describe MainBoard do
       when 400,405,450,455,460,465,480
         m.move_piece_right
       when 470
-        current_widget.rotate_piece
+        current_widget._rotate_piece_right
       when 481
         g.level = 7
       end
@@ -126,6 +126,46 @@ describe MainBoard do
           current_widget._rows[-2][0].must_equal s1
           current_widget._rows[-2][1].must_equal s2
           current_widget._rows[-1][1].must_equal s3
+          test_window.close
+        end
+      end
+      test_window.show
+    end
+  end
+
+  describe "slide mechanics" do
+    it "doesn't allow you to smash one piece into another" do
+      g = GameState.new
+      m = MainBoard.new(305,239,g)
+
+      m._rows[0][0] = Square.new(2,g)
+      m._rows[1][0] = Square.new(2,g)
+      m._rows[2][0] = Square.new(2,g)
+      m._rows[3][0] = Square.new(2,g)
+      m._rows[4][0] = Square.new(2,g)
+      m._rows[5][0] = Square.new(2,g)
+      m._rows[6][0] = Square.new(2,g)
+      m._rows[7][0] = Square.new(2,g)
+      m._rows[0][1] = Square.new(2,g)
+      m._rows[1][1] = Square.new(2,g)
+      m._rows[2][1] = Square.new(2,g)
+      m._rows[3][1] = Square.new(2,g)
+      m._rows[4][1] = Square.new(2,g)
+      m._rows[5][1] = Square.new(2,g)
+
+      m._relink_and_relock_squares
+
+      m.current_piece = Piece::S.with_game_state(g)
+
+      initial_pieces = m._rows.flatten.compact.size + m.current_piece.squares_with_coordinates(0,0).size
+
+      test_window = TestWindow.new([m],10000) do |current_widget, current_time|
+        sleep_to_see_test
+
+        current_widget.move_piece_left
+
+        if current_widget.needs_next_piece?
+          m._rows.flatten.compact.size.must_equal initial_pieces
           test_window.close
         end
       end

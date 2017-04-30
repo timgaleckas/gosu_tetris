@@ -28,7 +28,7 @@ class MainBoard < Widget
 
     @moves_with_current_piece = 0
 
-    @animation_pending = false
+    @animations_pending = []
   end
 
   suspendable def current_piece=(piece)
@@ -53,10 +53,14 @@ class MainBoard < Widget
         end
       end
     end
+    _pop_animation_pending(:flush) if _animation_pending == :flush
   end
 
   suspendable def move_piece_left
     unless _collision_detected?(@current_piece, @cursor_x - Square.width, _cursor_y, Tunables.slide_buffer)
+      if _collision_detected?(@current_piece, @cursor_x - Square.width, _cursor_y)
+        @cursor_y = (_cursor_y + 15) / 30 * 30
+      end
       @cursor_x -= Square.width
       @moves_with_current_piece += 1
     end
@@ -64,32 +68,37 @@ class MainBoard < Widget
 
   suspendable def move_piece_right
     unless _collision_detected?(@current_piece, @cursor_x + Square.width, _cursor_y, Tunables.slide_buffer)
+      if _collision_detected?(@current_piece, @cursor_x - Square.width, _cursor_y)
+        @cursor_y = (_cursor_y + 15) / 30 * 30
+      end
       @cursor_x += Square.width
       @moves_with_current_piece += 1
     end
   end
 
   def needs_next_piece?
-    @current_piece.nil?
+    @current_piece.nil? && @animations_pending.empty?
   end
 
   suspendable def update
-    case @animation_pending
+    case _animation_pending
     when :clear_rows
       _clear_rows
     when :apply_gravity
       _apply_gravity
+    when :flush
+      #wait for display
     else
       _update_current_piece if @current_piece
     end
   end
 
   def _animation_pending
-    @animation_pending
+    @animations_pending.first
   end
 
   def _animation_pending=(animation_pending)
-    @animation_pending = animation_pending
+    @animations_pending << animation_pending
   end
 
   def _apply_gravity
@@ -108,13 +117,13 @@ class MainBoard < Widget
       changed_this_frame.each do |x,y|
         _square_at_index(x,y).lock if _index_out_of_bounds?(x,y+1) || _square_at_index(x,y+1).try(:locked?)
       end
-      @animation_pending = :apply_gravity
     elsif @gravity_happened
       _relink_and_relock_squares
-      @animation_pending = :clear_rows
+      _pop_animation_pending(:apply_gravity)
+      self._animation_pending=:clear_rows
       @gravity_happened = false
     else
-      @animation_pending = false
+      _pop_animation_pending(:apply_gravity)
     end
   end
 
@@ -158,11 +167,10 @@ class MainBoard < Widget
       square.try(:lock)
     end
 
-    if rows_cleared > 0
-      @animation_pending = :apply_gravity
-    else
-      _apply_gravity
-    end
+    _pop_animation_pending(:clear_rows)
+    self._animation_pending=:apply_gravity
+
+    _apply_gravity if rows_cleared == 0
   end
 
   def _collision_detected?(piece, cursor_x, cursor_y, buffer=0)
@@ -200,7 +208,12 @@ class MainBoard < Widget
       @rows[row][column]=square
     end
     @current_piece = nil
-    @animation_pending = :clear_rows
+    self._animation_pending=:clear_rows
+  end
+
+  def _pop_animation_pending(animation_on_top)
+    raise "invalid state #{_animation_pending} instead of #{animation_on_top}" unless @animations_pending.first == animation_on_top
+    @animations_pending.shift
   end
 
   def _relink_and_relock_squares
