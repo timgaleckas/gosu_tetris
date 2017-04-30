@@ -24,11 +24,4 @@ class TetrisWindow < Gosu::Window
       super
     end
   end
-
-  def button_up(id)
-    case id
-    when @current_screen.nil?, @current_screen.button_up(id) == :super
-      super
-    end
-  end
 end

@@ -45,3 +45,7 @@ class TestWindow < Gosu::Window
     end
   end
 end
+
+def sleep_to_see_test
+  sleep ENV['FRAME_PAUSE'].to_f / 1000 if ENV['FRAME_PAUSE']
+end

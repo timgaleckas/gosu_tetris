@@ -7,7 +7,10 @@ describe NextPiece do
     end.flatten.map do |piece|
       NextPiece.new(200,200,nil,piece)
     end
-    TestWindow.new(widgets, 25).show
+    w = TestWindow.new(widgets, 1) do |current_widget, current_time|
+      sleep_to_see_test
+    end
+    w.show
   end
 end
 

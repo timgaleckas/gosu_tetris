@@ -51,6 +51,7 @@ describe MainBoard do
       m._rows[0][0] = s
       m._animation_pending = :apply_gravity
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
+        sleep_to_see_test
         if !current_widget._animation_pending
           current_widget._rows.last[0].must_equal s
           test_window.close
@@ -69,6 +70,7 @@ describe MainBoard do
       m._rows[1][0] = s2
       m._animation_pending = :apply_gravity
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
+        sleep_to_see_test
         if !current_widget._animation_pending
           current_widget._rows[-2][0].must_equal s1
           current_widget._rows[-1][0].must_equal s2
@@ -92,6 +94,7 @@ describe MainBoard do
       m._rows[1][1] = s3
       m._animation_pending = :apply_gravity
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
+        sleep_to_see_test
         if !current_widget._animation_pending
           current_widget._rows[-2][0].must_equal s1
           current_widget._rows[-2][1].must_equal s2
@@ -118,7 +121,7 @@ describe MainBoard do
 
       m._animation_pending = :apply_gravity
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
-        sleep 1
+        sleep_to_see_test
         if !current_widget._animation_pending
           current_widget._rows[-2][0].must_equal s1
           current_widget._rows[-2][1].must_equal s2

@@ -1,4 +1,9 @@
 class GameScreen < Screen
+  include Suspendable
+  def suspended?
+    @game_state.paused? || @game_state.ended?
+  end
+
   def initialize(width, height, game_state)
     super(width, height)
 
@@ -26,41 +31,15 @@ class GameScreen < Screen
     end
   end
 
-  def update
-    unless @game_state.ended?
-      @main_board.update
-      @main_board.current_piece = @next_piece.pop if @main_board.needs_next_piece?
-    end
+  suspendable def update
+    @main_board.update
+    @main_board.current_piece = @next_piece.pop if @main_board.needs_next_piece?
   end
 
   def button_down(id)
     case id
-    when Gosu::KB_A
-      @next_piece.pop
-    when Gosu::KB_B
-    when Gosu::KB_LEFT
-      @main_board.pressing_left = true
-    when Gosu::KB_RIGHT
-      @main_board.pressing_right = true
-    when Gosu::KB_UP
-      @main_board.rotate_piece
-    when Gosu::KB_DOWN
-      @main_board.pressing_down = true
-    when Gosu::KB_RETURN
+    when @game_state.key_map.pause
       @game_state.paused = !@game_state.paused
-    else
-      :super
-    end
-  end
-
-  def button_up(id)
-    case id
-    when Gosu::KB_LEFT
-      @main_board.pressing_left = false
-    when Gosu::KB_RIGHT
-      @main_board.pressing_right = false
-    when Gosu::KB_DOWN
-      @main_board.pressing_down = false
     else
       :super
     end

@@ -5,6 +5,7 @@ require 'active_support/core_ext/object/try'
 
 require_relative './concerns/suspendable'
 require_relative './tunables'
+require_relative './key_map'
 require_relative './sprites'
 require_relative './piece'
 require_relative './game_state'

@@ -5,9 +5,6 @@ class MainBoard < Widget
   end
 
   attr_reader :current_piece
-  attr_accessor :pressing_down
-
-  suspendable :pressing_down=
 
   def initialize(widget_width, widget_height, game_state)
     super(widget_width, widget_height)
@@ -74,23 +71,6 @@ class MainBoard < Widget
 
   def needs_next_piece?
     @current_piece.nil?
-  end
-
-  suspendable def rotate_piece
-    unless _collision_detected?(@current_piece.rotated_right, @cursor_x, _cursor_y, Tunables.slide_buffer)
-      @current_piece = @current_piece.rotated_right
-      @moves_with_current_piece += 1
-    end
-  end
-
-  suspendable def pressing_left=(pressing_left)
-    @pressing_left = pressing_left
-    @pressing_left_time = 0
-  end
-
-  suspendable def pressing_right=(pressing_right)
-    @pressing_right = pressing_right
-    @pressing_right_time = 0
   end
 
   suspendable def update
@@ -236,6 +216,20 @@ class MainBoard < Widget
     @rows.last.each{|s|s.try(:lock)}
   end
 
+  def _rotate_piece_left
+    unless _collision_detected?(@current_piece.rotated_left, @cursor_x, _cursor_y, Tunables.slide_buffer)
+      @current_piece = @current_piece.rotated_left
+      @moves_with_current_piece += 1
+    end
+  end
+
+  def _rotate_piece_right
+    unless _collision_detected?(@current_piece.rotated_right, @cursor_x, _cursor_y, Tunables.slide_buffer)
+      @current_piece = @current_piece.rotated_right
+      @moves_with_current_piece += 1
+    end
+  end
+
   def _rows
     @rows
   end
@@ -260,16 +254,37 @@ class MainBoard < Widget
   end
 
   def _update_current_piece
-    if @pressing_right
-      move_piece_right if (@pressing_right_time % Tunables.rotate_repeat) == 0
+    if Gosu.button_down? @game_state.key_map.right
+      move_piece_right if (@pressing_right_time % Tunables.slide_repeat) == 0
       @pressing_right_time += 1
-    end
-    if @pressing_left
-      move_piece_left if (@pressing_left_time % Tunables.rotate_repeat) == 0
-      @pressing_left_time += 1
+    else
+      @pressing_right_time = 0
     end
 
-    move_down_amount = Tunables.speed_for_level(@game_state.level) + (pressing_down ? Tunables.down_speed : 0)
+    if Gosu.button_down? @game_state.key_map.left
+      move_piece_left if (@pressing_left_time % Tunables.slide_repeat) == 0
+      @pressing_left_time += 1
+    else
+      @pressing_left_time = 0
+    end
+
+    if Gosu.button_down? @game_state.key_map.rotate_right
+      _rotate_piece_right if (@pressing_rotate_right_time % Tunables.rotate_repeat) == 0
+      @pressing_rotate_right_time += 1
+    else
+      @pressing_rotate_right_time = 0
+    end
+
+    if Gosu.button_down? @game_state.key_map.rotate_left
+      _rotate_piece_left if (@pressing_rotate_left_time % Tunables.rotate_repeat) == 0
+      @pressing_rotate_left_time += 1
+    else
+      @pressing_rotate_left_time = 0
+    end
+
+    move_down_amount = Tunables.speed_for_level(@game_state.level)
+    move_down_amount += Tunables.down_speed if Gosu.button_down? @game_state.key_map.down
+
     if _collision_detected?(@current_piece, @cursor_x, _cursor_y + move_down_amount)
       until _collision_detected?(@current_piece, @cursor_x, _cursor_y + 1)
         @cursor_y += 1
