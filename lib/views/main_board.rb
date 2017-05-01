@@ -53,7 +53,6 @@ class MainBoard < Widget
         end
       end
     end
-    _pop_animation_pending(:flush) if _animation_pending == :flush
   end
 
   suspendable def move_piece_left
@@ -83,11 +82,11 @@ class MainBoard < Widget
   suspendable def update
     case _animation_pending
     when :clear_rows
+      _pop_animation_pending(:clear_rows)
       _clear_rows
     when :apply_gravity
+      _pop_animation_pending(:apply_gravity)
       _apply_gravity
-    when :flush
-      #wait for display
     else
       _update_current_piece if @current_piece
     end
@@ -98,10 +97,10 @@ class MainBoard < Widget
   end
 
   def _animation_pending=(animation_pending)
-    @animations_pending << animation_pending
+    @animations_pending << animation_pending unless _animation_pending == animation_pending
   end
 
-  def _apply_gravity
+  def _apply_gravity(initial=true)
     changed_this_frame = []
     (@rows.size-2).downto(0).each do |row_index|
       @rows[row_index].each_with_index do |square, column_index|
@@ -109,68 +108,37 @@ class MainBoard < Widget
           @rows[row_index+1][column_index]=square
           @rows[row_index][column_index]=nil
           changed_this_frame << [column_index, row_index+1]
-          @gravity_happened = true
         end
       end
     end
+    changed_this_frame.each do |x,y|
+      _square_at_index(x,y).lock if _index_out_of_bounds?(x,y+1) || _square_at_index(x,y+1).try(:locked?)
+    end
     if !changed_this_frame.empty?
-      changed_this_frame.each do |x,y|
-        _square_at_index(x,y).lock if _index_out_of_bounds?(x,y+1) || _square_at_index(x,y+1).try(:locked?)
+      _apply_gravity(false)
+      if initial
+        _relink_and_relock_squares
+        self._animation_pending=:clear_rows
       end
-    elsif @gravity_happened
-      _relink_and_relock_squares
-      _pop_animation_pending(:apply_gravity)
-      self._animation_pending=:clear_rows
-      @gravity_happened = false
-    else
-      _pop_animation_pending(:apply_gravity)
     end
   end
 
   def _clear_rows
-    rows_cleared = 0
-    @rows.reject! do |r|
-      if r.all?{|s|s}
-        rows_cleared += 1
-        r.each{|s| s.left = s.right = s.up = s.down = nil }
-        true
-      else
-        false
+    rows_to_clear = @rows.select{|r|r.all?{|s|s}}
+    @game_state.register_cleared_rows(rows_to_clear.size)
+
+    rows_to_clear.each do |r|
+      r.each_with_index do |s, s_index|
+        s.left = s.right = s.up = s.down = nil
+        r[s_index] = nil
       end
     end
-    @game_state.register_cleared_rows(rows_cleared)
-    @rows.size.upto(@squares_high - 1){ @rows.unshift [nil]*@squares_wide}
-    @rows.each_with_index do |row, row_index|
-      row.each_with_index do |square, column_index|
-        if square
-          if column_index > 0
-            square.left = @rows[row_index][column_index - 1]
-          else
-            square.left = nil
-          end
-          if row_index > 0
-            square.up = @rows[row_index - 1][column_index]
-          else
-            square.up = nil
-          end
-          if row_index == @rows.size - 1
-            square.down = nil
-          end
-          square.unlock
-        else
-          @rows[row_index][column_index - 1].try(:right=, nil) if column_index > 0
-          @rows[row_index - 1][column_index].try(:down=, nil) if row_index > 0
-        end
-      end
-    end
-    @rows.last.each do |square|
-      square.try(:lock)
-    end
 
-    _pop_animation_pending(:clear_rows)
-    self._animation_pending=:apply_gravity
+    unless rows_to_clear.empty?
+      _relink_and_relock_squares
 
-    _apply_gravity if rows_cleared == 0
+      self._animation_pending=:apply_gravity
+    end
   end
 
   def _collision_detected?(piece, cursor_x, cursor_y, buffer=0)
