@@ -176,6 +176,7 @@ class MainBoard < Widget
       @rows[row][column]=square
     end
     @current_piece = nil
+    _relink_and_relock_squares
     self._animation_pending=:clear_rows
   end
 
