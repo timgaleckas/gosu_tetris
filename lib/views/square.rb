@@ -1,13 +1,17 @@
 class Square < Widget
+  DISAPPEAR_LIMIT = 10
+
   attr_reader :color_index
-  attr_accessor :parent
   attr_reader :left, :right, :up, :down
+  attr_accessor :disappearing
+  attr_accessor :dropping
 
   def initialize(color_index, game_state)
     super Square.width, Square.height
     @color_index = color_index % Sprites::SQUARES.first.size
     @game_state = game_state
-    @parent = parent
+    @disappearing = 0
+    @dropping = 0
   end
 
   def right=(square, doubly_link=true)
@@ -52,10 +56,24 @@ class Square < Widget
     !!@locked
   end
 
+  def disappearing?
+    @disappearing > 0 && !disappeared?
+  end
+
+  def disappeared?
+    @disappearing >= DISAPPEAR_LIMIT
+  end
+
+  def dropping?
+    @dropping > 0
+  end
+
   def draw(x, y, z)
-    Sprites::SQUARES[(@game_state ? @game_state.level : 0) % Sprites::SQUARES.size][@color_index].draw(x, y, z)
-    Sprites::STITCHES.draw(x,y,z+1) if color_index == right.try(:color_index)
-    Sprites::STITCHES.draw_rot(x,y,z+1,90.0,0,1) if color_index == down.try(:color_index)
+    Gosu.scale(1 - (@disappearing.to_f / DISAPPEAR_LIMIT), 1 - (@disappearing.to_f / DISAPPEAR_LIMIT), x+(Sprites::SQUARE_WIDTH/2), y+(Sprites::SQUARE_HEIGHT/2)) do
+      Sprites::SQUARES[(@game_state ? @game_state.level : 0) % Sprites::SQUARES.size][@color_index].draw(x, y-@dropping, z)
+      Sprites::STITCHES.draw(x,y-@dropping,z+1) if color_index == right.try(:color_index)
+      Sprites::STITCHES.draw_rot(x,y-@dropping,z+1,90.0,0,1) if color_index == down.try(:color_index)
+    end
   end
 
   def self.height

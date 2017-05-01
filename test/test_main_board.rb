@@ -49,10 +49,10 @@ describe MainBoard do
       m = MainBoard.new(65,119,g)
       s = Square.new(1,g)
       m._rows[0][0] = s
-      m._animation_pending = :apply_gravity
+      m._push_action_pending :apply_gravity
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
         sleep_to_see_test
-        if !current_widget._animation_pending
+        if !current_widget._peek_action_pending
           current_widget._rows.last[0].must_equal s
           test_window.close
         end
@@ -68,10 +68,10 @@ describe MainBoard do
       s1.down = s2
       m._rows[0][0] = s1
       m._rows[1][0] = s2
-      m._animation_pending = :apply_gravity
+      m._push_action_pending :apply_gravity
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
         sleep_to_see_test
-        if !current_widget._animation_pending
+        if !current_widget._peek_action_pending
           current_widget._rows[-2][0].must_equal s1
           current_widget._rows[-1][0].must_equal s2
           test_window.close
@@ -92,10 +92,10 @@ describe MainBoard do
       m._rows[0][0] = s1
       m._rows[0][1] = s2
       m._rows[1][1] = s3
-      m._animation_pending = :apply_gravity
+      m._push_action_pending :apply_gravity
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
         sleep_to_see_test
-        if !current_widget._animation_pending
+        if !current_widget._peek_action_pending
           current_widget._rows[-2][0].must_equal s1
           current_widget._rows[-2][1].must_equal s2
           current_widget._rows[-1][1].must_equal s3
@@ -107,7 +107,7 @@ describe MainBoard do
 
     it "drops past squares of the same color and only comes to rest at the bottom" do
       g = GameState.new
-      m = MainBoard.new(125,149,g)
+      m = MainBoard.new(125,119,g)
 
       m._rows[2][2] = Square.new(1,g)
       m._rows[3][2] = Square.new(1,g)
@@ -119,10 +119,11 @@ describe MainBoard do
 
       m._relink_and_relock_squares
 
-      m._animation_pending = :apply_gravity
+      m._push_action_pending :apply_gravity
+      m._push_action_pending :flush_display
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
         sleep_to_see_test
-        if !current_widget._animation_pending
+        unless true
           current_widget._rows[-2][0].must_equal s1
           current_widget._rows[-2][1].must_equal s2
           current_widget._rows[-1][1].must_equal s3
@@ -170,6 +171,33 @@ describe MainBoard do
         end
       end
       test_window.show
+    end
+  end
+
+  describe "action stack" do
+    it "acts like a stack" do
+      g = GameState.new
+      m = MainBoard.new(305,239,g)
+
+      assert_nil m._peek_action_pending
+      assert_nil m._pop_action_pending
+
+      m._push_action_pending(:tim)
+
+      m._peek_action_pending.must_equal :tim
+      m._pop_action_pending.must_equal :tim
+      assert_nil m._peek_action_pending
+
+      m._push_action_pending :last
+      m._push_action_pending :first
+
+      m._peek_action_pending.must_equal :first
+      m._pop_action_pending.must_equal :first
+
+      m._peek_action_pending.must_equal :last
+      m._pop_action_pending.must_equal :last
+
+      assert_nil m._pop_action_pending
     end
   end
 end

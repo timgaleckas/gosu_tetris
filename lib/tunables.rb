@@ -4,6 +4,7 @@ class Tunables
   @slide_repeat = 8
   @rotate_repeat = 4611686018427387903
   @lock_delay = 15
+  @drop_rate = 10
 
   class << self
     attr_accessor :down_speed
@@ -11,6 +12,7 @@ class Tunables
     attr_accessor :slide_buffer
     attr_accessor :slide_repeat
     attr_accessor :lock_delay
+    attr_accessor :drop_rate
 
     def speed_for_level(level)
       1 + ((level - 1).to_f * 0.5)

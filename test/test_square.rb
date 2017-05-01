@@ -69,6 +69,22 @@ describe Square do
       end
       test_window.show
     end
+
+    it "can disappear" do
+      squares = []
+      s = Square.new(1,nil)
+      s.disappearing += 1
+      while s.disappearing?
+        squares << [s,0,0,0]
+        s = s.dup
+        s.disappearing += 1
+      end
+
+      test_window = TestWindow.new(squares,2) do |current_widget, current_time|
+        current_widget.disappearing?.must_equal true
+      end
+      test_window.show
+    end
   end
 end
 

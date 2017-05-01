@@ -28,7 +28,7 @@ class MainBoard < Widget
 
     @moves_with_current_piece = 0
 
-    @animations_pending = []
+    @actions_pending = []
   end
 
   suspendable def current_piece=(piece)
@@ -76,37 +76,48 @@ class MainBoard < Widget
   end
 
   def needs_next_piece?
-    @current_piece.nil? && @animations_pending.empty?
+    @current_piece.nil? && !_peek_action_pending
   end
 
   suspendable def update
-    case _animation_pending
+    case _pop_action_pending
     when :clear_rows
-      _pop_animation_pending(:clear_rows)
       _clear_rows
+    when :clear_squares
+      _clear_squares
     when :apply_gravity
-      _pop_animation_pending(:apply_gravity)
       _apply_gravity
-    else
+    when :drop_squares
+      _drop_squares
+    when :flush_display
+      nil
+    when nil
       _update_current_piece if @current_piece
+    else
     end
   end
 
-  def _animation_pending
-    @animations_pending.first
+  def _peek_action_pending
+    @actions_pending.last
   end
 
-  def _animation_pending=(animation_pending)
-    @animations_pending << animation_pending unless _animation_pending == animation_pending
+  def _pop_action_pending
+    @actions_pending.pop
+  end
+
+  def _push_action_pending(action)
+    @actions_pending.push(action)
   end
 
   def _apply_gravity(initial=true)
+    _relink_and_relock_squares if initial
     changed_this_frame = []
     (@rows.size-2).downto(0).each do |row_index|
       @rows[row_index].each_with_index do |square, column_index|
         if square && !square.locked? && !_square_at_index(column_index, row_index+1)
           @rows[row_index+1][column_index]=square
           @rows[row_index][column_index]=nil
+          square.dropping += Square.height
           changed_this_frame << [column_index, row_index+1]
         end
       end
@@ -118,7 +129,8 @@ class MainBoard < Widget
       _apply_gravity(false)
       if initial
         _relink_and_relock_squares
-        self._animation_pending=:clear_rows
+        _push_action_pending(:clear_rows)
+        _push_action_pending(:drop_squares)
       end
     end
   end
@@ -128,16 +140,43 @@ class MainBoard < Widget
     @game_state.register_cleared_rows(rows_to_clear.size)
 
     rows_to_clear.each do |r|
-      r.each_with_index do |s, s_index|
+      r.each do |s|
         s.left = s.right = s.up = s.down = nil
-        r[s_index] = nil
+        s.disappearing += 1
       end
     end
 
     unless rows_to_clear.empty?
-      _relink_and_relock_squares
+      _push_action_pending(:apply_gravity)
+      _push_action_pending(:clear_squares)
+    end
+  end
 
-      self._animation_pending=:apply_gravity
+  def _clear_squares
+    @rows.each_with_index do |row, row_index|
+      row.each_with_index do |square, column_index|
+        if square && square.disappearing?
+          square.disappearing+=1
+          if square.disappeared?
+            @rows[row_index][column_index] = nil
+          else
+            _push_action_pending(:clear_squares) unless _peek_action_pending == :clear_squares
+          end
+        end
+      end
+    end
+  end
+
+  def _drop_squares
+    @rows.each_with_index do |row, row_index|
+      row.each_with_index do |square, column_index|
+        if square && square.dropping?
+          square.dropping-=Tunables.drop_rate
+          if square.dropping?
+            _push_action_pending(:drop_squares) unless _peek_action_pending == :drop_squares
+          end
+        end
+      end
     end
   end
 
@@ -177,12 +216,7 @@ class MainBoard < Widget
     end
     @current_piece = nil
     _relink_and_relock_squares
-    self._animation_pending=:clear_rows
-  end
-
-  def _pop_animation_pending(animation_on_top)
-    raise "invalid state #{_animation_pending} instead of #{animation_on_top}" unless @animations_pending.first == animation_on_top
-    @animations_pending.shift
+    _push_action_pending(:clear_rows)
   end
 
   def _relink_and_relock_squares
