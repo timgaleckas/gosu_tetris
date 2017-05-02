@@ -27,8 +27,8 @@ describe Piece do
   end
 
   describe "#squares_with_coordinates" do
-    it "responds correctly for Q" do
-      Piece::Q.squares_with_coordinates(0,0).map{|r| r[1..2]}.sort.must_equal [
+    it "responds correctly for O" do
+      Piece::O.squares_with_coordinates(0,0).map{|r| r[1..2]}.sort.must_equal [
         [30,  60], [60, 60],
         [30,  90], [60, 90]
       ].sort

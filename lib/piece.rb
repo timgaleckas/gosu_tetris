@@ -53,7 +53,7 @@ class Piece
 
   _ = nil
 
-  Q_POSITIONS = [
+  O_POSITIONS = [
     [
       [_,_,_,_],
       [_,_,_,_],
@@ -239,13 +239,13 @@ class Piece
     ]
   ]
 
-  Q = new(Q_POSITIONS,0)
-  Z = new(Z_POSITIONS,1)
-  S = new(S_POSITIONS,2)
-  T = new(T_POSITIONS,3)
-  I = new(I_POSITIONS,4)
-  L = new(L_POSITIONS,5)
-  J = new(J_POSITIONS,6)
+  I = new(I_POSITIONS,0)
+  J = new(J_POSITIONS,1)
+  L = new(L_POSITIONS,2)
+  O = new(O_POSITIONS,3)
+  S = new(S_POSITIONS,4)
+  T = new(T_POSITIONS,5)
+  Z = new(Z_POSITIONS,6)
 
-  ALL = [Q,Z,S,T,I,L,J]
+  ALL = [I,J,L,O,S,T,Z]
 end

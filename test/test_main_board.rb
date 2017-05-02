@@ -19,7 +19,7 @@ describe MainBoard do
     g = GameState.new
     g.level = 5
     m = MainBoard.new(291,592,g)
-    m.current_piece = Piece::Q.with_game_state(g)
+    m.current_piece = Piece::O.with_game_state(g)
     test_window = TestWindow.new([m],650) do |current_widget, current_time|
       case current_time
       when 5,10,15,20,140,145
@@ -34,7 +34,7 @@ describe MainBoard do
 
       if current_widget.current_piece.nil?
         if current_time < 420
-          current_widget.current_piece = Piece::Q.with_game_state(g)
+          current_widget.current_piece = Piece::O.with_game_state(g)
         else
           current_widget.current_piece = Piece::I.with_game_state(g)
         end

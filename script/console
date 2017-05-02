@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+$LOAD_PATH << (File.expand_path("..", File.dirname(__FILE__)))
+
+require "irb"
+require "irb/completion"
+
+require 'lib/app.rb'
+
+IRB.start

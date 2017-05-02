@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require_relative '../lib/app'
+require_relative '../lib/sprite_generation'
 
 class TestWindow < Gosu::Window
   def initialize(widgets, time_between_widgets, &block)

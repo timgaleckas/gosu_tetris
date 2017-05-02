@@ -2,6 +2,19 @@ require 'rubygems'
 require 'gosu'
 require 'rmagick'
 require 'active_support/core_ext/object/try'
+require 'filepath'
+
+class App
+  class << self
+    def root
+      @root ||= FilePath.new(File.expand_path("..", File.dirname(__FILE__)))
+    end
+
+    def asset_root
+      @asset_root ||= root / 'assets'
+    end
+  end
+end
 
 require_relative './concerns/suspendable'
 require_relative './tunables'

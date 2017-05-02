@@ -5,7 +5,7 @@ class GameState
   attr_accessor :player_id
 
   def initialize
-    @level = 1
+    @level = 0
     @rows_cleared = 0
     @paused = false
     @player_id = 0
@@ -25,7 +25,7 @@ class GameState
 
   def register_cleared_rows(number_of_rows)
     @rows_cleared += number_of_rows
-    level_from_rows = @rows_cleared / 10 + 1
+    level_from_rows = @rows_cleared / 10
     @level = [@level, level_from_rows].max
   end
 end

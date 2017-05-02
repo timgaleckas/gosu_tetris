@@ -6,6 +6,7 @@ GEM
       multi_json (~> 1.0)
     chipmunk (6.1.3.4)
     coderay (1.1.1)
+    filepath (0.6)
     gosu (0.11.3.1)
     i18n (0.6.1)
     method_source (0.8.2)
@@ -25,6 +26,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   chipmunk
+  filepath
   gosu
   minitest
   pry
