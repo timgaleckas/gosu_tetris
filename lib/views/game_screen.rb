@@ -38,7 +38,7 @@ class GameScreen < Screen
 
   def button_down(id)
     case id
-    when @game_state.key_map.pause
+    when *@game_state.key_map.pause
       @game_state.paused = !@game_state.paused
     else
       :super

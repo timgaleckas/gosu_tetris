@@ -1,27 +1,33 @@
 class KeyMap
   class << self
-    def down
-      Gosu::KB_DOWN
+    def self.pressable(method)
+      define_method("#{method}_pressed?") do
+        Array(send(method)).any?{|button|Gosu.button_down?(button)}
+      end
     end
 
-    def left
-      Gosu::KB_LEFT
+    pressable def down
+      [Gosu::KB_DOWN, Gosu::GP_0_DOWN]
     end
 
-    def right
-      Gosu::KB_RIGHT
+    pressable def left
+      [Gosu::KB_LEFT, Gosu::GP_0_LEFT]
     end
 
-    def rotate_right
-      Gosu::KB_UP
+    pressable def right
+      [Gosu::KB_RIGHT, Gosu::GP_0_RIGHT]
     end
 
-    def rotate_left
-
+    pressable def rotate_right
+      [Gosu::KB_UP, Gosu::GP_0_BUTTON_1]
     end
 
-    def pause
-      Gosu::KB_P
+    pressable def rotate_left
+      [Gosu::GP_0_BUTTON_0]
+    end
+
+    pressable def pause
+      [Gosu::KB_P, Gosu::GP_0_BUTTON_6]
     end
   end
 end
