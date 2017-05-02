@@ -69,7 +69,7 @@ describe Square do
     end
     it "can be drawn for 11 levels and 8 colors" do
       squares = []
-      0.upto(10) do |level|
+      0.upto(11) do |level|
         g = GameState.new
         g.level = level
         0.upto(7) do |color|

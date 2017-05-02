@@ -22,6 +22,8 @@ class TetrisWindow < Gosu::Window
       close
     when @current_screen.nil?, @current_screen.button_down(id) == :super
       super
+    else
+      super
     end
   end
 end
