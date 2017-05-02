@@ -55,16 +55,28 @@ describe Square do
   end
 
   describe "drawing" do
-    it "can be drawn for 100 levels and 9 colors" do
+    it "can be visually inspected" do
+      s = Square.new(0, nil)
+      sr = Square.new(0, nil)
+      sd = Square.new(0, nil)
+
+      s.right = sr
+      s.down = sd
+
+      test_window = TestWindow.new([[s,0,0,1]],200,4) do |current_widget, current_time|
+      end
+      test_window.show
+    end
+    it "can be drawn for 11 levels and 8 colors" do
       squares = []
-      0.upto(100) do |level|
+      0.upto(10) do |level|
         g = GameState.new
         g.level = level
-        0.upto(9) do |color|
+        0.upto(7) do |color|
           squares << [Square.new(color,g), 0,0,1]
         end
       end
-      test_window = TestWindow.new(squares,2) do |current_widget, current_time|
+      test_window = TestWindow.new(squares,1) do |current_widget, current_time|
 
       end
       test_window.show

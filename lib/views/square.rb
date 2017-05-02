@@ -70,9 +70,10 @@ class Square < Widget
 
   def draw(x, y, z)
     Gosu.scale(1 - (@disappearing.to_f / DISAPPEAR_LIMIT), 1 - (@disappearing.to_f / DISAPPEAR_LIMIT), x+(Sprites::SQUARE_WIDTH/2), y+(Sprites::SQUARE_HEIGHT/2)) do
-      Sprites::SQUARES[(@game_state ? @game_state.level : 0) % Sprites::SQUARES.size][@color_index].draw(x, y-@dropping, z)
-      Sprites::STITCHES.draw(x,y-@dropping,z+1) if color_index == right.try(:color_index)
-      Sprites::STITCHES.draw_rot(x,y-@dropping,z+1,90.0,0,1) if color_index == down.try(:color_index)
+      index = (@game_state ? @game_state.level : 0) % Sprites::SQUARES.size
+      Sprites::SQUARES[index][@color_index].draw(x, y-@dropping, z)
+      Sprites::VERTICAL_STITCHES[index][@color_index].draw(x+Square.width-(Square.stitch_width/2),y-@dropping+1,z+1) if color_index == right.try(:color_index)
+      Sprites::HORIZONTAL_STITCHES[index][@color_index].draw(x+1,y+Square.height-(Square.stitch_width/2)-@dropping,z+1) if color_index == down.try(:color_index)
     end
   end
 
@@ -82,5 +83,9 @@ class Square < Widget
 
   def self.width
     Sprites::SQUARE_WIDTH
+  end
+
+  def self.stitch_width
+    Sprites::STITCH_WIDTH
   end
 end
