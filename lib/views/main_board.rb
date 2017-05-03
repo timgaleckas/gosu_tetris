@@ -67,7 +67,7 @@ class MainBoard < Widget
 
   suspendable def move_piece_right
     unless _collision_detected?(@current_piece, @cursor_x + Square.width, _cursor_y, Tunables.slide_buffer)
-      if _collision_detected?(@current_piece, @cursor_x - Square.width, _cursor_y)
+      if _collision_detected?(@current_piece, @cursor_x + Square.width, _cursor_y)
         @cursor_y = (_cursor_y + 15) / 30 * 30
       end
       @cursor_x += Square.width
