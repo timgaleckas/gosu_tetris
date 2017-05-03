@@ -16,7 +16,7 @@ class TestWindow < Gosu::Window
     current_widget, *args = current_widget_and_args
     self.width = current_widget ? (current_widget.width * @magnification) + 4 : 1
     self.height = current_widget ? (current_widget.height * @magnification) + 4 : 1
-    Gosu.draw_rect(0,0,width,height,Gosu::Color::WHITE)
+    Gosu.draw_rect(0,0,width,height,Gosu::Color::AQUA)
     line_x = (width % Square.width) / 2
     while line_x < width
       Gosu.draw_line(line_x,0,Gosu::Color::BLACK,line_x,height,Gosu::Color::BLACK,1)

@@ -8,7 +8,7 @@ class Square < Widget
 
   def initialize(color_index, game_state)
     super Square.width, Square.height
-    @color_index = color_index % Sprites::SQUARES.first.size
+    @color_index = color_index
     @game_state = game_state
     @disappearing = 0
     @dropping = 0
@@ -70,10 +70,21 @@ class Square < Widget
 
   def draw(x, y, z)
     Gosu.scale(1 - (@disappearing.to_f / DISAPPEAR_LIMIT), 1 - (@disappearing.to_f / DISAPPEAR_LIMIT), x+(Sprites::SQUARE_WIDTH/2), y+(Sprites::SQUARE_HEIGHT/2)) do
-      index = (@game_state ? @game_state.level : 0) % Sprites::SQUARES.size
-      Sprites::SQUARES[index][@color_index].draw(x, y-@dropping, z)
-      Sprites::VERTICAL_STITCHES[index][@color_index].draw(x+Square.width-(Square.stitch_width/2),y-@dropping+1,z+1) if color_index == right.try(:color_index)
-      Sprites::HORIZONTAL_STITCHES[index][@color_index].draw(x+1,y+Square.height-(Square.stitch_width/2)-@dropping,z+1) if color_index == down.try(:color_index)
+      level_index = (@game_state ? @game_state.level : 0) % 10
+      index = level_index * 7 + @color_index
+      Sprites::SQUARES[index].draw(x, y-@dropping, z)
+      border_index = [
+        color_index == left.try(:color_index) ? "0" : "1",
+        color_index == right.try(:color_index) ? "0" : "1",
+        color_index == up.try(:color_index) ? "0" : "1",
+        color_index == down.try(:color_index) ? "0" : "1"
+      ].join.to_i(2)
+
+      begin
+      Sprites::BORDERS[border_index].draw(x,y-@dropping, z+1)
+      rescue => e
+        require 'pry'; binding.pry
+      end
     end
   end
 

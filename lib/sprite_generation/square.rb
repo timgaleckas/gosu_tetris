@@ -24,28 +24,22 @@ class SpriteGeneration::Square
       gc = Magick::Draw.new
       gc.stroke = color
       gc.fill = color
-      gc.rectangle(x + 1, y + 1, x + Square.width - 2, y + Square.height - 2 )
+      gc.rectangle(x, y, x + Square.width, y + Square.height)
       gc.draw(image)
     end
 
-    def draw_vertical_stitches(row,column,color,image)
-      x = column * Square.stitch_width
-      y = row * (Square.height-2)
-      gc = Magick::Draw.new
-      gc.stroke = color
-      gc.fill = color
-      gc.rectangle(x, y, x + Square.stitch_width, y + Square.height - 2 )
-      gc.draw(image)
-    end
-
-    def draw_horizontal_stitches(row,column,color,image)
-      x = column * (Square.width-2)
-      y = row * Square.stitch_width
-      gc = Magick::Draw.new
-      gc.stroke = color
-      gc.fill = color
-      gc.rectangle(x, y, x + Square.width - 2, y + Square.stitch_width )
-      gc.draw(image)
+    def draw_borders(row,column,l,r,u,d,image)
+      x = column * Square.width
+      y = row * Square.height
+      x2 = x + Square.width - 1
+      y2 = y + Square.height - 1
+      bd = Magick::Draw.new
+      bd.stroke = 'black'
+      bd.line(x,  y,  x,  y2 ) if l
+      bd.line(x2, y,  x2, y2 ) if r
+      bd.line(x,  y,  x2, y  ) if u
+      bd.line(x,  y2, x2, y2 ) if d
+      bd.draw(image) if l || r || u || d
     end
 
     def generate_sprite_sheet
@@ -59,23 +53,12 @@ class SpriteGeneration::Square
       Gosu::Image.new(image)
     end
 
-    def generate_horizontal_stitches_sprite_sheet
-      image = Image.new((Square.width - 2)*SQUARES_WIDE, Square.stitch_width*SQUARES_HIGH)
-      COLORS.each_with_index do |row, row_index|
-        row.each_with_index do |color, column_index|
-          draw_horizontal_stitches(row_index,column_index,color,image)
-        end
-      end
+    def generate_border_sprite_sheet
+      image = Image.new(::Square.width*16,::Square.height) { self.background_color = "transparent" }
 
-      Gosu::Image.new(image)
-    end
-
-    def generate_vertical_stitches_sprite_sheet
-      image = Image.new(Square.stitch_width*SQUARES_WIDE, (Square.height-2)*SQUARES_HIGH)
-      COLORS.each_with_index do |row, row_index|
-        row.each_with_index do |color, column_index|
-          draw_vertical_stitches(row_index,column_index,color,image)
-        end
+      0.upto(15) do |i|
+        l,r,u,d = ("%0.4b" % i).chars.map{|c|c=="1"}
+        draw_borders(0,i,l,r,u,d,image)
       end
 
       Gosu::Image.new(image)
@@ -83,8 +66,7 @@ class SpriteGeneration::Square
 
     def write_files
       generate_sprite_sheet.save(App.asset_root / 'blocks.png')
-      generate_vertical_stitches_sprite_sheet.save(App.asset_root / 'vertical_stitches.png')
-      generate_horizontal_stitches_sprite_sheet.save(App.asset_root / 'horizontal_stitches.png')
+      generate_border_sprite_sheet.save(App.asset_root / 'borders.png')
     end
   end
 end
