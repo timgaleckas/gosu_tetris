@@ -1,7 +1,7 @@
 class SplashScreen < Screen
   def initialize(width, height)
     super(width, height)
-    @time_remaining = 120
+    @time_remaining = 50
     @image = Gosu::Image.new('./assets/splash_screen.gif')
   end
 
@@ -14,7 +14,6 @@ class SplashScreen < Screen
   end
 
   def next_screen
-    game_state = GameState.new
-    @time_remaining <= 0 && GameScreen.new(@width, @height, game_state)
+    @time_remaining <= 0 && MenuScreen.new(@width, @height)
   end
 end

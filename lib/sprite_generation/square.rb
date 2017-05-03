@@ -63,10 +63,5 @@ class SpriteGeneration::Square
 
       Gosu::Image.new(image)
     end
-
-    def write_files
-      generate_sprite_sheet.save(App.asset_root / 'blocks.png')
-      generate_border_sprite_sheet.save(App.asset_root / 'borders.png')
-    end
   end
 end

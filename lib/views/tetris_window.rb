@@ -8,6 +8,7 @@ class TetrisWindow < Gosu::Window
   end
 
   def draw
+    Sprites::MOUSE_CURSOR.draw(self.mouse_x, self.mouse_y, 99) if @current_screen.try(:needs_cursor?)
     @current_screen.try(:draw)
   end
 

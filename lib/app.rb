@@ -16,6 +16,7 @@ class App
   end
 end
 
+require_relative './colors'
 require_relative './concerns/suspendable'
 require_relative './tunables'
 require_relative './key_map'
@@ -29,6 +30,7 @@ require_relative './views/screen'
 require_relative './views/widget'
 
 require_relative './views/splash_screen'
+require_relative './views/menu_screen'
 
 require_relative './views/game_screen'
 require_relative './views/main_board'

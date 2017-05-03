@@ -35,7 +35,7 @@ class MainBoard < Widget
     @current_piece = piece
     @cursor_x = ((@squares_wide / 2) - 1) * Square.width
     @cursor_y = -(Square.height*2)
-    @moves_with_current_piece = 0
+    _end_game if _collision_detected?(@current_piece, @cursor_x, _cursor_y)
   end
 
   def draw
@@ -61,7 +61,6 @@ class MainBoard < Widget
         @cursor_y = (_cursor_y + 15) / 30 * 30
       end
       @cursor_x -= Square.width
-      @moves_with_current_piece += 1
     end
   end
 
@@ -71,7 +70,6 @@ class MainBoard < Widget
         @cursor_y = (_cursor_y + 15) / 30 * 30
       end
       @cursor_x += Square.width
-      @moves_with_current_piece += 1
     end
   end
 
@@ -197,6 +195,7 @@ class MainBoard < Widget
   end
 
   def _end_game
+    @game_state.ended = true
   end
 
   def _index_out_of_bounds?(x,y)
@@ -235,14 +234,12 @@ class MainBoard < Widget
   def _rotate_piece_left
     unless _collision_detected?(@current_piece.rotated_left, @cursor_x, _cursor_y, Tunables.slide_buffer)
       @current_piece = @current_piece.rotated_left
-      @moves_with_current_piece += 1
     end
   end
 
   def _rotate_piece_right
     unless _collision_detected?(@current_piece.rotated_right, @cursor_x, _cursor_y, Tunables.slide_buffer)
       @current_piece = @current_piece.rotated_right
-      @moves_with_current_piece += 1
     end
   end
 
@@ -308,11 +305,7 @@ class MainBoard < Widget
 
       @current_piece_resting_for += 1
       if @current_piece_resting_for >= Tunables.lock_delay
-        if @moves_with_current_piece == 0
-          _end_game
-        else
-          _place_piece
-        end
+        _place_piece
       end
     else
       @cursor_y += move_down_amount

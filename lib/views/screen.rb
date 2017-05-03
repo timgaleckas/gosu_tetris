@@ -19,4 +19,8 @@ class Screen
 
   def next_screen
   end
+
+  def needs_cursor?
+    false
+  end
 end

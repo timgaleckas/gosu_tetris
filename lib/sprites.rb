@@ -6,5 +6,7 @@ class Sprites
   BORDERS = Gosu::Image.load_tiles(App.asset_root / 'borders.png', SQUARE_WIDTH, SQUARE_HEIGHT, :tileable => true)
 
   PAUSE_ICON = Gosu::Image.new(App.asset_root / 'Pause.png')
+
+  MOUSE_CURSOR = Gosu::Image.new(App.asset_root / 'pointer.png')
 end
 
