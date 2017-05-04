@@ -24,11 +24,12 @@ class MainBoard < Widget
 
     @rows = 0.upto(@squares_high - 1).map{|_|[nil]*@squares_wide}
 
-    @current_piece_resting_for = 0
-
-    @moves_with_current_piece = 0
-
     @actions_pending = []
+
+    @pressing_rotate_left_time =
+      @pressing_rotate_right_time =
+      @current_piece_resting_for =
+      0
   end
 
   suspendable def current_piece=(piece)
@@ -310,7 +311,6 @@ class MainBoard < Widget
     else
       @cursor_y += move_down_amount
       @current_piece_resting_for = 0
-      @moves_with_current_piece += 1
     end
   end
 
