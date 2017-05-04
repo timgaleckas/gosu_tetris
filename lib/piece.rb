@@ -1,3 +1,5 @@
+require 'set'
+
 class Piece
   def initialize(positions, color_index=0, rotation=0)
     @positions = positions
@@ -23,6 +25,18 @@ class Piece
     p
   end
 
+  def randomly_mutate_color
+    @secondary_color = rand(7)
+    @color_mutated_squares = Set.new
+    if rand(3) == 0
+      @color_mutated_squares << (rand(3)+1)
+      if rand(3) == 0
+        @color_mutated_squares << (rand(3)+1)
+      end
+
+    end
+  end
+
   def squares_with_coordinates(cursor_x, cursor_y)
     ret = {}
     @positions[@rotation].each_with_index do |row, row_index|
@@ -30,7 +44,8 @@ class Piece
         if square
           square_x = cursor_x + (column_index*Square.width)
           square_y = cursor_y + (row_index*Square.height)
-          ret[[row_index,column_index]] = [Square.new(@color_index, @game_state), square_x, square_y]
+          color_index = (@secondary_color && @color_mutated_squares.include?(square)) ? @secondary_color : @color_index
+          ret[[row_index,column_index]] = [Square.new(color_index, @game_state), square_x, square_y]
         end
       end
     end

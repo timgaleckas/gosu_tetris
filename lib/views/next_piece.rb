@@ -23,6 +23,7 @@ class NextPiece < Widget
   suspendable def pop
     last = @current
     @current = Piece::ALL.sample.with_game_state(@game_state)
+    @current.randomly_mutate_color
     last
   end
 end

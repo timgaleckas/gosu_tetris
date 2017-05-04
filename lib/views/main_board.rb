@@ -217,6 +217,7 @@ class MainBoard < Widget
     @current_piece = nil
     _relink_and_relock_squares
     _push_action_pending(:clear_rows)
+    _push_action_pending(:apply_gravity)
   end
 
   def _relink_and_relock_squares
