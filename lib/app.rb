@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'gosu'
-require 'rmagick'
+require 'active_support'
 require 'active_support/core_ext/object/try'
 require 'filepath'
 

@@ -2,13 +2,15 @@
 source "https://rubygems.org"
 
 gem "gosu"
-gem "rmagick"
 gem "chipmunk"
-gem "rake"
-
-gem "minitest"
-
 gem "activesupport"
 gem "filepath"
 
-gem "pry"
+group :development do
+  gem "rake"
+  gem "rmagick"
+  gem "minitest"
+
+  gem "pry"
+  gem "plist"
+end
