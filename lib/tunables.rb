@@ -15,7 +15,7 @@ class Tunables
     attr_accessor :drop_rate
 
     def speed_for_level(level)
-      1 + ((level - 1).to_f * 0.5)
+      1 + ((level - 1).to_f * 0.8)
     end
   end
 end
