@@ -58,19 +58,15 @@ class MainBoard < Widget
 
   suspendable def move_piece_left
     unless _collision_detected?(@current_piece, @cursor_x - Square.width, _cursor_y, Tunables.slide_buffer)
-      if _collision_detected?(@current_piece, @cursor_x - Square.width, _cursor_y)
-        @cursor_y = (_cursor_y + 15) / 30 * 30
-      end
       @cursor_x -= Square.width
+      _shimmy_piece_to_fit
     end
   end
 
   suspendable def move_piece_right
     unless _collision_detected?(@current_piece, @cursor_x + Square.width, _cursor_y, Tunables.slide_buffer)
-      if _collision_detected?(@current_piece, @cursor_x + Square.width, _cursor_y)
-        @cursor_y = (_cursor_y + 15) / 30 * 30
-      end
       @cursor_x += Square.width
+      _shimmy_piece_to_fit
     end
   end
 
@@ -236,17 +232,23 @@ class MainBoard < Widget
   def _rotate_piece_left
     unless _collision_detected?(@current_piece.rotated_left, @cursor_x, _cursor_y, Tunables.slide_buffer)
       @current_piece = @current_piece.rotated_left
+      _shimmy_piece_to_fit
     end
   end
 
   def _rotate_piece_right
     unless _collision_detected?(@current_piece.rotated_right, @cursor_x, _cursor_y, Tunables.slide_buffer)
       @current_piece = @current_piece.rotated_right
+      _shimmy_piece_to_fit
     end
   end
 
   def _rows
     @rows
+  end
+
+  def _shimmy_piece_to_fit
+    @cursor_y = (_cursor_y + 15) / 30 * 30 if _collision_detected?(@current_piece, @cursor_x, _cursor_y)
   end
 
   def _square_at?(x,y)
