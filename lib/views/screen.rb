@@ -1,6 +1,7 @@
 class Screen
-  def initialize(width, height)
+  def initialize(width, height, window)
     @width, @height = width, height
+    @window = window
   end
 
   def button_down(id)

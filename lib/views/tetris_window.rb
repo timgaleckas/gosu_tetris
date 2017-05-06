@@ -4,7 +4,7 @@ class TetrisWindow < Gosu::Window
 
     self.caption = "Tetris"
 
-    @current_screen = SplashScreen.new(400,600)
+    @current_screen = SplashScreen.new(400,600,self)
   end
 
   def draw

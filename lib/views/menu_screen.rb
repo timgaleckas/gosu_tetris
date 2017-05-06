@@ -1,5 +1,5 @@
 class MenuScreen < Screen
-  def initialize(width, height)
+  def initialize(width, height, window)
     super
     @color = 0
     @start_button = Gosu::Image.new(App.asset_root / 'buttons' / 'start_game.png')
@@ -16,7 +16,7 @@ class MenuScreen < Screen
   end
 
   def button_down(id)
-    @next_screen ||= GameScreen.new(@width,@height,GameState.new)
+    @next_screen ||= GameScreen.new(@width,@height,@window,GameState.new.tap{|gs|gs.level=0})
   end
 
   def next_screen

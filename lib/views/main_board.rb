@@ -132,16 +132,17 @@ class MainBoard < Widget
 
   def _clear_rows
     rows_to_clear = @rows.select{|r|r.all?{|s|s}}
-    @game_state.register_cleared_rows(rows_to_clear.size)
-
-    rows_to_clear.each do |r|
-      r.each do |s|
-        s.left = s.right = s.up = s.down = nil
-        s.disappearing += 1
-      end
-    end
-
     unless rows_to_clear.empty?
+      @game_state.register_cleared_rows(@current_cascade,rows_to_clear.size)
+      @current_cascade += 1
+
+      rows_to_clear.each do |r|
+        r.each do |s|
+          s.left = s.right = s.up = s.down = nil
+          s.disappearing += 1
+        end
+      end
+
       _push_action_pending(:apply_gravity)
       _push_action_pending(:clear_squares)
     end
@@ -212,6 +213,7 @@ class MainBoard < Widget
     end
     @current_piece = nil
     _relink_and_relock_squares
+    @current_cascade = 0
     _push_action_pending(:clear_rows)
     _push_action_pending(:apply_gravity)
   end
