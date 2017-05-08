@@ -13,6 +13,10 @@ class App
     def asset_root
       @asset_root ||= root / 'assets'
     end
+
+    def name
+      "Timtris"
+    end
   end
 end
 
@@ -29,8 +33,9 @@ require_relative './views/tetris_window'
 require_relative './views/screen'
 require_relative './views/widget'
 
+require_relative './views/menu'
+
 require_relative './views/splash_screen'
-require_relative './views/menu_screen'
 
 require_relative './views/game_screen'
 require_relative './views/main_board'

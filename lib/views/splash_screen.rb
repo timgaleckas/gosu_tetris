@@ -14,6 +14,6 @@ class SplashScreen < Screen
   end
 
   def next_screen
-    @time_remaining <= 0 && MenuScreen.new(@width, @height, @window)
+    @time_remaining <= 0 && Menu::MainScreen.new(@width, @height, @window)
   end
 end

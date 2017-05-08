@@ -25,13 +25,11 @@ task :package do
   FileUtils.cp(App.root/'Gemfile.lock',package_ruby_root)
 
   File.open(package_ruby_root/'.ruby-version', 'w') do |file|
-    file.write("2.3.1")
+    file.write("2.4.1")
   end
   Bundler.with_clean_env do
     puts `cd #{package_ruby_root} && BUNDLE_IGNORE_CONFIG=1 bundle install --without=development --deployment --path lib`
   end
-  FileUtils.rm_f package_ruby_root/'lib'/'gosu'
-  FileUtils.rm_f package_ruby_root/'lib'/'chipmunk'
   FileUtils.cp_r(Dir.glob(package_ruby_root/'lib'/'ruby'/'*'/'gems'/'*'/'lib'/'*'), package_ruby_root/'lib')
   File.open(package_ruby_root/'main.rb', 'w') do |file|
     file.write(<<-MAIN)

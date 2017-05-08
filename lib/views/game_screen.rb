@@ -42,7 +42,7 @@ class GameScreen < Screen
     if @game_state.ended?
       @ended_for ||=0
       @ended_for += 1
-      @next_screen = MenuScreen.new(@width, @height, @window) if @ended_for > 30
+      @next_screen = Menu::MainScreen.new(@width, @height, @window) if @ended_for > 30
     end
     _update
   end

@@ -7,27 +7,27 @@ class KeyMap
     end
 
     pressable def down
-      [Gosu::KB_DOWN, Gosu::GP_0_DOWN]
+      [Gosu::KbDown, Gosu::Gp0Down]
     end
 
     pressable def left
-      [Gosu::KB_LEFT, Gosu::GP_0_LEFT]
+      [Gosu::KbLeft, Gosu::Gp0Left]
     end
 
     pressable def right
-      [Gosu::KB_RIGHT, Gosu::GP_0_RIGHT]
+      [Gosu::KbRight, Gosu::Gp0Right]
     end
 
     pressable def rotate_right
-      [Gosu::KB_UP, Gosu::GP_0_BUTTON_1]
+      [Gosu::KbUp, Gosu::Gp0Button1]
     end
 
     pressable def rotate_left
-      [Gosu::GP_0_BUTTON_0]
+      [Gosu::Gp0Button0]
     end
 
     pressable def pause
-      [Gosu::KB_P, Gosu::GP_0_BUTTON_6]
+      [Gosu::KbP, Gosu::Gp0Button6]
     end
   end
 end

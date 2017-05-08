@@ -80,11 +80,7 @@ class Square < Widget
         color_index == down.try(:color_index) ? "0" : "1"
       ].join.to_i(2)
 
-      begin
       Sprites::BORDERS[border_index].draw(x,y-@dropping, z+1)
-      rescue => e
-        require 'pry'; binding.pry
-      end
     end
   end
 
