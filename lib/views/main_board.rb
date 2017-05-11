@@ -22,7 +22,13 @@ class MainBoard < Widget
 
     @y = @height - @board_height
 
-    @rows = 0.upto(@squares_high - 1).map{|_|[nil]*@squares_wide}
+    @rows = (0...@squares_high).map{|_|[nil]*@squares_wide}
+
+    ((@rows.size - 15)...@rows.size).each do |row_index|
+      (0...@squares_wide).each do |column_index|
+        @rows[row_index][column_index] = Square.new(0,@game_state,true) if rand(5) == 0
+      end
+    end
 
     @actions_pending = []
 
@@ -229,6 +235,7 @@ class MainBoard < Widget
       end
     end
     @rows.last.each{|s|s.try(:lock)}
+    @rows.flatten.select{|s|s.try(:permalocked?)}.each{|s|s.lock}
   end
 
   def _rotate_piece_left

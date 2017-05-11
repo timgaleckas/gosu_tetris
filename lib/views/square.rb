@@ -6,12 +6,13 @@ class Square < Widget
   attr_accessor :disappearing
   attr_accessor :dropping
 
-  def initialize(color_index, game_state)
+  def initialize(color_index, game_state, permalocked=false)
     super Square.width, Square.height
     @color_index = color_index
     @game_state = game_state
     @disappearing = 0
     @dropping = 0
+    @permalocked = permalocked
   end
 
   def right=(square, doubly_link=true)
@@ -53,7 +54,11 @@ class Square < Widget
   end
 
   def locked?
-    !!@locked
+    permalocked? || !!@locked
+  end
+
+  def permalocked?
+    !!@permalocked
   end
 
   def disappearing?
