@@ -76,13 +76,13 @@ class Square < Widget
   def draw(x, y, z)
     Gosu.scale(1 - (@disappearing.to_f / DISAPPEAR_LIMIT), 1 - (@disappearing.to_f / DISAPPEAR_LIMIT), x+(Sprites::SQUARE_WIDTH/2), y+(Sprites::SQUARE_HEIGHT/2)) do
       level_index = (@game_state ? @game_state.level : 0) % 10
-      index = level_index * 7 + @color_index
+      index = level_index * 8 + @color_index
       Sprites::SQUARES[index].draw(x, y-@dropping, z)
       border_index = [
-        color_index == left.try(:color_index) ? "0" : "1",
-        color_index == right.try(:color_index) ? "0" : "1",
-        color_index == up.try(:color_index) ? "0" : "1",
-        color_index == down.try(:color_index) ? "0" : "1"
+        !permalocked? && color_index == left.try(:color_index) ? "0" : "1",
+        !permalocked? && color_index == right.try(:color_index) ? "0" : "1",
+        !permalocked? && color_index == up.try(:color_index) ? "0" : "1",
+        !permalocked? && color_index == down.try(:color_index) ? "0" : "1"
       ].join.to_i(2)
 
       Sprites::BORDERS[border_index].draw(x,y-@dropping, z+1)

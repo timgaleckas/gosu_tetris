@@ -26,7 +26,7 @@ class MainBoard < Widget
 
     ((@rows.size - 15)...@rows.size).each do |row_index|
       (0...@squares_wide).each do |column_index|
-        @rows[row_index][column_index] = Square.new(0,@game_state,true) if rand(5) == 0
+        @rows[row_index][column_index] = Square.new(7,@game_state,true) if rand(5) == 0
       end
     end
 
@@ -220,8 +220,8 @@ class MainBoard < Widget
     @current_piece = nil
     _relink_and_relock_squares
     @current_cascade = 0
-    _push_action_pending(:clear_rows)
     _push_action_pending(:apply_gravity)
+    _push_action_pending(:clear_rows)
   end
 
   def _relink_and_relock_squares
