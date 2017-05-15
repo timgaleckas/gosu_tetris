@@ -294,36 +294,15 @@ class MainBoard < Widget
     @squares_wide
   end
 
+  def _repeatable_key(is_pressed, repeat, &block)
+
+  end
+
   def _update_current_piece
-    if @game_state.key_map.right_pressed?
-      @pressing_rotate_right_time ||= 0
-      move_piece_right if (@pressing_right_time % Tunables.slide_repeat) == 0
-      @pressing_right_time += 1
-    else
-      @pressing_right_time = 0
-    end
-
-    if @game_state.key_map.left_pressed?
-      @pressing_rotate_left_time ||= 0
-      move_piece_left if (@pressing_left_time % Tunables.slide_repeat) == 0
-      @pressing_left_time += 1
-    else
-      @pressing_left_time = 0
-    end
-
-    if @game_state.key_map.rotate_right_pressed?
-      _rotate_piece_right if (@pressing_rotate_right_time % Tunables.rotate_repeat) == 0
-      @pressing_rotate_right_time += 1
-    else
-      @pressing_rotate_right_time = 0
-    end
-
-    if @game_state.key_map.rotate_left_pressed?
-      _rotate_piece_left if (@pressing_rotate_left_time % Tunables.rotate_repeat) == 0
-      @pressing_rotate_left_time += 1
-    else
-      @pressing_rotate_left_time = 0
-    end
+    move_piece_right    if @game_state.key_map.right_pressed?
+    move_piece_left     if @game_state.key_map.left_pressed?
+    _rotate_piece_right if @game_state.key_map.rotate_right_pressed?
+    _rotate_piece_left  if @game_state.key_map.rotate_left_pressed?
 
     move_down_amount = Tunables.speed_for_level(@game_state.speed_level)
     move_down_amount += Tunables.down_speed if @game_state.key_map.down_pressed?
