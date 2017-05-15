@@ -3,6 +3,10 @@ task :test do
   Dir.glob('./test/test_*.rb').each { |file| require file}
 end
 
+task :generate_sprites do
+  Dir.glob('./sprite_generation/test/test_*.rb').each { |file| require file}
+end
+
 task :package do
   require 'plist'
   require_relative './lib/app'

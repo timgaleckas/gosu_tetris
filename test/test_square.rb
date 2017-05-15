@@ -70,7 +70,7 @@ describe Square do
       squares = []
       0.upto(11) do |level|
         g = GameState.new
-        g.level = level
+        g.speed_level = level
         0.upto(6) do |color|
           squares << [Square.new(color,g), 0,0,1]
         end

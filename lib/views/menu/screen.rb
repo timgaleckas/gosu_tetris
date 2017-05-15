@@ -1,6 +1,6 @@
 class Menu::Screen < Screen
-  def initialize(width, height, window, buttons)
-    super(width, height, window)
+  def initialize(screen, buttons)
+    super(screen)
     buttons.each_with_index do |row, row_index|
       row.each_with_index do |button, column_index|
         button.down  = buttons[row_index+1].try(:slice, column_index)

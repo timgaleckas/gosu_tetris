@@ -1,8 +1,14 @@
 require_relative './test_helper'
 
 describe MainBoard do
+  def game_state
+    g = GameState.new
+    g.junk_level = 0
+    g
+  end
+
   def main_board
-    MainBoard.new(154,310,GameState.new)
+    MainBoard.new(154,310,game_state)
   end
 
   describe "#initialize" do
@@ -16,8 +22,7 @@ describe MainBoard do
   end
 
   it "displays properly" do
-    g = GameState.new
-    g.level = 5
+    g = game_state
     m = MainBoard.new(291,592,g)
     m.current_piece = Piece::O.with_game_state(g)
     test_window = TestWindow.new([m],650) do |current_widget, current_time|
@@ -29,7 +34,7 @@ describe MainBoard do
       when 470
         current_widget._rotate_piece_right
       when 481
-        g.level = 7
+        g.speed_level = 7
       end
 
       if current_widget.current_piece.nil?
@@ -45,7 +50,7 @@ describe MainBoard do
 
   describe "#_apply_gravity" do
     it "drops 1 square correctly" do
-      g = GameState.new
+      g = game_state
       m = MainBoard.new(65,119,g)
       s = Square.new(1,g)
       m._rows[0][0] = s
@@ -61,7 +66,7 @@ describe MainBoard do
     end
 
     it "drops a 2 square vertical piece correctly" do
-      g = GameState.new
+      g = game_state
       m = MainBoard.new(65,119,g)
       s1 = Square.new(1,g)
       s2 = Square.new(1,g)
@@ -81,7 +86,7 @@ describe MainBoard do
     end
 
     it "drops a 3 square J correctly" do
-      g = GameState.new
+      g = game_state
       m = MainBoard.new(95,119,g)
       s1 = Square.new(1,g)
       s2 = Square.new(1,g)
@@ -106,7 +111,7 @@ describe MainBoard do
     end
 
     it "drops past squares of the same color and only comes to rest at the bottom" do
-      g = GameState.new
+      g = game_state
       m = MainBoard.new(125,119,g)
 
       m._rows[2][2] = Square.new(1,g)
@@ -136,7 +141,7 @@ describe MainBoard do
 
   describe "slide mechanics" do
     it "doesn't allow you to smash one piece into another" do
-      g = GameState.new
+      g = game_state
       m = MainBoard.new(305,239,g)
 
       m._rows[0][0] = Square.new(2,g)
@@ -176,7 +181,7 @@ describe MainBoard do
 
   describe "action stack" do
     it "acts like a stack" do
-      g = GameState.new
+      g = game_state
       m = MainBoard.new(305,239,g)
 
       assert_nil m._peek_action_pending

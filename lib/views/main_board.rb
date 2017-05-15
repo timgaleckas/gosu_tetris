@@ -22,9 +22,10 @@ class MainBoard < Widget
 
     @y = @height - @board_height
 
-    @rows = (0...@squares_high).map{|_|[nil]*@squares_wide}
+    @rows = []
+    _refill_rows
 
-    ((@rows.size - 15)...@rows.size).each do |row_index|
+    ((@rows.size - @game_state.junk_level)...@rows.size).each do |row_index|
       (0...@squares_wide).each do |column_index|
         @rows[row_index][column_index] = Square.new(7,@game_state,true) if rand(5) == 0
       end
@@ -42,7 +43,7 @@ class MainBoard < Widget
     @current_piece = piece
     @cursor_x = ((@squares_wide / 2) - 1) * Square.width
     @cursor_y = -(Square.height*2)
-    _end_game if _collision_detected?(@current_piece, @cursor_x, _cursor_y)
+    _lose_game if _collision_detected?(@current_piece, @cursor_x, _cursor_y)
   end
 
   def draw
@@ -94,6 +95,7 @@ class MainBoard < Widget
       nil
     when nil
       _update_current_piece if @current_piece
+      @game_state.won = true if @game_state.junk_level > 0 && @rows.flatten.compact.none?{|s|s.permalocked?}
     else
     end
   end
@@ -111,6 +113,7 @@ class MainBoard < Widget
   end
 
   def _apply_gravity(initial=true)
+    return unless @game_state.gravity
     _relink_and_relock_squares if initial
     changed_this_frame = []
     (@rows.size-2).downto(0).each do |row_index|
@@ -160,12 +163,17 @@ class MainBoard < Widget
         if square && square.disappearing?
           square.disappearing+=1
           if square.disappeared?
-            @rows[row_index][column_index] = nil
+            @rows[row_index][column_index] = nil unless @game_state.drop_cleared_rows
           else
             _push_action_pending(:clear_squares) unless _peek_action_pending == :clear_squares
           end
         end
       end
+    end
+
+    if @game_state.drop_cleared_rows
+      @rows.reject!{|row|row.all?{|s|s && s.disappeared?}}
+      _refill_rows if @rows.size < @squares_high
     end
   end
 
@@ -198,8 +206,8 @@ class MainBoard < Widget
     @cursor_y.to_i
   end
 
-  def _end_game
-    @game_state.ended = true
+  def _lose_game
+    @game_state.lost = true
   end
 
   def _index_out_of_bounds?(x,y)
@@ -222,6 +230,13 @@ class MainBoard < Widget
     @current_cascade = 0
     _push_action_pending(:apply_gravity)
     _push_action_pending(:clear_rows)
+  end
+
+  def _refill_rows
+    (@rows.size...@squares_high).each do |i|
+      @rows.unshift [nil]*@squares_wide
+    end
+    _relink_and_relock_squares
   end
 
   def _relink_and_relock_squares
@@ -281,6 +296,7 @@ class MainBoard < Widget
 
   def _update_current_piece
     if @game_state.key_map.right_pressed?
+      @pressing_rotate_right_time ||= 0
       move_piece_right if (@pressing_right_time % Tunables.slide_repeat) == 0
       @pressing_right_time += 1
     else
@@ -288,6 +304,7 @@ class MainBoard < Widget
     end
 
     if @game_state.key_map.left_pressed?
+      @pressing_rotate_left_time ||= 0
       move_piece_left if (@pressing_left_time % Tunables.slide_repeat) == 0
       @pressing_left_time += 1
     else
@@ -308,7 +325,7 @@ class MainBoard < Widget
       @pressing_rotate_left_time = 0
     end
 
-    move_down_amount = Tunables.speed_for_level(@game_state.level)
+    move_down_amount = Tunables.speed_for_level(@game_state.speed_level)
     move_down_amount += Tunables.down_speed if @game_state.key_map.down_pressed?
 
     if _collision_detected?(@current_piece, @cursor_x, _cursor_y + move_down_amount)

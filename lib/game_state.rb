@@ -1,21 +1,30 @@
 class GameState
-  attr_accessor :level
+  attr_accessor :drop_cleared_rows
+  attr_accessor :gravity
+  attr_accessor :junk_level
+  attr_accessor :lost
+  attr_accessor :multicolor
   attr_accessor :paused
-  attr_accessor :ended
   attr_accessor :player_id
+  attr_accessor :speed_level
+  attr_accessor :won
   attr_reader :rows_cleared
   attr_reader :score
 
   def initialize
-    @level = 0
+    @speed_level = 0
+    @junk_level = 2
     @rows_cleared = 0
     @paused = false
     @player_id = 0
     @score = 0
+    @multicolor = true
+    @gravity = true
+    @drop_cleared_rows = false
   end
 
   def ended?
-    !!@ended
+    won || lost
   end
 
   def key_map
@@ -40,9 +49,9 @@ class GameState
                 else
                   0
                 end
-    @score += (@level + 1) * row_score
+    @score += (@speed_level + 1) * row_score
     @score += current_cascade*50
-    level_from_rows = @rows_cleared / 10
-    @level = [@level, level_from_rows].max
+    speed_level_from_rows = @rows_cleared / 10
+    @speed_level = [@speed_level, speed_level_from_rows].max
   end
 end

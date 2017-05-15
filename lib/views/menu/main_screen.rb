@@ -1,12 +1,12 @@
 class Menu::MainScreen < Menu::Screen
-  def initialize(width, height, window)
-    super(width, height, window, [
+  def initialize(screen)
+    super(screen, [
       [
-        Menu::Button.new('start_game', width/2, height/5 * 2.5) do
-          @next_screen = GameScreen.new(width, height, window, GameState.new)
+        Menu::Button.new('start_game', screen.width/2, screen.height/5 * 2.5) do
+          @next_screen = Menu::GameModeScreen.new(self)
         end
       ],[
-        Menu::Button.new('options', width/2, height/5 * 4)
+        Menu::Button.new('options', screen.width/2, screen.height/5 * 4)
       ]
     ])
     @font = Gosu::Font.new(@window,App.asset_root/'fonts'/'Pacifico'/'Pacifico-Regular.ttf',200)
