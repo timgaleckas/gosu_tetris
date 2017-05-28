@@ -1,8 +1,9 @@
 require 'set'
 
 class Piece
-  def initialize(positions, color_index=0, rotation=0)
+  def initialize(positions, kick_data, color_index=0, rotation=0)
     @positions = positions
+    @kick_data = kick_data
     @color_index = color_index
     @rotation = rotation
   end
@@ -13,10 +14,20 @@ class Piece
     r
   end
 
+  def rotated_right_kick_offsets
+    return [] unless @kick_data
+    @kick_data[@rotation][:r]
+  end
+
   def rotated_left
     r = dup
     r._rotation -= 1
     r
+  end
+
+  def rotated_left_kick_offsets
+    return [] unless @kick_data
+    @kick_data[@rotation][:l]
   end
 
   def with_game_state(game_state)
@@ -354,13 +365,13 @@ class Piece
     ]
   ]
 
-  I = new(I_POSITIONS,0)
-  J = new(J_POSITIONS,1)
-  L = new(L_POSITIONS,2)
-  O = new(O_POSITIONS,3)
-  S = new(S_POSITIONS,4)
-  T = new(T_POSITIONS,5)
-  Z = new(Z_POSITIONS,6)
+  I = new(I_POSITIONS, KICK_DATA_I, 0)
+  J = new(J_POSITIONS, KICK_DATA_3, 1)
+  L = new(L_POSITIONS, KICK_DATA_3, 2)
+  O = new(O_POSITIONS, nil,         3)
+  S = new(S_POSITIONS, KICK_DATA_3, 4)
+  T = new(T_POSITIONS, KICK_DATA_3, 5)
+  Z = new(Z_POSITIONS, KICK_DATA_3, 6)
 
   ALL = [I,J,L,O,S,T,Z]
 end

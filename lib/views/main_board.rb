@@ -254,15 +254,27 @@ class MainBoard < Widget
   end
 
   def _rotate_piece_left
-    unless _collision_detected?(@current_piece.rotated_left, @cursor_x, _cursor_y, Tunables.slide_buffer)
-      @current_piece = @current_piece.rotated_left
+    rotated_left_piece = @current_piece.rotated_left
+    x_offset, y_offset = ([[0,0]] + @current_piece.rotated_right_kick_offsets).find do |(_x_offset,_y_offset)|
+      !_collision_detected?(rotated_left_piece, @cursor_x + (_x_offset * Square.width), _cursor_y + (_y_offset * Square.height), Tunables.slide_buffer)
+    end
+    if x_offset
+      @current_piece = rotated_left_piece
+      @cursor_x += (x_offset * Square.width)
+      @cursor_y += (y_offset * Square.height)
       _shimmy_piece_to_fit
     end
   end
 
   def _rotate_piece_right
-    unless _collision_detected?(@current_piece.rotated_right, @cursor_x, _cursor_y, Tunables.slide_buffer)
-      @current_piece = @current_piece.rotated_right
+    rotated_right_piece = @current_piece.rotated_right
+    x_offset, y_offset = ([[0,0]] + @current_piece.rotated_right_kick_offsets).find do |(_x_offset,_y_offset)|
+      !_collision_detected?(rotated_right_piece, @cursor_x + (_x_offset * Square.width), _cursor_y + (_y_offset * Square.height), Tunables.slide_buffer)
+    end
+    if x_offset
+      @current_piece = rotated_right_piece
+      @cursor_x += (x_offset * Square.width)
+      @cursor_y += (y_offset * Square.height)
       _shimmy_piece_to_fit
     end
   end
