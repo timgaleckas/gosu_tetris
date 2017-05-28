@@ -66,6 +66,126 @@ class Piece
     @rotation = number % @positions.size
   end
 
+  # kick data for all 3 square pieces indexed by position index and rotation direction
+  KICK_DATA_3 = [
+    { # original position
+      r: [
+        [-1, 0],
+        [-1, 1],
+        [ 0,-2],
+        [-1,-2]
+      ],
+      l: [
+        [1, 0],
+        [1, 1],
+        [0,-2],
+        [1,-2]
+      ]
+    },
+    { # rotated clocwize once
+      r: [
+        [1, 0],
+        [1,-1],
+        [0, 2],
+        [1, 2]
+      ],
+      l: [
+        [1, 0],
+        [1,-1],
+        [0, 2],
+        [1, 2]
+      ]
+    },
+    { # rotated twice
+      r: [
+        [1, 0],
+        [1, 1],
+        [0,-2],
+        [1,-2]
+      ],
+      l: [
+        [-1, 0],
+        [-1, 1],
+        [ 0,-2],
+        [-1,-2]
+      ]
+    },
+    { # rotated counter-clocwize once
+      r: [
+        [-1, 0],
+        [-1,-1],
+        [ 0, 2],
+        [-1, 2]
+      ],
+      l: [
+        [-1, 0],
+        [-1,-1],
+        [ 0, 2],
+        [-1, 2]
+      ]
+    }
+  ]
+
+  # kick data for I piece indexed by position index and rotation direction
+  KICK_DATA_I = [
+    { # original position
+      r: [
+        [-2, 0],
+        [ 1, 0],
+        [-2,-1],
+        [ 1, 2]
+      ],
+      l: [
+        [-1, 0],
+        [ 2, 0],
+        [-1, 2],
+        [ 2,-1]
+      ]
+    },
+    { # rotated clocwize once
+      r: [
+        [-1, 0],
+        [ 2, 0],
+        [-1, 2],
+        [ 2,-1]
+      ],
+      l: [
+        [ 2, 0],
+        [-1, 0],
+        [ 2, 1],
+        [-1,-2]
+      ]
+    },
+    { # rotated twice
+      r: [
+        [ 2, 0],
+        [-1, 0],
+        [ 2, 1],
+        [-1,-2]
+      ],
+      l: [
+        [ 1, 0],
+        [-2, 0],
+        [ 1,-2],
+        [-2, 1]
+      ]
+    },
+    { # rotated counter-clocwize once
+      r: [
+        [ 1, 0],
+        [-2, 0],
+        [ 1,-2],
+        [-2, 1]
+      ],
+      l: [
+        [-2, 0],
+        [ 1, 0],
+        [-2,-1],
+        [ 1, 2]
+      ]
+    }
+  ]
+
   _ = nil
 
   O_POSITIONS = [
