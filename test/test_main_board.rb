@@ -163,6 +163,8 @@ describe MainBoard do
 
       m.current_piece = Piece::S.with_game_state(g)
 
+      40.times{ m.update }
+
       initial_pieces = m._rows.flatten.compact.size + m.current_piece.squares_with_coordinates(0,0).size
 
       test_window = TestWindow.new([m],10000) do |current_widget, current_time|

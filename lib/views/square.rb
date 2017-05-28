@@ -89,6 +89,16 @@ class Square < Widget
     end
   end
 
+  def inspect
+    [
+      locked? ? 'L' : '.',
+      up ?      'U' : '.',
+      down ?    'D' : '.',
+      left ?    'L' : '.',
+      right ?   'R' : '.'
+    ].join
+  end
+
   def self.height
     Sprites::SQUARE_HEIGHT
   end

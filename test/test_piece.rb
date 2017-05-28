@@ -29,16 +29,35 @@ describe Piece do
   describe "#squares_with_coordinates" do
     it "responds correctly for O" do
       Piece::O.squares_with_coordinates(0,0).map{|r| r[1..2]}.sort.must_equal [
-        [30,  60], [60, 60],
-        [30,  90], [60, 90]
+        [30, 30], [30, 60],
+        [60, 30], [60, 60]
       ].sort
     end
 
     it "responds correctly for T" do
-      Piece::T.squares_with_coordinates(0,0).map{|r| r[1..2]}.sort.must_equal [
-        [30,  60], [60, 60], [90, 60],
-                   [60, 90]
+      swc = Piece::T.squares_with_coordinates(0,0)
+
+      swc.map{|r| r[1..2]}.sort.must_equal [
+                 [30, 0],
+        [0, 30], [30, 30], [60, 30]
       ].sort
+
+      swc[2][0].up.must_equal    swc[0][0]
+      swc[2][0].right.must_equal swc[3][0]
+      swc[2][0].left.must_equal  swc[1][0]
+    end
+
+    it "responds correctly for J" do
+      swc = Piece::J.squares_with_coordinates(0,0)
+
+      swc.map{|r| r[1..2]}.sort.must_equal [
+        [0, 0],
+        [0, 30], [30, 30], [60, 30]
+      ].sort
+
+      swc[1][0].up.must_equal    swc[0][0]
+      swc[1][0].right.must_equal swc[2][0]
+      swc[2][0].right.must_equal swc[3][0]
     end
   end
 end
