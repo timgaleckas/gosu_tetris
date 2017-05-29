@@ -3,6 +3,7 @@ class GameState
   attr_accessor :gravity
   attr_accessor :junk_level
   attr_accessor :lost
+  attr_accessor :marathon
   attr_accessor :multicolor
   attr_accessor :paused
   attr_accessor :player_id
@@ -12,15 +13,16 @@ class GameState
   attr_reader :score
 
   def initialize
-    @speed_level = 0
+    @drop_cleared_rows = false
+    @gravity = true
     @junk_level = 2
-    @rows_cleared = 0
+    @marathon = false
+    @multicolor = true
     @paused = false
     @player_id = 0
+    @rows_cleared = 0
     @score = 0
-    @multicolor = true
-    @gravity = true
-    @drop_cleared_rows = false
+    @speed_level = 0
   end
 
   def ended?

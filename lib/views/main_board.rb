@@ -95,7 +95,9 @@ class MainBoard < Widget
       nil
     when nil
       _update_current_piece if @current_piece
-      @game_state.won = true if @game_state.junk_level > 0 && @rows.flatten.compact.none?{|s|s.permalocked?}
+      if !@game_state.marathon && @game_state.junk_level > 0 && @rows.flatten.compact.none?{|s|s.permalocked?}
+        @game_state.won = true
+      end
     else
     end
   end

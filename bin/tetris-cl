@@ -1,0 +1,82 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'commander/import'
+
+program :name, 'Tetris'
+program :version, '0.0.1'
+program :description, 'Tetris Game based off of The Next Tetris'
+
+command :classic do |c|
+  c.syntax = 'Tetris classic [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--speed-level LEVEL', Integer, 'Speed level'
+  c.action do |args, options|
+    options.default \
+      :speed_level  => 1
+    require_relative '../lib/app'
+    window = TetrisWindow.new
+    game_state = GameState.new
+    game_state.junk_level = 0
+    game_state.multicolor = false
+    game_state.drop_cleared_rows = true
+    game_state.gravity = false
+    game_state.speed_level = options.speed_level
+    window.current_screen = GameScreen.new(window.current_screen.width, window.current_screen.height, window, game_state)
+    window.show
+  end
+end
+
+command :next do |c|
+  c.syntax = 'Tetris next [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--junk-level LEVEL', Integer, 'How many rows of junk squares should we start off with'
+  c.option '--marathon', 'Continue playing even after the junk is cleared'
+  c.option '--speed-level LEVEL', Integer, 'Speed level'
+  c.action do |args, options|
+    options.default \
+      :junk_level => 2,
+      :speed_level  => 1
+    require_relative '../lib/app'
+    window = TetrisWindow.new
+    game_state = GameState.new
+    game_state.junk_level = options.junk_level
+    game_state.marathon = options.marathon
+    game_state.speed_level = options.speed_level
+    window.current_screen = GameScreen.new(window.current_screen.width, window.current_screen.height, window, game_state)
+    window.show
+  end
+end
+
+command :custom do |c|
+  c.syntax = 'Tetris custom [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--drop-cleared-rows'
+  c.option '--gravity'
+  c.option '--junk-level LEVEL', Integer, 'How many rows of junk squares should we start off with'
+  c.option '--marathon', 'Continue playing even after the junk is cleared'
+  c.option '--multicolor'
+  c.option '--speed-level LEVEL', Integer, 'Speed level'
+  c.action do |args, options|
+    options.default \
+      :junk_level => 2,
+      :speed_level  => 1
+
+    require_relative '../lib/app'
+    window = TetrisWindow.new
+    game_state = GameState.new
+    game_state.drop_cleared_rows = options.drop_cleared_rows
+    game_state.gravity = options.gravity
+    game_state.junk_level = options.junk_level
+    game_state.marathon = options.marathon
+    game_state.speed_level = options.speed_level
+    window.current_screen = GameScreen.new(window.current_screen.width, window.current_screen.height, window, game_state)
+    window.show
+  end
+end

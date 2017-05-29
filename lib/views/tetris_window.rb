@@ -1,4 +1,6 @@
 class TetrisWindow < Gosu::Window
+  attr_accessor :current_screen
+
   def initialize
     super 400, 600
 
