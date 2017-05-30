@@ -54,6 +54,7 @@ class GameState
     @score += (@speed_level + 1) * row_score
     @score += current_cascade*50
     speed_level_from_rows = @rows_cleared / 10
+    Sounds::SFX_LevelUp.play if speed_level_from_rows > @speed_level
     @speed_level = [@speed_level, speed_level_from_rows].max
   end
 end

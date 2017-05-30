@@ -66,6 +66,7 @@ class MainBoard < Widget
   suspendable def move_piece_left
     unless _collision_detected?(@current_piece, @cursor_x - Square.width, _cursor_y, Tunables.slide_buffer)
       @cursor_x -= Square.width
+      Sounds::SFX_PieceMoveLR.play
       _shimmy_piece_to_fit
     end
   end
@@ -73,6 +74,7 @@ class MainBoard < Widget
   suspendable def move_piece_right
     unless _collision_detected?(@current_piece, @cursor_x + Square.width, _cursor_y, Tunables.slide_buffer)
       @cursor_x += Square.width
+      Sounds::SFX_PieceMoveLR.play
       _shimmy_piece_to_fit
     end
   end
@@ -146,6 +148,21 @@ class MainBoard < Widget
     unless rows_to_clear.empty?
       @game_state.register_cleared_rows(@current_cascade,rows_to_clear.size)
       @current_cascade += 1
+
+      if @current_cascade > 1
+        Sounds::PRAISES.sample.play
+      end
+
+      case rows_to_clear.size
+      when 1
+        Sounds::SFX_SpecialLineClearSingle.play
+      when 2
+        Sounds::SFX_SpecialLineClearDouble.play
+      when 3
+        Sounds::SFX_SpecialLineClearTriple.play
+      else
+        Sounds::SFX_SpecialTetris.play
+      end
 
       rows_to_clear.each do |r|
         r.each do |s|
@@ -264,7 +281,10 @@ class MainBoard < Widget
       @current_piece = rotated_left_piece
       @cursor_x += (x_offset * Square.width)
       @cursor_y += (y_offset * Square.height)
+      Sounds::SFX_PieceRotateLR.play
       _shimmy_piece_to_fit
+    else
+      Sounds::SFX_PieceRotateFail.play
     end
   end
 
@@ -277,7 +297,10 @@ class MainBoard < Widget
       @current_piece = rotated_right_piece
       @cursor_x += (x_offset * Square.width)
       @cursor_y += (y_offset * Square.height)
+      Sounds::SFX_PieceRotateLR.play
       _shimmy_piece_to_fit
+    else
+      Sounds::SFX_PieceRotateFail.play
     end
   end
 
@@ -327,7 +350,10 @@ class MainBoard < Widget
       end
 
       @current_piece_resting_for += 1
+
+      Sounds::SFX_PieceTouchDown.play if @current_piece_resting_for == 0
       if @current_piece_resting_for >= Tunables.lock_delay
+        Sounds::SFX_PieceLockdown.play
         _place_piece
       end
     else
