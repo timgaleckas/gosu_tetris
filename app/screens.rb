@@ -1,4 +1,4 @@
-# The screens, mirroring lib/views. update handles input and returns the screen to
+# The screens. update handles input and returns the screen to
 # show next (itself to stay); render_targets fills any render targets the screen uses
 # (before the 400x600 canvas is opened, so it doesn't sample last frame's); draw fills the canvas.
 module Screens
@@ -43,7 +43,7 @@ module Screens
     end
   end
 
-  # A grid of buttons navigated by mouse, keyboard or gamepad; see lib/views/menu/screen.rb.
+  # A grid of buttons navigated by mouse, keyboard or gamepad.
   class Menu
     BACKGROUND = [0xDD, 0xDD, 0xBB].freeze
     GAMEPAD_SELECT = [:a, :b, :x, :y, :l1, :r1, :l2, :r2, :start, :select].freeze
@@ -149,7 +149,7 @@ module Screens
     end
   end
 
-  # A game in progress; see lib/views/game_screen.rb.
+  # A game in progress.
   class Play
     BACKGROUND = 'assets/bck.png'.freeze
     PAUSE_ICON = 'assets/pause.png'.freeze

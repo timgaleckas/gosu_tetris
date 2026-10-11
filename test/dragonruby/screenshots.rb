@@ -1,5 +1,4 @@
 # Saves the DragonRuby screens to tmp/screenshots/dr_*.png: bin/dr screenshots
-# test/gosu/screenshots.rb saves the same moments from the Gosu version for comparison.
 require 'test/core/simulation.rb'
 require 'test/core/scenarios.rb'
 
@@ -24,7 +23,7 @@ module ScreenshotRun
     DR.request_quit if tick > SHOTS.keys.max + 2
   end
 
-  # The same seeded game and scripted input as the Gosu run.
+  # A seeded game with scripted input, so the shots are the same every run.
   def self._start_game
     state = GameState.new
     state.rng = Rng.new(1)

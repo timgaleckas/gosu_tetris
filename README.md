@@ -1,14 +1,14 @@
 # Timtris
 
 A falling-blocks game whose rules follow Tetris Worlds, including the gravity,
-cascade and junk-clearing modes.
+cascade and junk-clearing modes. It runs on [DragonRuby](https://dragonruby.org)
+and builds for the web.
 
-The rules live in `lib/core` as plain Ruby and run unchanged on two frontends:
+- `lib/core`: the rules, in plain Ruby with no dependencies.
+- `app/`: the DragonRuby frontend (screens, drawing, input, sound).
+- `assets/`, `metadata/`: what DragonRuby packages with the game.
 
-- **DragonRuby** (`app/`): the main version; builds for the web.
-- **Gosu** (`lib/views`, `bin/tetris.rb`): the original desktop version.
-
-## DragonRuby
+## Running
 
 Download DragonRuby, then either set `DRAGONRUBY_HOME` to its folder or symlink it:
 
@@ -21,21 +21,15 @@ bin/dr publish      # package the web build into DragonRuby's builds/ folder
 ```
 
 Set `devid` and `devtitle` in `metadata/game_metadata.txt` before uploading to itch.io.
-
-## Gosu
-
-Needs Ruby 3.3 and SDL2 (`brew install sdl2`).
-
-```sh
-bundle install
-bundle exec ruby bin/tetris.rb
-```
+The web build needs HTTPS (or localhost) to run.
 
 ## Tests
 
+The rules' tests also run under MRI (Ruby 3.3), which is where the golden traces are recorded:
+
 ```sh
-bundle exec rake            # everything
-bundle exec rake test:core  # just the rules, without Gosu
+bundle install
+bundle exec rake
 ```
 
 `test/core/golden/*.trace` are frame-by-frame recordings of scripted games. They

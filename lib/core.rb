@@ -1,4 +1,4 @@
-# The game rules in plain Ruby, with no Gosu or gem dependencies, so any frontend can run them.
+# The game rules in plain Ruby with no gem dependencies.
 # Frontends supply input (held?(action)) and audio (play(name)); see Game.
 # Runs on MRI and DragonRuby: integer division uses div (DragonRuby's Integer#/ returns a Float),
 # randomness goes through Rng, and requires use paths DragonRuby can resolve.

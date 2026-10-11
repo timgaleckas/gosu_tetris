@@ -2,7 +2,7 @@
 # Runs the DragonRuby version of the game from this repo.
 #   bin/dr            play
 #   bin/dr test       run the core's cross-engine tests
-#   bin/dr screenshots  save screens to tmp/screenshots (compare with test/gosu/screenshots.rb)
+#   bin/dr screenshots  save screens to tmp/screenshots
 #   bin/dr publish    package the web build (no upload); desktop builds need a paid DragonRuby tier
 # DragonRuby lives outside the repo: set DRAGONRUBY_HOME, or symlink it to ./dragonruby-engine.
 # Builds land in DragonRuby's builds directory.
@@ -29,13 +29,11 @@ case "$1" in
     ;;
   publish)
     # dragonruby-publish only packages a game directory inside the engine directory, and
-    # doesn't follow symlinks, so stage a copy of just the DragonRuby game there.
+    # doesn't follow symlinks, so stage a copy of the game there.
     staging="timtris"
     rm -rf "$staging"
-    mkdir -p "$staging/lib"
-    cp -R "$game_dir/app" "$game_dir/assets" "$game_dir/metadata" "$staging/"
-    cp -R "$game_dir/lib/core.rb" "$game_dir/lib/core" "$staging/lib/"
-    rm -f "$staging/assets/fonts.zip"
+    mkdir -p "$staging"
+    cp -R "$game_dir/app" "$game_dir/assets" "$game_dir/lib" "$game_dir/metadata" "$staging/"
     ./dragonruby-publish --platforms=html5 --package "$staging" || status=$?
     rm -rf "$staging"
     ls -d "$engine"/builds/timtris-* 2>/dev/null

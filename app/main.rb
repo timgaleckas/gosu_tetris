@@ -1,4 +1,4 @@
-# DragonRuby frontend. The rules are lib/core, shared with the Gosu version (bin/tetris.rb).
+# The game's entry point. The rules are lib/core; app/ draws them and feeds them input.
 require 'lib/core.rb'
 require 'app/platform.rb'
 require 'app/canvas.rb'

@@ -1,5 +1,5 @@
-# Draws into a render target using top-left coordinates, the way the Gosu version lays
-# things out, converting to DragonRuby's bottom-left origin.
+# Draws into a render target using top-left coordinates, converting to DragonRuby's
+# bottom-left origin.
 class Canvas
   WHITE = [255, 255, 255].freeze
 

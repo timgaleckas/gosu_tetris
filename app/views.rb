@@ -1,4 +1,4 @@
-# Drawing for the rules' objects; mirrors lib/views (SquareView, BoardView, NextPiece).
+# Drawing for the rules' objects: squares, the board and the next piece.
 module Views
   BLOCKS = 'assets/blocks.png'.freeze     # 8 colors across, one row per level
   BORDERS = 'assets/borders.png'.freeze   # 16 border combinations across
