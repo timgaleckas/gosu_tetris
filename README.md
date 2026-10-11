@@ -36,8 +36,18 @@ bin/dr screenshots  # save screens to tmp/screenshots
 bin/dr publish      # package the web build into DragonRuby's builds/ folder
 ```
 
-Set `devid` and `devtitle` in `metadata/game_metadata.txt` before uploading to itch.io.
 The web build needs HTTPS (or localhost) to run.
+
+## Releasing to itch.io
+
+`bin/dr release` packages the web build and uploads it with butler to
+[timgaleckas.itch.io/timtris](https://timgaleckas.itch.io/timtris) (set in
+`metadata/game_metadata.txt`; bump `version` there for each release). The first
+release downloads butler to `~/.dragonruby/itchio-butler`; log it in once with
+`~/.dragonruby/itchio-butler/butler login`.
+
+The project page is an HTML project with SharedArrayBuffer support turned on in its
+embed options, which DragonRuby's web build needs.
 
 ## Tests
 

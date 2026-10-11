@@ -1,10 +1,9 @@
 # DragonRuby settings for the DragonRuby version (bin/dr). The full list of options is in
 # DragonRuby's own mygame/metadata/game_metadata.txt.
 
-# Replace devid and devtitle with your itch.io account before uploading; packaging
-# locally (bin/dr publish) works with these placeholders.
-devid=your_itchio_username
-devtitle=Your Itch.io Display Name
+# The itch.io account and project (itch.io/timgaleckas/timtris) bin/dr release uploads to.
+devid=timgaleckas
+devtitle=Tim Galeckas
 gameid=timtris
 gametitle=Timtris
 version=0.1

@@ -4,6 +4,8 @@
 #   bin/dr test       run the core's cross-engine tests
 #   bin/dr screenshots  save screens to tmp/screenshots
 #   bin/dr publish    package the web build (no upload); desktop builds need a paid DragonRuby tier
+#   bin/dr release    package the web build and upload it to itch.io (needs butler login once;
+#                     see README)
 # DragonRuby lives outside the repo: set DRAGONRUBY_HOME, or symlink it to ./dragonruby-engine.
 # Builds land in DragonRuby's builds directory.
 set -e
@@ -27,14 +29,15 @@ case "$1" in
     ./dragonruby "$game_dir" --eval test/dragonruby/screenshots.rb > /dev/null 2>&1
     ls "$game_dir"/tmp/screenshots/dr_*.png
     ;;
-  publish)
+  publish|release)
     # dragonruby-publish only packages a game directory inside the engine directory, and
     # doesn't follow symlinks, so stage a copy of the game there.
     staging="timtris"
     rm -rf "$staging"
     mkdir -p "$staging"
     cp -R "$game_dir/app" "$game_dir/assets" "$game_dir/lib" "$game_dir/metadata" "$staging/"
-    ./dragonruby-publish --platforms=html5 --package "$staging" || status=$?
+    if [ "$1" = release ]; then upload=""; else upload="--package"; fi
+    ./dragonruby-publish --platforms=html5 $upload "$staging" || status=$?
     rm -rf "$staging"
     ls -d "$engine"/builds/timtris-* 2>/dev/null
     exit ${status:-0}
