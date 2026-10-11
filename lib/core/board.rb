@@ -1,13 +1,16 @@
-class MainBoard < Widget
+# The playfield: the settled squares, the falling piece, and the steps (gravity, clears,
+# drops) that run between pieces. Positions are in pixels, Square.width per column.
+class Board
   include Suspendable
   def suspended?
     @game_state.paused? || @game_state.ended?
   end
 
   attr_reader :current_piece
+  attr_reader :width, :height
 
-  def initialize(widget_width, widget_height, game_state)
-    super(widget_width, widget_height)
+  def initialize(width, height, game_state)
+    @width, @height = width, height
 
     @game_state = game_state
 
@@ -46,27 +49,32 @@ class MainBoard < Widget
     _lose_game if _collision_detected?(@current_piece, @cursor_x, _cursor_y)
   end
 
-  def draw
-    Gosu.clip_to(0, 0, width, height) do
-      Gosu.translate(@x, @y) do
-        @rows.each_with_index do |row, row_index|
-          row.each_with_index do |square, square_index|
-            if square
-              square.draw(square_index * Square.width, row_index * Square.height, 1)
-            end
-          end
-        end
-        _current_piece_squares_with_coordinates.each do |(square, x, y)|
-          square.draw(x,y,2)
-        end
+  # Yields each settled square with its position relative to the board's origin at (x, y).
+  def each_settled_square
+    @rows.each_with_index do |row, row_index|
+      row.each_with_index do |square, square_index|
+        yield square, square_index * Square.width, row_index * Square.height if square
       end
     end
+  end
+
+  # [square, x, y] for each square of the falling piece, relative to the board's origin.
+  def falling_squares
+    _current_piece_squares_with_coordinates
+  end
+
+  def x
+    @x
+  end
+
+  def y
+    @y
   end
 
   suspendable def move_piece_left
     unless _collision_detected?(@current_piece, @cursor_x - Square.width, _cursor_y, Tunables.slide_buffer)
       @cursor_x -= Square.width
-      Sounds::SFX_PieceMoveLR.play
+      @game_state.audio.play('SFX_PieceMoveLR')
       _shimmy_piece_to_fit
     end
   end
@@ -74,7 +82,7 @@ class MainBoard < Widget
   suspendable def move_piece_right
     unless _collision_detected?(@current_piece, @cursor_x + Square.width, _cursor_y, Tunables.slide_buffer)
       @cursor_x += Square.width
-      Sounds::SFX_PieceMoveLR.play
+      @game_state.audio.play('SFX_PieceMoveLR')
       _shimmy_piece_to_fit
     end
   end
@@ -131,7 +139,7 @@ class MainBoard < Widget
       end
     end
     changed_this_frame.each do |x,y|
-      _square_at_index(x,y).lock if _index_out_of_bounds?(x,y+1) || _square_at_index(x,y+1).try(:locked?)
+      _square_at_index(x,y).lock if _index_out_of_bounds?(x,y+1) || _square_at_index(x,y+1)&.locked?
     end
     if !changed_this_frame.empty?
       _apply_gravity(false)
@@ -150,18 +158,18 @@ class MainBoard < Widget
       @current_cascade += 1
 
       if @current_cascade > 1
-        Sounds::PRAISES.sample.play
+        @game_state.audio.play(Audio::PRAISES.sample)
       end
 
       case rows_to_clear.size
       when 1
-        Sounds::SFX_SpecialLineClearSingle.play
+        @game_state.audio.play('SFX_SpecialLineClearSingle')
       when 2
-        Sounds::SFX_SpecialLineClearDouble.play
+        @game_state.audio.play('SFX_SpecialLineClearDouble')
       when 3
-        Sounds::SFX_SpecialLineClearTriple.play
+        @game_state.audio.play('SFX_SpecialLineClearTriple')
       else
-        Sounds::SFX_SpecialTetris.play
+        @game_state.audio.play('SFX_SpecialTetris')
       end
 
       rows_to_clear.each do |r|
@@ -261,15 +269,18 @@ class MainBoard < Widget
   def _relink_and_relock_squares
     @rows.each_with_index do |row, row_index|
       row.each_with_index do |square, column_index|
-        square.try(:unlock)
-        square.try(:up=,    _index_out_of_bounds?(column_index, row_index - 1) ? nil : _square_at_index(column_index, row_index - 1), false)
-        square.try(:down=,  _index_out_of_bounds?(column_index, row_index + 1) ? nil : _square_at_index(column_index, row_index + 1), false)
-        square.try(:left=,  _index_out_of_bounds?(column_index - 1, row_index) ? nil : _square_at_index(column_index - 1, row_index), false)
-        square.try(:right=, _index_out_of_bounds?(column_index + 1, row_index) ? nil : _square_at_index(column_index + 1, row_index), false)
+        next unless square
+        square.unlock
+        square.relink(
+          _index_out_of_bounds?(column_index, row_index - 1) ? nil : _square_at_index(column_index, row_index - 1),
+          _index_out_of_bounds?(column_index, row_index + 1) ? nil : _square_at_index(column_index, row_index + 1),
+          _index_out_of_bounds?(column_index - 1, row_index) ? nil : _square_at_index(column_index - 1, row_index),
+          _index_out_of_bounds?(column_index + 1, row_index) ? nil : _square_at_index(column_index + 1, row_index)
+        )
       end
     end
-    @rows.last.each{|s|s.try(:lock)}
-    @rows.flatten.select{|s|s.try(:permalocked?)}.each{|s|s.lock}
+    @rows.last.each{|s|s&.lock}
+    @rows.flatten.select{|s|s&.permalocked?}.each{|s|s.lock}
   end
 
   def _rotate_piece_left
@@ -281,10 +292,10 @@ class MainBoard < Widget
       @current_piece = rotated_left_piece
       @cursor_x += (x_offset * Square.width)
       @cursor_y -= (y_offset * Square.height)
-      Sounds::SFX_PieceRotateLR.play
+      @game_state.audio.play('SFX_PieceRotateLR')
       _shimmy_piece_to_fit
     else
-      Sounds::SFX_PieceRotateFail.play
+      @game_state.audio.play('SFX_PieceRotateFail')
     end
   end
 
@@ -297,10 +308,10 @@ class MainBoard < Widget
       @current_piece = rotated_right_piece
       @cursor_x += (x_offset * Square.width)
       @cursor_y -= (y_offset * Square.height)
-      Sounds::SFX_PieceRotateLR.play
+      @game_state.audio.play('SFX_PieceRotateLR')
       _shimmy_piece_to_fit
     else
-      Sounds::SFX_PieceRotateFail.play
+      @game_state.audio.play('SFX_PieceRotateFail')
     end
   end
 
@@ -336,37 +347,29 @@ class MainBoard < Widget
   end
 
   def _update_current_piece
-    move_piece_right    if @game_state.key_map.right_pressed?
-    move_piece_left     if @game_state.key_map.left_pressed?
-    _rotate_piece_right if @game_state.key_map.rotate_right_pressed?
-    _rotate_piece_left  if @game_state.key_map.rotate_left_pressed?
+    move_piece_right    if @game_state.controls.pressed?(:right)
+    move_piece_left     if @game_state.controls.pressed?(:left)
+    _rotate_piece_right if @game_state.controls.pressed?(:rotate_right)
+    _rotate_piece_left  if @game_state.controls.pressed?(:rotate_left)
 
     move_down_amount = Tunables.speed_for_level(@game_state.speed_level)
-    move_down_amount += Tunables.down_speed if @game_state.key_map.down_pressed?
+    move_down_amount += Tunables.down_speed if @game_state.controls.pressed?(:down)
 
     if _collision_detected?(@current_piece, @cursor_x, _cursor_y + move_down_amount)
       until _collision_detected?(@current_piece, @cursor_x, _cursor_y + 1)
         @cursor_y += 1
       end
 
-      Sounds::SFX_PieceTouchDown.play if @current_piece_resting_for == 0
+      @game_state.audio.play('SFX_PieceTouchDown') if @current_piece_resting_for == 0
       @current_piece_resting_for += 1
 
       if @current_piece_resting_for >= Tunables.lock_delay
-        Sounds::SFX_PieceLockdown.play
+        @game_state.audio.play('SFX_PieceLockdown')
         _place_piece
       end
     else
       @cursor_y += move_down_amount
       @current_piece_resting_for = 0
     end
-  end
-
-  def _x
-    @x
-  end
-
-  def _y
-    @y
   end
 end

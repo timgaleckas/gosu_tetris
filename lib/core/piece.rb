@@ -1,5 +1,3 @@
-require 'set'
-
 class Piece
   def initialize(positions, kick_data, color_index=0, rotation=0)
     @positions = positions
@@ -38,7 +36,7 @@ class Piece
 
   def randomly_mutate_color
     @secondary_color = rand(7)
-    @color_mutated_squares = Set.new
+    @color_mutated_squares = []
     if rand(3) == 0
       @color_mutated_squares << (rand(3)+1)
       if rand(3) == 0
@@ -62,8 +60,10 @@ class Piece
     end
     (0...@positions[@rotation].size).each do |row_index|
       (0...@positions[@rotation][row_index].size).each do |column_index|
-        ret[[row_index,column_index]].try(:first).try(:right=, ret[[row_index,column_index+1]].try(:first))
-        ret[[row_index,column_index]].try(:first).try(:down=, ret[[row_index+1,column_index]].try(:first))
+        square = ret[[row_index,column_index]]&.first
+        next unless square
+        square.right = ret[[row_index,column_index+1]]&.first
+        square.down = ret[[row_index+1,column_index]]&.first
       end
     end
     ret.values

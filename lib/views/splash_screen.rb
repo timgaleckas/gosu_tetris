@@ -2,7 +2,7 @@ class SplashScreen < Screen
   def initialize(width, height, window)
     super
     @time_remaining = 50
-    @image = Gosu::Image.new('./assets/splash_screen.gif')
+    @image = Gosu::Image.new((App.asset_root / 'splash_screen.gif').to_s)
   end
 
   def draw

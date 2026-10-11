@@ -1,10 +1,11 @@
-require 'active_support/concern'
-
+# Wraps methods so they do nothing while the including object's suspended? is true.
 module Suspendable
-  extend ActiveSupport::Concern
+  def self.included(base)
+    base.extend(ClassMethods)
+  end
 
-  included do
-    def self.suspendable(method)
+  module ClassMethods
+    def suspendable(method)
       alias_method "#{method}_without_suspending", method
       define_method method do |*args|
         unless suspended?

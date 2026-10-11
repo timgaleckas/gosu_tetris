@@ -3,10 +3,10 @@ class Menu::Screen < Screen
     super(screen)
     buttons.each_with_index do |row, row_index|
       row.each_with_index do |button, column_index|
-        button.down  = buttons[row_index+1].try(:slice, column_index)
-        button.up    = buttons[row_index-1].try(:slice, column_index) if row_index > 0
-        button.left  = buttons[row_index].try(:slice, column_index-1) if column_index > 0
-        button.right = buttons[row_index].try(:slice, column_index+1)
+        button.down  = buttons[row_index+1]&.slice(column_index)
+        button.up    = buttons[row_index-1]&.slice(column_index) if row_index > 0
+        button.left  = buttons[row_index]&.slice(column_index-1) if column_index > 0
+        button.right = buttons[row_index]&.slice(column_index+1)
       end
     end
     @buttons = buttons.flatten!
@@ -103,7 +103,7 @@ class Menu::Screen < Screen
   end
 
   def _select_item
-    action = @buttons.find{|b|b.hovered?}.try(:action)
+    action = @buttons.find{|b|b.hovered?}&.action
     instance_eval(&action) if action
   end
 

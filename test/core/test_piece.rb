@@ -1,4 +1,4 @@
-require_relative './test_helper'
+require_relative '../core_helper'
 
 describe Piece do
   def t

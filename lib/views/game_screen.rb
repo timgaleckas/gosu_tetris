@@ -1,19 +1,14 @@
 class GameScreen < Screen
-  include Suspendable
-  def suspended?
-    @game_state.paused? || @game_state.ended?
-  end
-
   def initialize(width, height, window, game_state)
     super(width, height, window)
 
     @game_state = game_state
+    @game = Game.new(@game_state, input: GosuInput.new, audio: Sounds)
 
     @background = Gosu::Image.new((App.asset_root / 'Bck.png').to_s)
-    @next_piece = NextPiece.new(200,200, @game_state)
-    @main_board = MainBoard.new(274,592, @game_state)
+    @next_piece = NextPiece.new(200,200, @game.queue)
+    @board_view = BoardView.new(@game.board)
     @pause_overlay = PauseOverlay.new(400,600, @game_state)
-    @main_board.current_piece = @next_piece.pop
     @font = Gosu::Font.new(50, name: (App.asset_root/'fonts'/'Pacifico'/'Pacifico-Regular.ttf').to_s)
   end
 
@@ -27,7 +22,7 @@ class GameScreen < Screen
       @font.draw_text("Score",300,120,9)
       @font.draw_text(@game_state.score.to_s,300,140,9)
       Gosu.translate(17,0) do
-        @main_board.draw
+        @board_view.draw
       end
       Gosu.translate(296,337) do
         Gosu.scale(0.5,0.5) do
@@ -39,31 +34,22 @@ class GameScreen < Screen
   end
 
   def update
-    if @game_state.ended?
-      @ended_for ||=0
-      @ended_for += 1
-      if @ended_for > 30
-        if @game_state.won
-          g = GameState.new
-          g.junk_level = @game_state.junk_level + 1
-          @next_screen = GameScreen.new(width,height,window,g)
-        else
-          @next_screen = Menu::MainScreen.new(self)
-        end
+    @game.update
+    if @game.over?
+      if @game_state.won
+        g = GameState.new
+        g.junk_level = @game_state.junk_level + 1
+        @next_screen = GameScreen.new(width,height,window,g)
+      else
+        @next_screen = Menu::MainScreen.new(self)
       end
     end
-    _update
-  end
-
-  suspendable def _update
-    @main_board.update
-    @main_board.current_piece = @next_piece.pop if @main_board.needs_next_piece?
   end
 
   def button_down(id)
     case id
-    when *@game_state.key_map.pause
-      @game_state.paused = !@game_state.paused
+    when *GosuInput::PAUSE
+      @game.toggle_pause
     else
       :super
     end

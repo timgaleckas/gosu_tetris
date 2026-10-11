@@ -1,5 +1,5 @@
-require_relative './test_helper'
-require_relative './support/simulation'
+require_relative '../core_helper'
+require_relative './simulation'
 
 # Golden-master tests: each scenario plays a seeded, scripted session and compares
 # the frame-by-frame trace with test/golden/<name>.trace. They pin the gameplay

@@ -1,7 +1,5 @@
 require 'rubygems'
 require 'gosu'
-require 'active_support'
-require 'active_support/core_ext/object/try'
 require 'pathname'
 
 class App
@@ -20,14 +18,12 @@ class App
   end
 end
 
+require_relative './core'
+
 require_relative './colors'
-require_relative './concerns/suspendable'
-require_relative './tunables'
-require_relative './key_map'
+require_relative './gosu_input'
 require_relative './sounds'
 require_relative './sprites'
-require_relative './piece'
-require_relative './game_state'
 
 require_relative './views/tetris_window'
 
@@ -39,8 +35,8 @@ require_relative './views/menu'
 require_relative './views/splash_screen'
 
 require_relative './views/game_screen'
-require_relative './views/main_board'
+require_relative './views/board_view'
 require_relative './views/next_piece'
 require_relative './views/pause_overlay'
 
-require_relative './views/square'
+require_relative './views/square_view'

@@ -1,6 +1,15 @@
 task :default => :test
+
+desc "Run all tests"
 task :test do
-  Dir.glob('./test/test_*.rb').each { |file| require file}
+  Dir.glob('./test/{core,gosu}/test_*.rb').each { |file| require file}
+end
+
+namespace :test do
+  desc "Run the rules tests without loading Gosu"
+  task :core do
+    Dir.glob('./test/core/test_*.rb').each { |file| require file}
+  end
 end
 
 task :generate_sprites do

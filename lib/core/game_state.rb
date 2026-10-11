@@ -1,4 +1,6 @@
 class GameState
+  attr_accessor :audio
+  attr_accessor :controls
   attr_accessor :drop_cleared_rows
   attr_accessor :gravity
   attr_accessor :junk_level
@@ -13,6 +15,8 @@ class GameState
   attr_reader :score
 
   def initialize
+    @audio = Audio::Silent.new
+    @controls = Controls.new
     @drop_cleared_rows = false
     @gravity = true
     @junk_level = 2
@@ -27,10 +31,6 @@ class GameState
 
   def ended?
     won || lost
-  end
-
-  def key_map
-    KeyMap
   end
 
   def paused?
@@ -54,7 +54,7 @@ class GameState
     @score += (@speed_level + 1) * row_score
     @score += current_cascade*50
     speed_level_from_rows = @rows_cleared / 10
-    Sounds::SFX_LevelUp.play if speed_level_from_rows > @speed_level
+    @audio.play('SFX_LevelUp') if speed_level_from_rows > @speed_level
     @speed_level = [@speed_level, speed_level_from_rows].max
   end
 end

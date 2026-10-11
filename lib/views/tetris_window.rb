@@ -10,13 +10,13 @@ class TetrisWindow < Gosu::Window
   end
 
   def draw
-    Sprites::MOUSE_CURSOR.draw(self.mouse_x, self.mouse_y, 99) if @current_screen.try(:needs_cursor?)
-    @current_screen.try(:draw)
+    Sprites::MOUSE_CURSOR.draw(self.mouse_x, self.mouse_y, 99) if @current_screen&.needs_cursor?
+    @current_screen&.draw
   end
 
   def update
-    @current_screen.try(:update)
-    @current_screen = @current_screen.next_screen if @current_screen.try(:next_screen)
+    @current_screen&.update
+    @current_screen = @current_screen.next_screen if @current_screen&.next_screen
   end
 
   def button_down(id)

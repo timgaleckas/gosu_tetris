@@ -1,4 +1,4 @@
-require_relative './test_helper'
+require_relative '../core_helper'
 
 describe Square do
   it "can doubly link left" do
@@ -53,49 +53,4 @@ describe Square do
     assert_nil d1.up
     _(d2.up).must_equal u
   end
-
-  describe "drawing" do
-    it "can be visually inspected" do
-      s = Square.new(0, nil)
-
-      s.right = s
-      s.down = s
-
-      test_window = TestWindow.new([[s,0,0,1]],200,4) do |current_widget, current_time|
-      end
-      test_window.show
-    end
-
-    it "can be drawn for 11 levels and 7 colors" do
-      squares = []
-      0.upto(11) do |level|
-        g = GameState.new
-        g.speed_level = level
-        0.upto(6) do |color|
-          squares << [Square.new(color,g), 0,0,1]
-        end
-      end
-      test_window = TestWindow.new(squares,1) do |current_widget, current_time|
-
-      end
-      test_window.show
-    end
-
-    it "can disappear" do
-      squares = []
-      s = Square.new(1,nil)
-      s.disappearing += 1
-      while s.disappearing?
-        squares << [s,0,0,0]
-        s = s.dup
-        s.disappearing += 1
-      end
-
-      test_window = TestWindow.new(squares,2) do |current_widget, current_time|
-        _(current_widget.disappearing?).must_equal true
-      end
-      test_window.show
-    end
-  end
 end
-

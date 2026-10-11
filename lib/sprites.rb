@@ -1,6 +1,6 @@
 class Sprites
-  SQUARE_WIDTH = 30
-  SQUARE_HEIGHT = 30
+  SQUARE_WIDTH = Square.width
+  SQUARE_HEIGHT = Square.height
 
   SQUARES = Gosu::Image.load_tiles((App.asset_root / 'blocks.png').to_s, SQUARE_WIDTH, SQUARE_HEIGHT, :tileable => true)
   BORDERS = Gosu::Image.load_tiles((App.asset_root / 'borders.png').to_s, SQUARE_WIDTH, SQUARE_HEIGHT, :tileable => true)
