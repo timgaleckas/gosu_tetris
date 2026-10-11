@@ -5,11 +5,11 @@ class GameScreen < Screen
     @game_state = game_state
     @game = Game.new(@game_state, input: GosuInput.new, audio: Sounds)
 
-    @background = Gosu::Image.new((App.asset_root / 'Bck.png').to_s)
+    @background = Gosu::Image.new((App.asset_root / 'bck.png').to_s)
     @next_piece = NextPiece.new(200,200, @game.queue)
     @board_view = BoardView.new(@game.board)
     @pause_overlay = PauseOverlay.new(400,600, @game_state)
-    @font = Gosu::Font.new(50, name: (App.asset_root/'fonts'/'Pacifico'/'Pacifico-Regular.ttf').to_s)
+    @font = Gosu::Font.new(50, name: (App.asset_root/'fonts'/'pacifico'/'pacifico-regular.ttf').to_s)
   end
 
   def draw

@@ -17,7 +17,7 @@ class Menu::GameModeScreen < Menu::Screen
         end
       ]
     ])
-    @font = Gosu::Font.new(200, name: (App.asset_root/'fonts'/'Pacifico'/'Pacifico-Regular.ttf').to_s)
+    @font = Gosu::Font.new(200, name: (App.asset_root/'fonts'/'pacifico'/'pacifico-regular.ttf').to_s)
   end
 
   def draw

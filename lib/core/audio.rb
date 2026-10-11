@@ -1,5 +1,5 @@
 # The rules play sounds by name through an object responding to play(name).
-# Names match the files in assets/sounds.
+# Names match the files in assets/sounds, ignoring case.
 module Audio
   PRAISES = %w[
     VO_AMAZING

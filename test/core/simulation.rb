@@ -14,15 +14,22 @@ class Simulation
     none:         []
   }.freeze
 
-  class Input
-    attr_accessor :held
+  # Holds a random action for a while, then switches, like a player mashing buttons.
+  class Agent
+    attr_reader :held_action
 
-    def initialize
-      @held = []
+    def initialize(seed)
+      @rng = Rng.new(seed * 7919 + 1)
+      @held_action = :none
+    end
+
+    # Call once per frame, before the game updates.
+    def advance
+      @held_action = @rng.sample(INPUTS.keys) if @rng.rand(100) < 8
     end
 
     def held?(action)
-      @held.include?(action)
+      INPUTS.fetch(@held_action).include?(action)
     end
   end
 
@@ -49,15 +56,14 @@ class Simulation
   end
 
   def run
-    agent_rng = Rng.new(@seed * 7919 + 1)
-    input = Input.new
+    agent = Agent.new(@seed)
     audio = RecordingAudio.new
 
     state = GameState.new
     state.rng = Rng.new(@seed)
     @game_state_options.each { |attribute, value| state.send("#{attribute}=", value) }
 
-    @game = Game.new(state, input: input, audio: audio)
+    @game = Game.new(state, input: agent, audio: audio)
     if @setup
       @setup.call(@game.board)
       @game.board._relink_and_relock_squares
@@ -65,17 +71,14 @@ class Simulation
 
     @trace = []
     previous_board = nil
-    held = :none
-
     @frames.times do |frame|
-      held = agent_rng.sample(INPUTS.keys) if agent_rng.rand(100) < 8
-      input.held = INPUTS.fetch(held)
+      agent.advance
       audio.played = []
 
       @game.update
 
       board = _board_dump
-      @trace << _frame_line(frame, held, audio.played)
+      @trace << _frame_line(frame, agent.held_action, audio.played)
       @trace << board if board != previous_board
       previous_board = board
 

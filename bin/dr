@@ -2,8 +2,10 @@
 # Runs the DragonRuby version of the game from this repo.
 #   bin/dr            play
 #   bin/dr test       run the core's cross-engine tests
-#   bin/dr publish    build for itch.io (see metadata/game_metadata.txt)
+#   bin/dr screenshots  save screens to tmp/screenshots (compare with test/gosu/screenshots.rb)
+#   bin/dr publish    package the web build (no upload); desktop builds need a paid DragonRuby tier
 # DragonRuby lives outside the repo: set DRAGONRUBY_HOME, or symlink it to ./dragonruby-engine.
+# Builds land in DragonRuby's builds directory.
 set -e
 game_dir="$(cd "$(dirname "$0")/.." && pwd)"
 engine="${DRAGONRUBY_HOME:-$game_dir/dragonruby-engine}"
@@ -20,8 +22,24 @@ case "$1" in
     sed -n 's/^- \[Game\] //p' "$log" | grep -v '^\*\* Running\|^Passed\.$'
     grep -q '\[Game\] 0 test(s) failed' "$log" && ! grep -q 'EXCEPTION' "$log"
     ;;
+  screenshots)
+    mkdir -p "$game_dir/tmp/screenshots"
+    ./dragonruby "$game_dir" --eval test/dragonruby/screenshots.rb > /dev/null 2>&1
+    ls "$game_dir"/tmp/screenshots/dr_*.png
+    ;;
   publish)
-    ./dragonruby-publish --only-package "$game_dir"
+    # dragonruby-publish only packages a game directory inside the engine directory, and
+    # doesn't follow symlinks, so stage a copy of just the DragonRuby game there.
+    staging="timtris"
+    rm -rf "$staging"
+    mkdir -p "$staging/lib"
+    cp -R "$game_dir/app" "$game_dir/assets" "$game_dir/metadata" "$staging/"
+    cp -R "$game_dir/lib/core.rb" "$game_dir/lib/core" "$staging/lib/"
+    rm -f "$staging/assets/fonts.zip"
+    ./dragonruby-publish --platforms=html5 --package "$staging" || status=$?
+    rm -rf "$staging"
+    ls -d "$engine"/builds/timtris-* 2>/dev/null
+    exit ${status:-0}
     ;;
   *)
     exec ./dragonruby "$game_dir"

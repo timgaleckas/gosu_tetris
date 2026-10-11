@@ -5,7 +5,7 @@ class SpriteGeneration::MenuButton
       caption = Magick::Draw.new
       caption.stroke(Colors::MENU_BUTTON_TEXT_HEX)
       caption.fill(Colors::MENU_BUTTON_TEXT_HEX)
-      caption.font((App.asset_root / "fonts" / "Courgette" / "Courgette-Regular.ttf").to_s)
+      caption.font((App.asset_root / "fonts" / "courgette" / "courgette-regular.ttf").to_s)
       caption.font_weight = 400
       caption.pointsize = 50
       caption.align = CenterAlign

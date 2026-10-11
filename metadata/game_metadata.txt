@@ -1,0 +1,20 @@
+# DragonRuby settings for the DragonRuby version (bin/dr). The full list of options is in
+# DragonRuby's own mygame/metadata/game_metadata.txt.
+
+# Replace devid and devtitle with your itch.io account before uploading; packaging
+# locally (bin/dr publish) works with these placeholders.
+devid=your_itchio_username
+devtitle=Your Itch.io Display Name
+gameid=timtris
+gametitle=Timtris
+version=0.1
+icon=metadata/icon.png
+
+orientation=landscape
+aspect_mode=0
+aspect_size=720
+
+# Linear filtering for the 1.2x scaled 400x600 screen.
+scale_quality=1
+
+hd=true
