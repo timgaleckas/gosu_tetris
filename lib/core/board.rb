@@ -247,7 +247,12 @@ class Board
   end
 
   def _place_piece
-    _current_piece_squares_with_coordinates.each do |(square, x, y)|
+    squares = _current_piece_squares_with_coordinates
+    # There are no rows above the top to hold it (a negative row would index from the
+    # bottom), so locking there ends the game.
+    return _lose_game if squares.any? { |(_, _, y)| y < 0 }
+
+    squares.each do |(square, x, y)|
       row = y.div(Square.height)
       column = x.div(Square.width)
       @rows[row][column]=square

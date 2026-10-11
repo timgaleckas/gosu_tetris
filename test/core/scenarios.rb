@@ -26,12 +26,12 @@ module GoldenScenarios
 
   # name => [seed, game state options, board setup, sounds the trace must include]
   ALL = {
-    'classic_well'       => [4, CLASSIC, well(12), %w[SFX_LevelUp SFX_SpecialTetris]],
+    'classic_well'       => [171, CLASSIC, well(12, col: 5), %w[SFX_LevelUp SFX_SpecialTetris]],
     'classic_fast'       => [1, CLASSIC.merge(speed_level: 7), nil, %w[SFX_PieceLockdown]],
     'next_default_lose'  => [1, {}, nil, %w[SFX_PieceLockdown]],
-    'next_default_win'   => [22, {}, nil, %w[SFX_SpecialLineClearSingle]],
-    'next_marathon'      => [22, { marathon: true }, nil, %w[SFX_SpecialLineClearSingle]],
-    'gravity_well'       => [4, { junk_level: 0 }, well(12), %w[SFX_LevelUp SFX_SpecialTetris]],
+    'next_default_win'   => [50, {}, nil, %w[SFX_SpecialLineClearSingle]],
+    'next_marathon'      => [50, { marathon: true }, nil, %w[SFX_SpecialLineClearSingle]],
+    'gravity_well'       => [157, { junk_level: 0 }, well(14, col: 5), %w[SFX_LevelUp SFX_SpecialTetris]],
     'gravity_scatter_a'  => [1, { junk_level: 0 }, scatter(10, 1), %w[SFX_SpecialLineClearTriple]],
     'gravity_scatter_b'  => [11, { junk_level: 0 }, scatter(10, 11), %w[SFX_SpecialLineClearDouble]],
     'gravity_drop_rows'  => [1, { junk_level: 0, drop_cleared_rows: true }, scatter(10, 1), []]

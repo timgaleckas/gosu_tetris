@@ -27,6 +27,29 @@ describe Board do
     end
   end
 
+  describe "topping out" do
+    # Columns 2-6 stacked to the top row, so a new piece can only lock above the board.
+    def topped_out_board(g)
+      b = Board.new(Game::BOARD_WIDTH, Game::BOARD_HEIGHT, g)
+      b._rows.each { |row| (2..6).each { |column| row[column] = Square.new(1, g) } }
+      b._relink_and_relock_squares
+      b
+    end
+
+    Piece::ALL.each_with_index do |piece, index|
+      it "loses when piece #{index} would lock above the top, without placing it on the bottom rows" do
+        g = game_state
+        b = topped_out_board(g)
+        b.current_piece = piece
+        200.times { b.update }
+        _(g.lost).must_equal true
+        piece_squares = piece.squares_with_coordinates(0, 0).map(&:first)
+        _(b._rows.flatten.compact & piece_squares).must_be_empty
+        _(g.rows_cleared).must_equal 0
+      end
+    end
+  end
+
   describe "#_apply_gravity" do
     it "drops 1 square correctly" do
       g = game_state
