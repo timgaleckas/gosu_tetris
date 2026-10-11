@@ -3,6 +3,7 @@
 #   bin/dr            play
 #   bin/dr test       run the core's cross-engine tests
 #   bin/dr screenshots  save screens to tmp/screenshots
+#   bin/dr promo      make the itch.io cover and screenshots in tmp/itch (needs Pillow)
 #   bin/dr publish    package the web build (no upload); desktop builds need a paid DragonRuby tier
 #   bin/dr release    package the web build and upload it to itch.io (needs butler login once;
 #                     see README)
@@ -28,6 +29,12 @@ case "$1" in
     mkdir -p "$game_dir/tmp/screenshots"
     ./dragonruby "$game_dir" --eval test/dragonruby/screenshots.rb > /dev/null 2>&1
     ls "$game_dir"/tmp/screenshots/dr_*.png
+    ;;
+  promo)
+    mkdir -p "$game_dir/tmp/screenshots" "$game_dir/tmp/promo"
+    ./dragonruby "$game_dir" --eval test/dragonruby/screenshots.rb > /dev/null 2>&1
+    ./dragonruby "$game_dir" --eval tools/promo/scenes.rb > /dev/null 2>&1
+    python3 "$game_dir/tools/promo/make_itch_images.py"
     ;;
   publish|release)
     # dragonruby-publish only packages a game directory inside the engine directory, and

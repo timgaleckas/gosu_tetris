@@ -33,6 +33,7 @@ ln -s /path/to/dragonruby-macos dragonruby-engine
 bin/dr              # play
 bin/dr test         # replay the golden scenarios inside DragonRuby
 bin/dr screenshots  # save screens to tmp/screenshots
+bin/dr promo        # make the itch.io cover and screenshots in tmp/itch (needs Pillow)
 bin/dr publish      # package the web build into DragonRuby's builds/ folder
 ```
 
@@ -45,6 +46,10 @@ The web build needs HTTPS (or localhost) to run.
 `metadata/game_metadata.txt`; bump `version` there for each release). The first
 release downloads butler to `~/.dragonruby/itchio-butler`; log it in once with
 `~/.dragonruby/itchio-butler/butler login`.
+
+`bin/dr promo` stages the gameplay scenes (`tools/promo/scenes.rb`) and builds the page's
+cover and screenshots from them (`tools/promo/make_itch_images.py`). The Classic stack comes
+from a seed that `ruby tools/promo/find_seed.rb` picked.
 
 The project page is an HTML project with SharedArrayBuffer support turned on in its
 embed options, which DragonRuby's web build needs.
