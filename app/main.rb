@@ -16,6 +16,7 @@ module Timtris
     $screen.draw(args, canvas)
 
     args.outputs.background_color = [0, 0, 0]
+    $screen.backdrop(args) if $screen.respond_to?(:backdrop)
     args.outputs.sprites << { x: Screens::LEFT, y: 0, w: Screens::WIDTH * Screens::SCALE, h: 720, path: :screen }
   end
 end

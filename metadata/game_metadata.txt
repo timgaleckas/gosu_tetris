@@ -6,7 +6,7 @@ devid=timgaleckas
 devtitle=Tim Galeckas
 gameid=timtris
 gametitle=Timtris
-version=0.2
+version=0.3
 icon=metadata/icon.png
 
 orientation=landscape

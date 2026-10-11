@@ -44,6 +44,10 @@ module Screens
       @time_remaining <= 0 ? Menu.main : self
     end
 
+    def backdrop(args)
+      Screens.window_image(args, 'assets/backdrop_splash.png')
+    end
+
     def draw(args, canvas)
       canvas.sprite(0, 0, WIDTH, HEIGHT, 'assets/splash_screen.png')
     end
@@ -211,6 +215,10 @@ module Screens
       next_screen || self
     end
 
+    def backdrop(args)
+      Screens.fill_window(args, @background) if @background
+    end
+
     def draw(args, canvas)
       canvas.rect(0, 0, WIDTH, HEIGHT, @background) if @background
       @buttons.each { |button| button.draw(canvas) }
@@ -295,6 +303,10 @@ module Screens
       pressed ? @back : self
     end
 
+    def backdrop(args)
+      Screens.fill_window(args, Menu::BACKGROUND)
+    end
+
     def draw(args, canvas)
       canvas.rect(0, 0, WIDTH, HEIGHT, Menu::BACKGROUND)
       Screens.title(canvas, 0, 'Controls', 90)
@@ -366,6 +378,11 @@ module Screens
       Views.board(args.outputs, @game.board)
     end
 
+    def backdrop(args)
+      Screens.window_image(args, 'assets/backdrop_game.png')
+      _overlay.backdrop(args) if _overlay
+    end
+
     def draw(args, canvas)
       canvas.sprite(0, 0, WIDTH, HEIGHT, BACKGROUND)
       canvas.text(300, 20, 'Level', 50, FONT)
@@ -379,8 +396,11 @@ module Screens
 
       Views.next_piece(canvas, @game.queue.current, 296, 337)
 
-      overlay = @game_over || (@state.paused? && @pause_menu)
-      overlay.draw(args, canvas) if overlay
+      _overlay.draw(args, canvas) if _overlay
+    end
+
+    def _overlay
+      @game_over || (@state.paused? && @pause_menu)
     end
 
     def _level
@@ -426,6 +446,17 @@ module Screens
   # Where the 400x600 screen sits in DragonRuby's 1280x720 window.
   SCALE = 720.0 / HEIGHT
   LEFT = (1280 - WIDTH * SCALE) / 2
+
+  # A screen's backdrop(args) fills the whole window behind it, so the sides the screen
+  # doesn't reach match it. These draw one, in window coordinates.
+  def self.fill_window(args, color)
+    args.outputs.sprites << { x: 0, y: 0, w: 1280, h: 720, path: :solid,
+                              r: color[0], g: color[1], b: color[2], a: color[3] || 255 }
+  end
+
+  def self.window_image(args, path)
+    args.outputs.sprites << { x: 0, y: 0, w: 1280, h: 720, path: path }
+  end
 
   # Window coordinates to screen (top-left) coordinates.
   def self.to_screen(x, y)

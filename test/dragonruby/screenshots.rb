@@ -22,7 +22,7 @@ module ScreenshotRun
     Timtris.tick(args)
 
     if SHOTS[tick]
-      args.outputs.screenshots << { x: Screens::LEFT, y: 0, w: Screens::WIDTH * Screens::SCALE, h: 720,
+      args.outputs.screenshots << { x: 0, y: 0, w: 1280, h: 720,
                                     path: "tmp/screenshots/dr_#{SHOTS[tick]}.png" }
     end
     DR.request_quit if tick > SHOTS.keys.max + 2
