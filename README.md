@@ -8,6 +8,19 @@ and builds for the web.
 - `app/`: the DragonRuby frontend (screens, drawing, input, sound).
 - `assets/`, `metadata/`: what DragonRuby packages with the game.
 
+## Controls
+
+| | Keyboard | Gamepad |
+|---|---|---|
+| Move | Left / Right | D-pad |
+| Drop faster | Down | D-pad down |
+| Rotate clockwise | Up or X | B (east) |
+| Rotate counter-clockwise | Z | A (south) |
+| Pause menu | Esc or P | Start |
+
+Menus take arrows and Enter, the mouse, or the gamepad; Esc goes back. The Controls
+screen (main menu or pause menu) shows the same table in the game.
+
 ## Running
 
 Download DragonRuby, then either set `DRAGONRUBY_HOME` to its folder or symlink it:

@@ -5,6 +5,26 @@ module Screens
   WIDTH = 400
   HEIGHT = 600
   FONT = 'assets/fonts/pacifico/pacifico-regular.ttf'.freeze
+  BUTTON_FONT = 'assets/fonts/courgette/courgette-regular.ttf'.freeze
+
+  # The settings for a fresh game in each mode.
+  module Modes
+    def self.classic
+      state = GameState.new
+      state.junk_level = 0
+      state.multicolor = false
+      state.drop_cleared_rows = true
+      state.gravity = false
+      state
+    end
+
+    # Clearing every junk square wins the stage; the next has a row more.
+    def self.next(junk_level = 2)
+      state = GameState.new
+      state.junk_level = junk_level
+      state
+    end
+  end
 
   class Splash
     def initialize
@@ -22,20 +42,29 @@ module Screens
   end
 
   class Button
+    HEIGHT = 98
+    PADDING = 20
+    TEXT_SIZE = 50
+    TEXT_COLOR = [0xE0, 0xDA, 0xF2].freeze
+
     attr_accessor :hovered, :left, :right, :up, :down
     attr_reader :action
 
-    # w, h: the image's size (assets/buttons/<name>.png).
-    def initialize(name, w, h, center_x, center_y, &action)
-      @name = name
-      @w, @h = w, h
-      @x1 = center_x - w.div(2)
-      @y1 = center_y - h.div(2)
+    # Sized to fit label. The action returns the screen to show next, or nil to stay.
+    def initialize(label, center_x, center_y, &action)
+      @label = label
+      text_w, _text_h = GTK.calcstringbox(label, size_px: TEXT_SIZE, font: BUTTON_FONT)
+      @w = text_w.ceil + 2 * PADDING
+      @h = HEIGHT
+      @x1 = center_x - @w.div(2)
+      @y1 = center_y - @h.div(2)
       @action = action
     end
 
     def draw(canvas)
-      canvas.sprite(@x1, @y1, @w, @h, "assets/buttons/#{@name}#{@hovered ? '_hovered' : ''}.png")
+      canvas.nine_slice(@x1, @y1, @w, @h, @hovered ? 'assets/button_hovered.png' : 'assets/button.png', 24, 8)
+      canvas.text(@x1 + @w / 2, @y1 + @h / 2, @label, TEXT_SIZE, BUTTON_FONT, TEXT_COLOR,
+                  align: 0.5, valign: 0.5)
     end
 
     def within_bounds?(x, y)
@@ -49,28 +78,25 @@ module Screens
     GAMEPAD_SELECT = [:a, :b, :x, :y, :l1, :r1, :l2, :r2, :start, :select].freeze
 
     def self.main
-      new('Timtris', [
-        [Button.new('start_game', 296, 98, WIDTH / 2, HEIGHT / 5 * 2.5) { Menu.modes }],
-        [Button.new('options', 212, 98, WIDTH / 2, HEIGHT / 5 * 4)]
-      ])
+      new([
+        [Button.new('Start Game', WIDTH / 2, 250) { Menu.modes }],
+        [Button.new('Controls', WIDTH / 2, 370) { Controls.new(Menu.main) }],
+        [Button.new('Options', WIDTH / 2, 490)]
+      ]) { |canvas| canvas.text(40, 0, 'Timtris', 200, FONT) }
     end
 
     def self.modes
-      new('Modes', [
-        [Button.new('classic', 201, 98, WIDTH / 2, HEIGHT / 5 * 2.5) do
-          state = GameState.new
-          state.junk_level = 0
-          state.multicolor = false
-          state.drop_cleared_rows = true
-          state.gravity = false
-          Play.new(state)
-        end],
-        [Button.new('next', 143, 98, WIDTH / 2, HEIGHT / 5 * 4) { Play.new(GameState.new) }]
-      ])
+      new([
+        [Button.new('Classic', WIDTH / 2, HEIGHT / 5 * 2.5) { Play.new(-> { Modes.classic }) }],
+        [Button.new('Next', WIDTH / 2, HEIGHT / 5 * 4) { Play.new(-> { Modes.next }) }]
+      ], back: -> { Menu.main }) { |canvas| canvas.text(40, 0, 'Modes', 200, FONT) }
     end
 
-    def initialize(title, rows)
-      @title = title
+    # rows: the buttons, laid out in a grid for keyboard and gamepad navigation.
+    # background: a color to fill the screen with first, or nil.
+    # back: returns the screen Escape goes to.
+    # The block draws anything else, such as the title.
+    def initialize(rows, background: BACKGROUND, back: nil, &decoration)
       rows.each_with_index do |row, row_index|
         row.each_with_index do |button, column_index|
           button.down = rows[row_index + 1] && rows[row_index + 1][column_index]
@@ -80,7 +106,10 @@ module Screens
         end
       end
       @buttons = rows.flatten
-      @last_interaction = :mouse
+      @background = background
+      @back = back
+      @decoration = decoration
+      @last_interaction = :keyboard
     end
 
     def update(args)
@@ -90,9 +119,9 @@ module Screens
     end
 
     def draw(args, canvas)
-      canvas.rect(0, 0, WIDTH, HEIGHT, BACKGROUND)
+      canvas.rect(0, 0, WIDTH, HEIGHT, @background) if @background
       @buttons.each { |button| button.draw(canvas) }
-      canvas.text(40, 0, @title, 200, FONT)
+      @decoration.call(canvas) if @decoration
     end
 
     def _handle_input(args)
@@ -106,7 +135,9 @@ module Screens
         @last_interaction = :gamepad
       end
 
-      if keyboard.down_arrow || controller.down_dpad
+      if keyboard.escape && @back
+        @back.call
+      elsif keyboard.down_arrow || controller.down_dpad
         _move(:down)
       elsif keyboard.up_arrow || controller.up_dpad
         _move(:up)
@@ -114,7 +145,7 @@ module Screens
         _move(:right)
       elsif keyboard.left_arrow || controller.left_dpad
         _move(:left)
-      elsif keyboard.enter || GAMEPAD_SELECT.any? { |button| controller.send(button) }
+      elsif keyboard.enter || keyboard.space || GAMEPAD_SELECT.any? { |button| controller.send(button) }
         _select
       elsif mouse.key_down.left || mouse.key_down.right
         was_mouse = @last_interaction == :mouse
@@ -149,13 +180,52 @@ module Screens
     end
   end
 
-  # A game in progress.
+  # Which keys and gamepad buttons do what; any key, click or button goes back.
+  class Controls
+    TEXT_COLOR = [0x3D, 0x48, 0x4C].freeze
+
+    # back: the screen to return to.
+    def initialize(back)
+      @back = back
+    end
+
+    def update(args)
+      inputs = args.inputs
+      pressed = inputs.keyboard.key_down.truthy_keys.any? ||
+                inputs.controller_one.key_down.truthy_keys.any? ||
+                inputs.mouse.key_down.left || inputs.mouse.key_down.right
+      pressed ? @back : self
+    end
+
+    def draw(args, canvas)
+      canvas.rect(0, 0, WIDTH, HEIGHT, Menu::BACKGROUND)
+      canvas.text(WIDTH / 2, 0, 'Controls', 90, FONT, align: 0.5)
+      _section(canvas, 'Keyboard', 1, 125)
+      _section(canvas, 'Gamepad', 2, 335)
+      canvas.text(WIDTH / 2, 590, 'Press any key to go back', 24, BUTTON_FONT, TEXT_COLOR, align: 0.5, valign: 1)
+    end
+
+    # column: which of DrInput::LABELS' columns to list.
+    def _section(canvas, title, column, y)
+      canvas.text(20, y, title, 44, FONT, TEXT_COLOR)
+      DrInput::LABELS.each_with_index do |labels, i|
+        row_y = y + 60 + i * 30
+        canvas.text(30, row_y, labels[0], 26, BUTTON_FONT, TEXT_COLOR)
+        canvas.text(WIDTH - 30, row_y, labels[column], 26, BUTTON_FONT, TEXT_COLOR, align: 1)
+      end
+    end
+  end
+
+  # A game in progress, with the pause menu over it while paused and the game over
+  # menu once it's lost.
   class Play
     BACKGROUND = 'assets/bck.png'.freeze
-    PAUSE_ICON = 'assets/pause.png'.freeze
+    DIM = [0, 0, 0, 215].freeze
 
-    def initialize(state)
-      @state = state
+    # new_state: makes the GameState for this game, and again for Restart and Retry.
+    def initialize(new_state)
+      @new_state = new_state
+      @state = new_state.call
       @input = DrInput.new
       @audio = DrAudio.new
       @game = Game.new(@state, input: @input, audio: @audio)
@@ -165,17 +235,26 @@ module Screens
       @input.inputs = args.inputs
       @audio.outputs = args.outputs
 
-      @game.toggle_pause if @input.pause_pressed?
+      return _through(@game_over, args) if @game_over
+
+      if @input.pause_pressed?
+        _toggle_pause
+        return self
+      end
+      if @state.paused?
+        @pause_menu ||= _pause_menu
+        return _through(@pause_menu, args)
+      end
+      @pause_menu = nil
+
       @game.update
 
       if @game.over?
         if @state.won
-          state = GameState.new
-          state.junk_level = @state.junk_level + 1
-          return Play.new(state)
-        else
-          return Menu.main
+          junk_level = @state.junk_level + 1
+          return Play.new(-> { Modes.next(junk_level) })
         end
+        @game_over = _game_over_menu
       end
       self
     end
@@ -187,7 +266,7 @@ module Screens
     def draw(args, canvas)
       canvas.sprite(0, 0, WIDTH, HEIGHT, BACKGROUND)
       canvas.text(300, 20, 'Level', 50, FONT)
-      canvas.text(300, 40, "#{@state.junk_level}:#{@state.speed_level}", 50, FONT)
+      canvas.text(300, 40, _level, 50, FONT)
       canvas.text(300, 70, 'Rows', 50, FONT)
       canvas.text(300, 90, @state.rows_cleared.to_s, 50, FONT)
       canvas.text(300, 120, 'Score', 50, FONT)
@@ -197,10 +276,47 @@ module Screens
 
       Views.next_piece(canvas, @game.queue.current, 296, 337)
 
-      if @state.paused?
-        canvas.rect(0, 0, WIDTH, HEIGHT, [0, 0, 0])
-        canvas.sprite(WIDTH / 2 - 25, HEIGHT / 2 - 25, 50, 50, PAUSE_ICON)
+      overlay = @game_over || (@state.paused? && @pause_menu)
+      overlay.draw(args, canvas) if overlay
+    end
+
+    def _level
+      "#{@state.junk_level}:#{@state.speed_level}"
+    end
+
+    # Pausing hides the board, so a pause can't be used to plan.
+    def _pause_menu
+      Menu.new([
+        [Button.new('Resume', WIDTH / 2, 215) { _toggle_pause; nil }],
+        [Button.new('Controls', WIDTH / 2, 320) { Controls.new(self) }],
+        [Button.new('Restart', WIDTH / 2, 425) { Play.new(@new_state) }],
+        [Button.new('Quit', WIDTH / 2, 530) { Menu.main }]
+      ], background: [0, 0, 0]) { |canvas| canvas.text(WIDTH / 2, 40, 'Paused', 100, FONT, align: 0.5) }
+    end
+
+    def _game_over_menu
+      Menu.new([
+        [Button.new('Retry', WIDTH / 2, 390) { Play.new(@new_state) }],
+        [Button.new('Menu', WIDTH / 2, 510) { Menu.main }]
+      ], background: DIM) do |canvas|
+        canvas.text(WIDTH / 2, 30, 'Game Over', 80, FONT, align: 0.5)
+        [['Score', @state.score], ['Rows', @state.rows_cleared], ['Level', _level]].each_with_index do |(name, value), i|
+          y = 160 + i * 50
+          canvas.text(WIDTH / 2 - 10, y, name, 45, FONT, align: 1)
+          canvas.text(WIDTH / 2 + 10, y, value.to_s, 45, FONT)
+        end
       end
+    end
+
+    def _toggle_pause
+      @game.toggle_pause
+      @input.suppress_held unless @state.paused?
+    end
+
+    # Updates an overlay menu, staying on this screen unless it picked another.
+    def _through(menu, args)
+      next_screen = menu.update(args)
+      next_screen.equal?(menu) ? self : next_screen
     end
   end
 

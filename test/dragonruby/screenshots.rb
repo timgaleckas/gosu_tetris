@@ -4,14 +4,17 @@ require 'test/core/scenarios.rb'
 
 module ScreenshotRun
   GAME_START = 90
-  SHOTS = { 5 => 'splash', 70 => 'menu', 85 => 'modes',
-            GAME_START + 149 => 'game_150', GAME_START + 399 => 'game_400', GAME_START + 400 => 'paused' }.freeze
+  SHOTS = { 5 => 'splash', 60 => 'menu', 70 => 'controls', 85 => 'modes',
+            GAME_START + 149 => 'game_150', GAME_START + 399 => 'game_400', GAME_START + 400 => 'paused',
+            GAME_START + 460 => 'game_over' }.freeze
 
   def self.tick(args)
     tick = Kernel.tick_count
+    $screen = Screens::Controls.new(Screens::Menu.main) if tick == 65
     $screen = Screens::Menu.modes if tick == 80
     _start_game if tick == GAME_START
-    @game.toggle_pause if tick == GAME_START + 400
+    @game.toggle_pause if tick == GAME_START + 400 || tick == GAME_START + 410
+    @game.state.lost = true if tick == GAME_START + 411
     @agent.advance if @agent
 
     Timtris.tick(args)
@@ -28,7 +31,7 @@ module ScreenshotRun
     state = GameState.new
     state.rng = Rng.new(1)
     state.junk_level = 0
-    $screen = Screens::Play.new(state)
+    $screen = Screens::Play.new(-> { state })
     @game = $screen.instance_variable_get(:@game)
     GoldenScenarios.scatter(10, 1).call(@game.board)
     @game.board._relink_and_relock_squares
