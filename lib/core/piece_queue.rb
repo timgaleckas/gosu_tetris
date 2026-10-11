@@ -15,8 +15,8 @@ class PieceQueue
 
   suspendable def pop
     last = @current
-    @current = Piece::ALL.sample.with_game_state(@game_state)
-    @current.randomly_mutate_color if @game_state.multicolor
+    @current = @game_state.rng.sample(Piece::ALL).with_game_state(@game_state)
+    @current.randomly_mutate_color(@game_state.rng) if @game_state.multicolor
     last
   end
 end

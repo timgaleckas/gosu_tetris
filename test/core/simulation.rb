@@ -49,13 +49,13 @@ class Simulation
   end
 
   def run
-    srand(@seed)
-    agent_rng = Random.new(@seed)
+    agent_rng = Rng.new(@seed * 7919 + 1)
     input = Input.new
     audio = RecordingAudio.new
 
     state = GameState.new
-    @game_state_options.each { |attribute, value| state.public_send("#{attribute}=", value) }
+    state.rng = Rng.new(@seed)
+    @game_state_options.each { |attribute, value| state.send("#{attribute}=", value) }
 
     @game = Game.new(state, input: input, audio: audio)
     if @setup
@@ -68,7 +68,7 @@ class Simulation
     held = :none
 
     @frames.times do |frame|
-      held = INPUTS.keys.sample(random: agent_rng) if agent_rng.rand < 0.08
+      held = agent_rng.sample(INPUTS.keys) if agent_rng.rand(100) < 8
       input.held = INPUTS.fetch(held)
       audio.played = []
 
@@ -116,7 +116,7 @@ class Simulation
     @game.board._rows.map do |row|
       row.map do |square|
         next '.' unless square
-        flags = +''
+        flags = String.new
         flags << 'P' if square.permalocked?
         flags << 'L' if square.locked?
         flags << "d#{square.disappearing}" if square.disappearing > 0
@@ -127,6 +127,6 @@ class Simulation
   end
 
   def _num(value)
-    value.is_a?(Float) ? value.round(6).to_s : value.to_s
+    value.is_a?(Float) ? format('%.6f', value) : value.to_s
   end
 end

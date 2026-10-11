@@ -1,51 +1,16 @@
 require_relative '../core_helper'
 require_relative './simulation'
+require_relative './scenarios'
 
 # Golden-master tests: each scenario plays a seeded, scripted session and compares
-# the frame-by-frame trace with test/golden/<name>.trace. They pin the gameplay
+# the frame-by-frame trace with test/core/golden/<name>.trace. They pin the gameplay
 # (timings, kicks, gravity, cascades, scoring, sounds) so refactors and ports can
 # be checked against the original feel. Regenerate with UPDATE_GOLDEN=1 only when
 # a behavior change is intended, and review the diff.
 describe "golden master" do
   GOLDEN_DIR = File.expand_path('golden', __dir__)
 
-  CLASSIC = { junk_level: 0, multicolor: false, drop_cleared_rows: true, gravity: false }.freeze
-
-  # Bottom n rows full except one column.
-  def self.well(n, col: 4)
-    ->(board) do
-      rows = board._rows
-      (rows.size - n...rows.size).each do |r|
-        rows[r].each_index { |c| rows[r][c] = c == col ? nil : Square.new(r % 7, nil) }
-      end
-    end
-  end
-
-  # Bottom n rows randomly filled with mixed colors.
-  def self.scatter(n, seed)
-    ->(board) do
-      rng = Random.new(seed)
-      rows = board._rows
-      (rows.size - n...rows.size).each do |r|
-        rows[r].each_index { |c| rows[r][c] = rng.rand < 0.75 ? Square.new(rng.rand(7), nil) : nil }
-      end
-    end
-  end
-
-  # name => [seed, game state options, board setup, sounds the trace must include]
-  SCENARIOS = {
-    'classic_well'       => [11, CLASSIC, well(12), %w[SFX_LevelUp SFX_SpecialTetris]],
-    'classic_fast'       => [1, CLASSIC.merge(speed_level: 7), nil, %w[SFX_PieceLockdown]],
-    'next_default_lose'  => [1, {}, nil, %w[SFX_PieceLockdown]],
-    'next_default_win'   => [7, {}, nil, %w[SFX_SpecialLineClearSingle]],
-    'next_marathon'      => [7, { marathon: true }, nil, %w[SFX_SpecialLineClearSingle]],
-    'gravity_well'       => [15, { junk_level: 0 }, well(12), %w[SFX_LevelUp SFX_SpecialTetris]],
-    'gravity_scatter_a'  => [6, { junk_level: 0 }, scatter(10, 6), %w[SFX_SpecialLineClearTriple]],
-    'gravity_scatter_b'  => [15, { junk_level: 0 }, scatter(10, 15), %w[SFX_SpecialLineClearDouble]],
-    'gravity_drop_rows'  => [6, { junk_level: 0, drop_cleared_rows: true }, scatter(10, 6), []]
-  }.freeze
-
-  SCENARIOS.each do |name, (seed, options, setup, expected_sounds)|
+  GoldenScenarios::ALL.each do |name, (seed, options, setup, expected_sounds)|
     it "plays #{name} the same way" do
       trace = Simulation.new(seed: seed, frames: 6000, game_state_options: options, &setup).run.trace
       path = File.join(GOLDEN_DIR, "#{name}.trace")

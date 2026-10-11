@@ -1,0 +1,29 @@
+#!/bin/sh
+# Runs the DragonRuby version of the game from this repo.
+#   bin/dr            play
+#   bin/dr test       run the core's cross-engine tests
+#   bin/dr publish    build for itch.io (see metadata/game_metadata.txt)
+# DragonRuby lives outside the repo: set DRAGONRUBY_HOME, or symlink it to ./dragonruby-engine.
+set -e
+game_dir="$(cd "$(dirname "$0")/.." && pwd)"
+engine="${DRAGONRUBY_HOME:-$game_dir/dragonruby-engine}"
+if [ ! -x "$engine/dragonruby" ]; then
+  echo "DragonRuby not found at $engine (set DRAGONRUBY_HOME or symlink ./dragonruby-engine)" >&2
+  exit 1
+fi
+cd "$engine"
+
+case "$1" in
+  test)
+    log="$(mktemp)"
+    ./dragonruby "$game_dir" --test test/dragonruby/tests.rb > "$log" 2>&1 || true
+    sed -n 's/^- \[Game\] //p' "$log" | grep -v '^\*\* Running\|^Passed\.$'
+    grep -q '\[Game\] 0 test(s) failed' "$log" && ! grep -q 'EXCEPTION' "$log"
+    ;;
+  publish)
+    ./dragonruby-publish --only-package "$game_dir"
+    ;;
+  *)
+    exec ./dragonruby "$game_dir"
+    ;;
+esac

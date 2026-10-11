@@ -14,12 +14,12 @@ class Board
 
     @game_state = game_state
 
-    @squares_wide = @width / Square.width
+    @squares_wide = @width.div(Square.width)
     @board_width = @squares_wide * Square.width
 
-    @x = (@width % Square.width) / 2
+    @x = (@width % Square.width).div(2)
 
-    @squares_high = (@height / Square.height) + 1
+    @squares_high = @height.div(Square.height) + 1
 
     @board_height = @squares_high * Square.height
 
@@ -30,7 +30,7 @@ class Board
 
     ((@rows.size - @game_state.junk_level)...@rows.size).each do |row_index|
       (0...@squares_wide).each do |column_index|
-        @rows[row_index][column_index] = Square.new(7,@game_state,true) if rand(5) == 0
+        @rows[row_index][column_index] = Square.new(7,@game_state,true) if @game_state.rng.rand(5) == 0
       end
     end
 
@@ -44,7 +44,7 @@ class Board
 
   suspendable def current_piece=(piece)
     @current_piece = piece
-    @cursor_x = ((@squares_wide / 2) - 1) * Square.width
+    @cursor_x = (@squares_wide.div(2) - 1) * Square.width
     @cursor_y = -(Square.height*2)
     _lose_game if _collision_detected?(@current_piece, @cursor_x, _cursor_y)
   end
@@ -158,7 +158,7 @@ class Board
       @current_cascade += 1
 
       if @current_cascade > 1
-        @game_state.audio.play(Audio::PRAISES.sample)
+        @game_state.audio.play(@game_state.rng.sample(Audio::PRAISES))
       end
 
       case rows_to_clear.size
@@ -248,8 +248,8 @@ class Board
 
   def _place_piece
     _current_piece_squares_with_coordinates.each do |(square, x, y)|
-      row = y/Square.height
-      column = x/Square.width
+      row = y.div(Square.height)
+      column = x.div(Square.width)
       @rows[row][column]=square
     end
     @current_piece = nil
@@ -320,13 +320,13 @@ class Board
   end
 
   def _shimmy_piece_to_fit
-    @cursor_y = (_cursor_y + 15) / 30 * 30 if _collision_detected?(@current_piece, @cursor_x, _cursor_y)
+    @cursor_y = (_cursor_y + 15).div(30) * 30 if _collision_detected?(@current_piece, @cursor_x, _cursor_y)
   end
 
   def _square_at?(x,y)
     return nil if _out_of_bounds?(x,y)
     return nil if y < 0
-    @rows[y/Square.height][x/Square.width]
+    @rows[y.div(Square.height)][x.div(Square.width)]
   end
 
   def _square_at_index(x,y)

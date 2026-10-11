@@ -34,13 +34,13 @@ class Piece
     p
   end
 
-  def randomly_mutate_color
-    @secondary_color = rand(7)
+  def randomly_mutate_color(rng)
+    @secondary_color = rng.rand(7)
     @color_mutated_squares = []
-    if rand(3) == 0
-      @color_mutated_squares << (rand(3)+1)
-      if rand(3) == 0
-        @color_mutated_squares << (rand(3)+1)
+    if rng.rand(3) == 0
+      @color_mutated_squares << (rng.rand(3)+1)
+      if rng.rand(3) == 0
+        @color_mutated_squares << (rng.rand(3)+1)
       end
 
     end

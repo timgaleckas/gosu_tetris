@@ -9,6 +9,7 @@ class GameState
   attr_accessor :multicolor
   attr_accessor :paused
   attr_accessor :player_id
+  attr_accessor :rng
   attr_accessor :speed_level
   attr_accessor :won
   attr_reader :rows_cleared
@@ -17,6 +18,7 @@ class GameState
   def initialize
     @audio = Audio::Silent.new
     @controls = Controls.new
+    @rng = Rng.new
     @drop_cleared_rows = false
     @gravity = true
     @junk_level = 2
@@ -53,7 +55,7 @@ class GameState
                 end
     @score += (@speed_level + 1) * row_score
     @score += current_cascade*50
-    speed_level_from_rows = @rows_cleared / 10
+    speed_level_from_rows = @rows_cleared.div(10)
     @audio.play('SFX_LevelUp') if speed_level_from_rows > @speed_level
     @speed_level = [@speed_level, speed_level_from_rows].max
   end
