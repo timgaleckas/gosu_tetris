@@ -41,28 +41,33 @@ class Menu::Screen < Screen
 
   def button_down(id)
     case id
-    when *([Gosu.constants.grep(/^Gp.*Down/)] + [Gosu::KB_DOWN])
+    when *gosu_ids(/^GP_(\d_)?(DPAD_)?DOWN$/), Gosu::KB_DOWN
       _move_down
-    when *([Gosu.constants.grep(/^Gp.*Up/)] + [Gosu::KB_UP])
+    when *gosu_ids(/^GP_(\d_)?(DPAD_)?UP$/), Gosu::KB_UP
       _move_up
-    when *([Gosu.constants.grep(/^Gp.*Right/)] + [Gosu::KB_RIGHT])
+    when *gosu_ids(/^GP_(\d_)?(DPAD_)?RIGHT$/), Gosu::KB_RIGHT
       _move_right
-    when *([Gosu.constants.grep(/^Gp.*Left/)] + [Gosu::KB_LEFT])
+    when *gosu_ids(/^GP_(\d_)?(DPAD_)?LEFT$/), Gosu::KB_LEFT
       _move_left
-    when *([Gosu.constants.grep(/^Gp/)] + [Gosu::KB_RETURN])
+    when *gosu_ids(/^GP_(\d_)?BUTTON_\d+$/), Gosu::KB_RETURN
       _select_item
     when Gosu::MS_LEFT, Gosu::MS_RIGHT
       _select_item if @last_interaction == :mouse
     end
 
     case id
-    when *Gosu.constants.map{|c|Gosu.const_get(c) if c =~ /^Kb/}.compact
+    when *gosu_ids(/^KB_/)
       @last_interaction = :keyboard
-    when *Gosu.constants.map{|c|Gosu.const_get(c) if c =~ /^Gp/}.compact
+    when *gosu_ids(/^GP_/)
       @last_interaction = :gamepad
-    when *Gosu.constants.map{|c|Gosu.const_get(c) if c =~ /^Ms/}.compact
+    when *gosu_ids(/^MS_/)
       @last_interaction = :mouse
     end
+  end
+
+  # Values of the Gosu button constants whose names match pattern.
+  def gosu_ids(pattern)
+    Gosu.constants.grep(pattern).map { |name| Gosu.const_get(name) }
   end
 
   def _move_down
@@ -100,6 +105,10 @@ class Menu::Screen < Screen
   def _select_item
     action = @buttons.find{|b|b.hovered?}.try(:action)
     instance_eval(&action) if action
+  end
+
+  def _buttons
+    @buttons
   end
 
   def next_screen
