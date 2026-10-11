@@ -237,6 +237,17 @@ describe MainBoard do
       _(m.current_piece._rotation).must_equal 1
       _(m.instance_variable_get(:@cursor_x)).must_equal 60
     end
+
+    # The kick tables use SRS coordinates, where +y is up; the board's y grows downward.
+    it "kicks up when SRS says +y" do
+      m = blocked_t
+      m._rows[12][3] = Square.new(1,m.instance_variable_get(:@game_state))
+      m._relink_and_relock_squares
+      m._rotate_piece_right
+      _(m.current_piece._rotation).must_equal 1
+      _(m.instance_variable_get(:@cursor_x)).must_equal 60
+      _(m.instance_variable_get(:@cursor_y)).must_equal 270
+    end
   end
 
   describe "action stack" do

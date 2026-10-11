@@ -78,6 +78,7 @@ class Piece
   end
 
   # kick data for all 3 square pieces indexed by position index and rotation direction
+  # (SRS offsets: +x is right, +y is up)
   KICK_DATA_3 = [
     { # original position
       r: [
@@ -138,6 +139,7 @@ class Piece
   ]
 
   # kick data for I piece indexed by position index and rotation direction
+  # (SRS offsets: +x is right, +y is up)
   KICK_DATA_I = [
     { # original position
       r: [
