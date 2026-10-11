@@ -1,5 +1,5 @@
 class Sounds
-  Dir.glob(App.asset_root / 'sounds' / '*.ogg').each do |f|
+  Dir.glob((App.asset_root / 'sounds' / '*.ogg').to_s).each do |f|
     const_set(File.basename(f, '.ogg'), Gosu::Sample.new(f))
   end
 

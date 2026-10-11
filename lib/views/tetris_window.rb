@@ -21,7 +21,7 @@ class TetrisWindow < Gosu::Window
 
   def button_down(id)
     case id
-    when Gosu::KbEscape
+    when Gosu::KB_ESCAPE
       close
     when @current_screen.nil?, @current_screen.button_down(id) == :super
       super

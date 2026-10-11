@@ -5,8 +5,8 @@ class Menu::Button
 
   def initialize(name, center_x, center_y, &action)
     @name = name
-    @button_image = Gosu::Image.new(App.asset_root / 'buttons' / "#{name}.png")
-    @hovered_button_image = Gosu::Image.new(App.asset_root / 'buttons' / "#{name}_hovered.png")
+    @button_image = Gosu::Image.new((App.asset_root / 'buttons' / "#{name}.png").to_s)
+    @hovered_button_image = Gosu::Image.new((App.asset_root / 'buttons' / "#{name}_hovered.png").to_s)
     @x1 = center_x - @button_image.width/2
     @x2 = center_x + @button_image.width/2
     @y1 = center_y - @button_image.height/2

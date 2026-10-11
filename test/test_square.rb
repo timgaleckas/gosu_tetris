@@ -6,52 +6,52 @@ describe Square do
     l1 = Square.new(0,nil)
     l2 = Square.new(0,nil)
     r.left = l1
-    r.left.must_equal l1
-    l1.right.must_equal r
+    _(r.left).must_equal l1
+    _(l1.right).must_equal r
 
     r.left = l2
-    r.left.must_equal l2
+    _(r.left).must_equal l2
     assert_nil l1.right
-    l2.right.must_equal r
+    _(l2.right).must_equal r
   end
   it "can doubly link right" do
     l = Square.new(0,nil)
     r1 = Square.new(0,nil)
     r2 = Square.new(0,nil)
     l.right = r1
-    l.right.must_equal r1
-    r1.left.must_equal l
+    _(l.right).must_equal r1
+    _(r1.left).must_equal l
 
     l.right = r2
-    l.right.must_equal r2
+    _(l.right).must_equal r2
     assert_nil r1.left
-    r2.left.must_equal l
+    _(r2.left).must_equal l
   end
   it "can doubly link up" do
     d = Square.new(0,nil)
     u1 = Square.new(0,nil)
     u2 = Square.new(0,nil)
     d.up = u1
-    d.up.must_equal u1
-    u1.down.must_equal d
+    _(d.up).must_equal u1
+    _(u1.down).must_equal d
 
     d.up = u2
-    d.up.must_equal u2
+    _(d.up).must_equal u2
     assert_nil u1.down
-    u2.down.must_equal d
+    _(u2.down).must_equal d
   end
   it "can doubly link down" do
     u = Square.new(0,nil)
     d1 = Square.new(0,nil)
     d2 = Square.new(0,nil)
     u.down = d1
-    u.down.must_equal d1
-    d1.up.must_equal u
+    _(u.down).must_equal d1
+    _(d1.up).must_equal u
 
     u.down = d2
-    u.down.must_equal d2
+    _(u.down).must_equal d2
     assert_nil d1.up
-    d2.up.must_equal u
+    _(d2.up).must_equal u
   end
 
   describe "drawing" do
@@ -92,7 +92,7 @@ describe Square do
       end
 
       test_window = TestWindow.new(squares,2) do |current_widget, current_time|
-        current_widget.disappearing?.must_equal true
+        _(current_widget.disappearing?).must_equal true
       end
       test_window.show
     end

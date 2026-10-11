@@ -18,32 +18,32 @@ class KeyMap
     end
 
     def down
-      [Gosu::KbDown, Gosu::Gp0Down]
+      [Gosu::KB_DOWN, Gosu::GP_0_DOWN]
     end
     pressable :down
 
     def left
-      [Gosu::KbLeft, Gosu::Gp0Left]
+      [Gosu::KB_LEFT, Gosu::GP_0_LEFT]
     end
     pressable :left, Tunables.slide_repeat
 
     def right
-      [Gosu::KbRight, Gosu::Gp0Right]
+      [Gosu::KB_RIGHT, Gosu::GP_0_RIGHT]
     end
     pressable :right, Tunables.slide_repeat
 
     def rotate_right
-      [Gosu::KbUp, Gosu::Gp0Button1]
+      [Gosu::KB_UP, Gosu::GP_0_BUTTON_1]
     end
     pressable :rotate_right, Tunables.rotate_repeat
 
     def rotate_left
-      [Gosu::Gp0Button0]
+      [Gosu::GP_0_BUTTON_0]
     end
     pressable :rotate_left, Tunables.rotate_repeat
 
     def pause
-      [Gosu::KbP, Gosu::Gp0Button6]
+      [Gosu::KB_P, Gosu::GP_0_BUTTON_6]
     end
     pressable :pause
   end

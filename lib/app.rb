@@ -2,12 +2,12 @@ require 'rubygems'
 require 'gosu'
 require 'active_support'
 require 'active_support/core_ext/object/try'
-require 'filepath'
+require 'pathname'
 
 class App
   class << self
     def root
-      @root ||= FilePath.new(File.expand_path("..", File.dirname(__FILE__)))
+      @root ||= Pathname.new(File.expand_path("..", File.dirname(__FILE__)))
     end
 
     def asset_root

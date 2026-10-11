@@ -33,6 +33,18 @@ class TestWindow < Gosu::Window
     end
   end
 
+  # Runs the update loop without rendering unless VISUAL is set, so the suite can run unattended.
+  def show
+    return super if ENV['VISUAL']
+    @closed = false
+    update until @closed
+  end
+
+  def close
+    return super if ENV['VISUAL']
+    @closed = true
+  end
+
   def current_widget_and_args
     @widgets[@current_time / @time_between_widgets]
   end

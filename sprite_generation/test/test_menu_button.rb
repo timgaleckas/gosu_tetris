@@ -15,8 +15,8 @@ describe SpriteGeneration::MenuButton do
     TestWindow.new(buttons,20).show
 
     file_name = text.downcase.gsub(/ /,'_')
-    button.save(App.asset_root / 'buttons' / "#{file_name}.png")
-    button_hovered.save(App.asset_root / 'buttons' / "#{file_name}_hovered.png")
+    button.save((App.asset_root / 'buttons' / "#{file_name}.png").to_s)
+    button_hovered.save((App.asset_root / 'buttons' / "#{file_name}_hovered.png").to_s)
   end
 
   it "generates all menu buttons" do

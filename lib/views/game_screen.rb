@@ -9,23 +9,23 @@ class GameScreen < Screen
 
     @game_state = game_state
 
-    @background = Gosu::Image.new('assets/Bck.png')
+    @background = Gosu::Image.new((App.asset_root / 'Bck.png').to_s)
     @next_piece = NextPiece.new(200,200, @game_state)
     @main_board = MainBoard.new(274,592, @game_state)
     @pause_overlay = PauseOverlay.new(400,600, @game_state)
     @main_board.current_piece = @next_piece.pop
-    @font = Gosu::Font.new(@window,App.asset_root/'fonts'/'Pacifico'/'Pacifico-Regular.ttf',50)
+    @font = Gosu::Font.new(50, name: (App.asset_root/'fonts'/'Pacifico'/'Pacifico-Regular.ttf').to_s)
   end
 
   def draw
     Gosu.clip_to(0,0,@width,@height) do
       @background.draw(0,0,0)
-      @font.draw("Level",300,20,9)
-      @font.draw("#{@game_state.junk_level}:#{@game_state.speed_level}",300,40,9)
-      @font.draw("Rows",300,70,9)
-      @font.draw(@game_state.rows_cleared,300,90,9)
-      @font.draw("Score",300,120,9)
-      @font.draw(@game_state.score,300,140,9)
+      @font.draw_text("Level",300,20,9)
+      @font.draw_text("#{@game_state.junk_level}:#{@game_state.speed_level}",300,40,9)
+      @font.draw_text("Rows",300,70,9)
+      @font.draw_text(@game_state.rows_cleared.to_s,300,90,9)
+      @font.draw_text("Score",300,120,9)
+      @font.draw_text(@game_state.score.to_s,300,140,9)
       Gosu.translate(17,0) do
         @main_board.draw
       end

@@ -17,11 +17,11 @@ class Menu::GameModeScreen < Menu::Screen
         end
       ]
     ])
-    @font = Gosu::Font.new(@window,App.asset_root/'fonts'/'Pacifico'/'Pacifico-Regular.ttf',200)
+    @font = Gosu::Font.new(200, name: (App.asset_root/'fonts'/'Pacifico'/'Pacifico-Regular.ttf').to_s)
   end
 
   def draw
     super
-    @font.draw("Modes", 40, 0, 4)
+    @font.draw_text("Modes", 40, 0, 4)
   end
 end

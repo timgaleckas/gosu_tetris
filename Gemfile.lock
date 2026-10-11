@@ -1,44 +1,64 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.1.0)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (~> 0.7)
-      minitest (~> 5.1)
-      tzinfo (~> 1.1)
-    chipmunk (6.1.3.4)
-    coderay (1.1.1)
-    concurrent-ruby (1.0.5)
-    filepath (0.6)
-    gosu (0.12.0)
-    i18n (0.8.1)
-    method_source (0.8.2)
-    minitest (5.10.1)
-    plist (3.3.0)
-    pry (0.10.4)
-      coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
-    rake (12.0.0)
-    rmagick (2.16.0)
-    slop (3.6.0)
-    thread_safe (0.3.6)
-    tzinfo (1.2.3)
-      thread_safe (~> 0.1)
+    activesupport (8.1.4)
+      base64
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.3.1)
+      connection_pool (>= 2.2.5)
+      drb
+      i18n (>= 1.6, < 2)
+      json
+      logger (>= 1.4.2)
+      minitest (>= 5.1)
+      securerandom (>= 0.3)
+      tzinfo (~> 2.0, >= 2.0.5)
+      uri (>= 0.13.1)
+    base64 (0.3.0)
+    bigdecimal (4.1.3)
+    commander (6.0.0)
+      highline (~> 3.1)
+    concurrent-ruby (1.3.8)
+    connection_pool (3.0.2)
+    drb (2.2.3)
+    gosu (1.4.6)
+    highline (3.1.2)
+      reline
+    i18n (1.15.2)
+      concurrent-ruby (~> 1.0)
+    io-console (0.9.4)
+    json (3.0.2)
+    logger (1.7.0)
+    minitest (6.0.6)
+      drb (~> 2.0)
+      prism (~> 1.5)
+    observer (0.1.2)
+    pkg-config (1.6.5)
+    plist (3.7.2)
+    prism (1.9.0)
+    rake (13.4.2)
+    reline (0.7.0)
+      io-console (~> 0.5)
+    rmagick (7.2.0)
+      observer (~> 0.1)
+      pkg-config (~> 1.4)
+    securerandom (0.4.1)
+    tzinfo (2.0.6)
+      concurrent-ruby (~> 1.0)
+    uri (1.1.2)
 
 PLATFORMS
+  arm64-darwin-24
   ruby
 
 DEPENDENCIES
   activesupport
-  chipmunk
-  filepath
+  commander
   gosu
   minitest
   plist
-  pry
   rake
   rmagick
 
 BUNDLED WITH
-   1.14.6
+   2.5.22

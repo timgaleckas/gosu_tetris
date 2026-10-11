@@ -41,17 +41,17 @@ class Menu::Screen < Screen
 
   def button_down(id)
     case id
-    when *([Gosu.constants.grep(/^Gp.*Down/)] + [Gosu::KbDown])
+    when *([Gosu.constants.grep(/^Gp.*Down/)] + [Gosu::KB_DOWN])
       _move_down
-    when *([Gosu.constants.grep(/^Gp.*Up/)] + [Gosu::KbUp])
+    when *([Gosu.constants.grep(/^Gp.*Up/)] + [Gosu::KB_UP])
       _move_up
-    when *([Gosu.constants.grep(/^Gp.*Right/)] + [Gosu::KbRight])
+    when *([Gosu.constants.grep(/^Gp.*Right/)] + [Gosu::KB_RIGHT])
       _move_right
-    when *([Gosu.constants.grep(/^Gp.*Left/)] + [Gosu::KbLeft])
+    when *([Gosu.constants.grep(/^Gp.*Left/)] + [Gosu::KB_LEFT])
       _move_left
-    when *([Gosu.constants.grep(/^Gp/)] + [Gosu::KbReturn])
+    when *([Gosu.constants.grep(/^Gp/)] + [Gosu::KB_RETURN])
       _select_item
-    when Gosu::MsLeft, Gosu::MsRight
+    when Gosu::MS_LEFT, Gosu::MS_RIGHT
       _select_item if @last_interaction == :mouse
     end
 

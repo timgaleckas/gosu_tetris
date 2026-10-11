@@ -2,15 +2,16 @@
 source "https://rubygems.org"
 
 gem "activesupport"
-gem "filepath"
+gem "gosu"
+gem "commander"
 
 group :development do
-  gem "gosu"
-  gem "chipmunk"
   gem "rake"
-  gem "rmagick"
   gem "minitest"
-
-  gem "pry"
   gem "plist"
+end
+
+# Only needed to regenerate sprites (rake generate_sprites); requires ImageMagick.
+group :sprites, optional: true do
+  gem "rmagick"
 end

@@ -9,11 +9,11 @@ class Menu::MainScreen < Menu::Screen
         Menu::Button.new('options', screen.width/2, screen.height/5 * 4)
       ]
     ])
-    @font = Gosu::Font.new(@window,App.asset_root/'fonts'/'Pacifico'/'Pacifico-Regular.ttf',200)
+    @font = Gosu::Font.new(200, name: (App.asset_root/'fonts'/'Pacifico'/'Pacifico-Regular.ttf').to_s)
   end
 
   def draw
     super
-    @font.draw(App.name, 40, 0, 4)
+    @font.draw_text(App.name, 40, 0, 4)
   end
 end

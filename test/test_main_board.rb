@@ -14,10 +14,10 @@ describe MainBoard do
   describe "#initialize" do
     it "figures how many squares and positions itself correctly" do
       b = main_board
-      b._squares_high.must_equal 11
-      b._squares_wide.must_equal 5
-      b._x.must_equal 2
-      b._y.must_equal -20
+      _(b._squares_high).must_equal 11
+      _(b._squares_wide).must_equal 5
+      _(b._x).must_equal 2
+      _(b._y).must_equal -20
     end
   end
 
@@ -58,7 +58,7 @@ describe MainBoard do
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
         sleep_to_see_test
         if !current_widget._peek_action_pending
-          current_widget._rows.last[0].must_equal s
+          _(current_widget._rows.last[0]).must_equal s
           test_window.close
         end
       end
@@ -77,8 +77,8 @@ describe MainBoard do
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
         sleep_to_see_test
         if !current_widget._peek_action_pending
-          current_widget._rows[-2][0].must_equal s1
-          current_widget._rows[-1][0].must_equal s2
+          _(current_widget._rows[-2][0]).must_equal s1
+          _(current_widget._rows[-1][0]).must_equal s2
           test_window.close
         end
       end
@@ -101,9 +101,9 @@ describe MainBoard do
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
         sleep_to_see_test
         if !current_widget._peek_action_pending
-          current_widget._rows[-2][0].must_equal s1
-          current_widget._rows[-2][1].must_equal s2
-          current_widget._rows[-1][1].must_equal s3
+          _(current_widget._rows[-2][0]).must_equal s1
+          _(current_widget._rows[-2][1]).must_equal s2
+          _(current_widget._rows[-1][1]).must_equal s3
           test_window.close
         end
       end
@@ -129,9 +129,9 @@ describe MainBoard do
       test_window = TestWindow.new([m],10) do |current_widget, current_time|
         sleep_to_see_test
         unless true
-          current_widget._rows[-2][0].must_equal s1
-          current_widget._rows[-2][1].must_equal s2
-          current_widget._rows[-1][1].must_equal s3
+          _(current_widget._rows[-2][0]).must_equal s1
+          _(current_widget._rows[-2][1]).must_equal s2
+          _(current_widget._rows[-1][1]).must_equal s3
           test_window.close
         end
       end
@@ -173,7 +173,7 @@ describe MainBoard do
         current_widget.move_piece_left
 
         if current_widget.needs_next_piece?
-          m._rows.flatten.compact.size.must_equal initial_pieces
+          _(m._rows.flatten.compact.size).must_equal initial_pieces
           test_window.close
         end
       end
@@ -191,18 +191,18 @@ describe MainBoard do
 
       m._push_action_pending(:tim)
 
-      m._peek_action_pending.must_equal :tim
-      m._pop_action_pending.must_equal :tim
+      _(m._peek_action_pending).must_equal :tim
+      _(m._pop_action_pending).must_equal :tim
       assert_nil m._peek_action_pending
 
       m._push_action_pending :last
       m._push_action_pending :first
 
-      m._peek_action_pending.must_equal :first
-      m._pop_action_pending.must_equal :first
+      _(m._peek_action_pending).must_equal :first
+      _(m._pop_action_pending).must_equal :first
 
-      m._peek_action_pending.must_equal :last
-      m._pop_action_pending.must_equal :last
+      _(m._peek_action_pending).must_equal :last
+      _(m._pop_action_pending).must_equal :last
 
       assert_nil m._pop_action_pending
     end
