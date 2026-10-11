@@ -4,13 +4,15 @@ require 'test/core/scenarios.rb'
 
 module ScreenshotRun
   GAME_START = 90
-  SHOTS = { 5 => 'splash', 60 => 'menu', 70 => 'controls', 85 => 'modes',
+  SHOTS = { 5 => 'splash', 50 => 'menu', 55 => 'controls', 60 => 'options', 70 => 'levels', 85 => 'modes',
             GAME_START + 149 => 'game_150', GAME_START + 399 => 'game_400', GAME_START + 400 => 'paused',
             GAME_START + 460 => 'game_over' }.freeze
 
   def self.tick(args)
     tick = Kernel.tick_count
-    $screen = Screens::Controls.new(Screens::Menu.main) if tick == 65
+    $screen = Screens::Controls.new(Screens::Menu.main) if tick == 52
+    $screen = Screens::Menu.options if tick == 57
+    $screen = Screens::Menu.levels(:next) if tick == 65
     $screen = Screens::Menu.modes if tick == 80
     _start_game if tick == GAME_START
     @game.toggle_pause if tick == GAME_START + 400 || tick == GAME_START + 410

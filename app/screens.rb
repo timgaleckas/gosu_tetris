@@ -9,19 +9,21 @@ module Screens
 
   # The settings for a fresh game in each mode.
   module Modes
-    def self.classic
+    def self.classic(speed_level)
       state = GameState.new
       state.junk_level = 0
       state.multicolor = false
       state.drop_cleared_rows = true
       state.gravity = false
+      state.speed_level = speed_level
       state
     end
 
     # Clearing every junk square wins the stage; the next has a row more.
-    def self.next(junk_level = 2)
+    def self.next(junk_level, speed_level)
       state = GameState.new
       state.junk_level = junk_level
+      state.speed_level = speed_level
       state
     end
   end
@@ -48,7 +50,6 @@ module Screens
     TEXT_COLOR = [0xE0, 0xDA, 0xF2].freeze
 
     attr_accessor :hovered, :left, :right, :up, :down
-    attr_reader :action
 
     # Sized to fit label. The action returns the screen to show next, or nil to stay.
     def initialize(label, center_x, center_y, &action)
@@ -70,6 +71,66 @@ module Screens
     def within_bounds?(x, y)
       @x1 <= x && @x1 + @w >= x && @y1 <= y && @y1 + @h >= y
     end
+
+    # x: where the mouse clicked, or nil from the keyboard or gamepad.
+    def select(_x)
+      @action.call if @action
+    end
+  end
+
+  # A number picked with left and right (or by clicking either end), saved to a
+  # Settings key.
+  class Stepper
+    W = 320
+    H = 70
+    TEXT_SIZE = 40
+
+    attr_accessor :hovered, :left, :right, :up, :down
+
+    # zero: what to show for 0, such as 'Off'. on_change is called with each new value.
+    def initialize(label, range, setting, center_y, zero: nil, &on_change)
+      @label = label
+      @range = range
+      @setting = setting
+      @zero = zero
+      @on_change = on_change
+      @x1 = (WIDTH - W).div(2)
+      @y1 = center_y - H.div(2)
+    end
+
+    def draw(canvas)
+      canvas.nine_slice(@x1, @y1, W, H, @hovered ? 'assets/button_hovered.png' : 'assets/button.png', 24, 8)
+      middle = @y1 + H / 2
+      value = Settings[@setting]
+      canvas.text(@x1 + 20, middle, @label, TEXT_SIZE, BUTTON_FONT, Button::TEXT_COLOR, valign: 0.5)
+      canvas.text(_value_x, middle, value == 0 && @zero ? @zero : value.to_s, TEXT_SIZE, BUTTON_FONT,
+                  Button::TEXT_COLOR, align: 0.5, valign: 0.5)
+      arrow = @hovered ? Button::TEXT_COLOR : [0x88, 0xAA, 0xCC]
+      canvas.text(_value_x - 45, middle, '<', TEXT_SIZE, BUTTON_FONT, arrow, align: 0.5, valign: 0.5)
+      canvas.text(_value_x + 45, middle, '>', TEXT_SIZE, BUTTON_FONT, arrow, align: 0.5, valign: 0.5)
+    end
+
+    def within_bounds?(x, y)
+      @x1 <= x && @x1 + W >= x && @y1 <= y && @y1 + H >= y
+    end
+
+    def step(by)
+      value = (Settings[@setting] + by).clamp(@range.min, @range.max)
+      return if value == Settings[@setting]
+
+      Settings[@setting] = value
+      @on_change.call(value) if @on_change
+    end
+
+    # A click left of the value lowers it, right of it raises it.
+    def select(x)
+      step(x < _value_x ? -1 : 1) if x
+      nil
+    end
+
+    def _value_x
+      @x1 + W - 75
+    end
   end
 
   # A grid of buttons navigated by mouse, keyboard or gamepad.
@@ -81,22 +142,47 @@ module Screens
       new([
         [Button.new('Start Game', WIDTH / 2, 250) { Menu.modes }],
         [Button.new('Controls', WIDTH / 2, 370) { Controls.new(Menu.main) }],
-        [Button.new('Options', WIDTH / 2, 490)]
+        [Button.new('Options', WIDTH / 2, 490) { Menu.options }]
       ]) { |canvas| canvas.text(40, 0, 'Timtris', 200, FONT) }
     end
 
     def self.modes
       new([
-        [Button.new('Classic', WIDTH / 2, HEIGHT / 5 * 2.5) { Play.new(-> { Modes.classic }) }],
-        [Button.new('Next', WIDTH / 2, HEIGHT / 5 * 4) { Play.new(-> { Modes.next }) }]
+        [Button.new('Classic', WIDTH / 2, HEIGHT / 5 * 2.5) { Menu.levels(:classic) }],
+        [Button.new('Next', WIDTH / 2, HEIGHT / 5 * 4) { Menu.levels(:next) }]
       ], back: -> { Menu.main }) { |canvas| canvas.text(40, 0, 'Modes', 200, FONT) }
+    end
+
+    # The starting levels for mode (:classic or :next), remembered between games.
+    # Start has the focus, so Enter starts at the levels last played.
+    def self.levels(mode)
+      rows = [[Stepper.new('Speed', 0..9, :"#{mode}_speed", 220)]]
+      rows << [Stepper.new('Stage', 1..10, :next_stage, 310)] if mode == :next
+      start = Button.new('Start', WIDTH / 2, 470) do
+        speed = Settings[:"#{mode}_speed"]
+        stage = Settings[:next_stage]
+        Play.new(mode == :next ? -> { Modes.next(stage, speed) } : -> { Modes.classic(speed) })
+      end
+      rows << [start]
+      title = mode == :next ? 'Next' : 'Classic'
+      new(rows, back: -> { Menu.modes }, focus: start) do |canvas|
+        canvas.text(WIDTH / 2, 0, title, 150, FONT, align: 0.5)
+      end
+    end
+
+    def self.options
+      new([
+        [Stepper.new('Volume', 0..10, :volume, 250, zero: 'Off') { DrAudio.play($args.outputs, 'SFX_PieceMoveLR') }],
+        [Button.new('Back', WIDTH / 2, 470) { Menu.main }]
+      ], back: -> { Menu.main }) { |canvas| canvas.text(WIDTH / 2, 0, 'Options', 150, FONT, align: 0.5) }
     end
 
     # rows: the buttons, laid out in a grid for keyboard and gamepad navigation.
     # background: a color to fill the screen with first, or nil.
     # back: returns the screen Escape goes to.
+    # focus: the button highlighted first (the first button if nil).
     # The block draws anything else, such as the title.
-    def initialize(rows, background: BACKGROUND, back: nil, &decoration)
+    def initialize(rows, background: BACKGROUND, back: nil, focus: nil, &decoration)
       rows.each_with_index do |row, row_index|
         row.each_with_index do |button, column_index|
           button.down = rows[row_index + 1] && rows[row_index + 1][column_index]
@@ -109,6 +195,7 @@ module Screens
       @background = background
       @back = back
       @decoration = decoration
+      @focus = focus || @buttons.first
       @last_interaction = :keyboard
     end
 
@@ -146,11 +233,11 @@ module Screens
       elsif keyboard.left_arrow || controller.left_dpad
         _move(:left)
       elsif keyboard.enter || keyboard.space || GAMEPAD_SELECT.any? { |button| controller.send(button) }
-        _select
+        _select(nil)
       elsif mouse.key_down.left || mouse.key_down.right
         was_mouse = @last_interaction == :mouse
         @last_interaction = :mouse
-        _select if was_mouse
+        _select(Screens.to_screen(mouse.x, mouse.y)[0]) if was_mouse
       end
     end
 
@@ -161,12 +248,17 @@ module Screens
         x, y = Screens.to_screen(mouse.x, mouse.y)
         @buttons.each { |button| button.hovered = button.within_bounds?(x, y) }
       elsif @buttons.none?(&:hovered)
-        @buttons.first.hovered = true
+        @focus.hovered = true
       end
     end
 
     def _move(direction)
       selected = @buttons.find(&:hovered)
+      if selected.respond_to?(:step) && (direction == :left || direction == :right)
+        selected.step(direction == :right ? 1 : -1)
+        return nil
+      end
+
       target = selected && selected.send(direction)
       if target
         target.hovered = true
@@ -174,9 +266,9 @@ module Screens
       end
     end
 
-    def _select
+    def _select(x)
       selected = @buttons.find(&:hovered)
-      selected.action.call if selected && selected.action
+      selected.select(x) if selected
     end
   end
 
@@ -252,7 +344,12 @@ module Screens
       if @game.over?
         if @state.won
           junk_level = @state.junk_level + 1
-          return Play.new(-> { Modes.next(junk_level) })
+          new_state = @new_state
+          return Play.new(lambda do
+            state = new_state.call
+            state.junk_level = junk_level
+            state
+          end)
         end
         @game_over = _game_over_menu
       end

@@ -55,7 +55,13 @@ end
 class DrAudio
   attr_writer :outputs
 
+  # Plays assets/sounds/<name, lowercased>.ogg at the volume in Settings.
+  def self.play(outputs, name)
+    volume = Settings[:volume]
+    outputs.sounds << { path: "assets/sounds/#{name.downcase}.ogg", gain: volume / 10.0 } if volume > 0
+  end
+
   def play(name)
-    @outputs.sounds << "assets/sounds/#{name.downcase}.ogg"
+    DrAudio.play(@outputs, name)
   end
 end

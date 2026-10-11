@@ -1,5 +1,6 @@
 # The game's entry point. The rules are lib/core; app/ draws them and feeds them input.
 require 'lib/core.rb'
+require 'app/settings.rb'
 require 'app/platform.rb'
 require 'app/canvas.rb'
 require 'app/views.rb'

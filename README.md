@@ -18,7 +18,10 @@ and builds for the web.
 | Rotate counter-clockwise | Z | A (south) |
 | Pause menu | Esc or P | Start |
 
-Menus take arrows and Enter, the mouse, or the gamepad; Esc goes back. The Controls
+Menus take arrows and Enter, the mouse, or the gamepad; Esc goes back. After picking a
+mode you choose the starting speed (and, for Next, the stage); left and right change a
+value. Options has the volume. These choices are saved between sessions (`settings.txt`
+on desktop, browser storage on the web). The Controls
 screen (main menu or pause menu) shows the same table in the game.
 
 ## Running
