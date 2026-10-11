@@ -376,7 +376,7 @@ f354 in=rotate_right piece=2/r3 x=30 y=416.0 rest=0 pending= score=0 rows=0 leve
 f355 in=left_down piece=2/r3 x=0 y=425.2 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
 f356 in=left_down piece=2/r3 x=0 y=434.4 rest=0 pending= score=0 rows=0 level=0
 f357 in=left_down piece=2/r3 x=0 y=443.6 rest=0 pending= score=0 rows=0 level=0
-f358 in=left_down piece=2/r3 x=0 y=450.6 rest=1 pending= score=0 rows=0 level=0
+f358 in=left_down piece=2/r3 x=0 y=450.6 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f359 in=left_down piece=2/r3 x=0 y=450.6 rest=2 pending= score=0 rows=0 level=0
 f360 in=left_down piece=2/r3 x=0 y=450.6 rest=3 pending= score=0 rows=0 level=0
 f361 in=left_down piece=2/r3 x=0 y=450.6 rest=4 pending= score=0 rows=0 level=0
@@ -478,7 +478,7 @@ f436 in=down piece=2/r0 x=180 y=510.4 rest=0 pending= score=0 rows=0 level=0
 f437 in=down piece=2/r0 x=180 y=519.6 rest=0 pending= score=0 rows=0 level=0
 f438 in=down piece=2/r0 x=180 y=528.8 rest=0 pending= score=0 rows=0 level=0
 f439 in=down piece=2/r0 x=180 y=538.0 rest=0 pending= score=0 rows=0 level=0
-f440 in=down piece=2/r0 x=180 y=541.0 rest=1 pending= score=0 rows=0 level=0
+f440 in=down piece=2/r0 x=180 y=541.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f441 in=down piece=2/r0 x=180 y=541.0 rest=2 pending= score=0 rows=0 level=0
 f442 in=down piece=2/r0 x=180 y=541.0 rest=3 pending= score=0 rows=0 level=0
 f443 in=rotate_left piece=2/r3 x=180 y=481.2 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceRotateLR
@@ -571,7 +571,7 @@ f529 in=left piece=2/r3 x=120 y=498.4 rest=0 pending= score=0 rows=0 level=0
 f530 in=left piece=2/r3 x=120 y=498.6 rest=0 pending= score=0 rows=0 level=0
 f531 in=left piece=2/r3 x=120 y=498.8 rest=0 pending= score=0 rows=0 level=0
 f532 in=right_down piece=2/r3 x=150 y=508.0 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
-f533 in=right_down piece=2/r3 x=150 y=511.0 rest=1 pending= score=0 rows=0 level=0
+f533 in=right_down piece=2/r3 x=150 y=511.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f534 in=right_down piece=2/r3 x=150 y=511.0 rest=2 pending= score=0 rows=0 level=0
 f535 in=down piece=2/r3 x=150 y=511.0 rest=3 pending= score=0 rows=0 level=0
 f536 in=down piece=2/r3 x=150 y=511.0 rest=4 pending= score=0 rows=0 level=0
@@ -1124,7 +1124,7 @@ f1062 in=left_down piece=3/r0 x=150 y=393.6 rest=0 pending= score=0 rows=0 level
 f1063 in=left_down piece=3/r0 x=150 y=402.8 rest=0 pending= score=0 rows=0 level=0
 f1064 in=left_down piece=3/r0 x=150 y=412.0 rest=0 pending= score=0 rows=0 level=0
 f1065 in=left_down piece=3/r0 x=150 y=421.2 rest=0 pending= score=0 rows=0 level=0
-f1066 in=left_down piece=3/r0 x=150 y=421.2 rest=1 pending= score=0 rows=0 level=0
+f1066 in=left_down piece=3/r0 x=150 y=421.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1067 in=left_down piece=3/r0 x=150 y=421.2 rest=2 pending= score=0 rows=0 level=0
 f1068 in=left_down piece=3/r0 x=150 y=421.2 rest=3 pending= score=0 rows=0 level=0
 f1069 in=left_down piece=3/r0 x=150 y=421.2 rest=4 pending= score=0 rows=0 level=0
@@ -1142,7 +1142,7 @@ f1080 in=left_down piece=3/r0 x=90 y=447.6 rest=0 pending= score=0 rows=0 level=
 f1081 in=left_down piece=3/r0 x=90 y=456.8 rest=0 pending= score=0 rows=0 level=0
 f1082 in=left_down piece=3/r0 x=90 y=466.0 rest=0 pending= score=0 rows=0 level=0
 f1083 in=left_down piece=3/r0 x=90 y=475.2 rest=0 pending= score=0 rows=0 level=0
-f1084 in=left_down piece=3/r0 x=90 y=480.2 rest=1 pending= score=0 rows=0 level=0
+f1084 in=left_down piece=3/r0 x=90 y=480.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1085 in=left_down piece=3/r0 x=90 y=480.2 rest=2 pending= score=0 rows=0 level=0
 f1086 in=left_down piece=3/r0 x=90 y=480.2 rest=3 pending= score=0 rows=0 level=0
 f1087 in=left_down piece=3/r0 x=90 y=480.2 rest=4 pending= score=0 rows=0 level=0
@@ -1289,10 +1289,10 @@ f1207 in=right piece=0/r2 x=150 y=393.4 rest=0 pending= score=0 rows=0 level=0
 f1208 in=right_down piece=0/r2 x=150 y=402.6 rest=0 pending= score=0 rows=0 level=0
 f1209 in=right_down piece=0/r2 x=150 y=411.8 rest=0 pending= score=0 rows=0 level=0
 f1210 in=right_down piece=0/r2 x=150 y=421.0 rest=0 pending= score=0 rows=0 level=0
-f1211 in=right_down piece=0/r2 x=150 y=421.0 rest=1 pending= score=0 rows=0 level=0
+f1211 in=right_down piece=0/r2 x=150 y=421.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1212 in=right_down piece=0/r2 x=150 y=421.0 rest=2 pending= score=0 rows=0 level=0
 f1213 in=right piece=0/r2 x=150 y=421.2 rest=0 pending= score=0 rows=0 level=0
-f1214 in=right piece=0/r2 x=150 y=421.2 rest=1 pending= score=0 rows=0 level=0
+f1214 in=right piece=0/r2 x=150 y=421.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1215 in=none piece=0/r2 x=150 y=421.2 rest=2 pending= score=0 rows=0 level=0
 f1216 in=none piece=0/r2 x=150 y=421.2 rest=3 pending= score=0 rows=0 level=0
 f1217 in=rotate_right piece=0/r3 x=210 y=421.4 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceRotateLR
@@ -1346,7 +1346,7 @@ f1264 in=rotate_left piece=0/r0 x=150 y=430.8 rest=0 pending= score=0 rows=0 lev
 f1265 in=rotate_left piece=0/r0 x=150 y=431.0 rest=0 pending= score=0 rows=0 level=0
 f1266 in=right_down piece=0/r0 x=150 y=440.2 rest=0 pending= score=0 rows=0 level=0
 f1267 in=right_down piece=0/r0 x=150 y=449.4 rest=0 pending= score=0 rows=0 level=0
-f1268 in=right_down piece=0/r0 x=150 y=450.4 rest=1 pending= score=0 rows=0 level=0
+f1268 in=right_down piece=0/r0 x=150 y=450.4 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1269 in=right_down piece=0/r0 x=150 y=450.4 rest=2 pending= score=0 rows=0 level=0
 f1270 in=right_down piece=0/r0 x=150 y=450.4 rest=3 pending= score=0 rows=0 level=0
 f1271 in=right_down piece=0/r0 x=150 y=450.4 rest=4 pending= score=0 rows=0 level=0
@@ -1489,7 +1489,7 @@ f1387 in=down piece=5/r0 x=90 y=392.6 rest=0 pending= score=0 rows=0 level=0
 f1388 in=down piece=5/r0 x=90 y=401.8 rest=0 pending= score=0 rows=0 level=0
 f1389 in=down piece=5/r0 x=90 y=411.0 rest=0 pending= score=0 rows=0 level=0
 f1390 in=down piece=5/r0 x=90 y=420.2 rest=0 pending= score=0 rows=0 level=0
-f1391 in=down piece=5/r0 x=90 y=420.2 rest=1 pending= score=0 rows=0 level=0
+f1391 in=down piece=5/r0 x=90 y=420.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1392 in=down piece=5/r0 x=90 y=420.2 rest=2 pending= score=0 rows=0 level=0
 f1393 in=down piece=5/r0 x=90 y=420.2 rest=3 pending= score=0 rows=0 level=0
 f1394 in=down piece=5/r0 x=90 y=420.2 rest=4 pending= score=0 rows=0 level=0
@@ -1632,7 +1632,7 @@ f1510 in=right_down piece=3/r0 x=180 y=356.6 rest=0 pending= score=0 rows=0 leve
 f1511 in=right_down piece=3/r0 x=180 y=365.8 rest=0 pending= score=0 rows=0 level=0
 f1512 in=right_down piece=3/r0 x=180 y=375.0 rest=0 pending= score=0 rows=0 level=0
 f1513 in=right_down piece=3/r0 x=180 y=384.2 rest=0 pending= score=0 rows=0 level=0
-f1514 in=right_down piece=3/r0 x=180 y=390.2 rest=1 pending= score=0 rows=0 level=0
+f1514 in=right_down piece=3/r0 x=180 y=390.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1515 in=right_down piece=3/r0 x=180 y=390.2 rest=2 pending= score=0 rows=0 level=0
 f1516 in=right_down piece=3/r0 x=180 y=390.2 rest=3 pending= score=0 rows=0 level=0
 f1517 in=right_down piece=3/r0 x=180 y=390.2 rest=4 pending= score=0 rows=0 level=0
@@ -1737,7 +1737,7 @@ f1595 in=left_down piece=4/r1 x=-30 y=331.0 rest=0 pending= score=0 rows=0 level
 f1596 in=left_down piece=4/r1 x=-30 y=340.2 rest=0 pending= score=0 rows=0 level=0
 f1597 in=left_down piece=4/r1 x=-30 y=349.4 rest=0 pending= score=0 rows=0 level=0
 f1598 in=left_down piece=4/r1 x=-30 y=358.6 rest=0 pending= score=0 rows=0 level=0
-f1599 in=left_down piece=4/r1 x=-30 y=360.6 rest=1 pending= score=0 rows=0 level=0
+f1599 in=left_down piece=4/r1 x=-30 y=360.6 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1600 in=left_down piece=4/r1 x=-30 y=360.6 rest=2 pending= score=0 rows=0 level=0
 f1601 in=left_down piece=4/r1 x=-30 y=360.6 rest=3 pending= score=0 rows=0 level=0
 f1602 in=left_down piece=4/r1 x=-30 y=360.6 rest=4 pending= score=0 rows=0 level=0
@@ -1751,7 +1751,7 @@ f1609 in=left_down piece=4/r1 x=-30 y=360.6 rest=11 pending= score=0 rows=0 leve
 f1610 in=none piece=4/r1 x=-30 y=360.8 rest=0 pending= score=0 rows=0 level=0
 f1611 in=none piece=4/r1 x=-30 y=361.0 rest=0 pending= score=0 rows=0 level=0
 f1612 in=none piece=4/r1 x=-30 y=361.2 rest=0 pending= score=0 rows=0 level=0
-f1613 in=none piece=4/r1 x=-30 y=361.2 rest=1 pending= score=0 rows=0 level=0
+f1613 in=none piece=4/r1 x=-30 y=361.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1614 in=none piece=4/r1 x=-30 y=361.2 rest=2 pending= score=0 rows=0 level=0
 f1615 in=none piece=4/r1 x=-30 y=361.2 rest=3 pending= score=0 rows=0 level=0
 f1616 in=none piece=4/r1 x=-30 y=361.2 rest=4 pending= score=0 rows=0 level=0
@@ -1762,7 +1762,7 @@ f1620 in=right piece=4/r1 x=0 y=360.4 rest=0 pending= score=0 rows=0 level=0
 f1621 in=right piece=4/r1 x=0 y=360.6 rest=0 pending= score=0 rows=0 level=0
 f1622 in=right piece=4/r1 x=0 y=360.8 rest=0 pending= score=0 rows=0 level=0
 f1623 in=right piece=4/r1 x=0 y=361.0 rest=0 pending= score=0 rows=0 level=0
-f1624 in=down piece=4/r1 x=0 y=361.0 rest=1 pending= score=0 rows=0 level=0
+f1624 in=down piece=4/r1 x=0 y=361.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1625 in=down piece=4/r1 x=0 y=361.0 rest=2 pending= score=0 rows=0 level=0
 f1626 in=down piece=4/r1 x=0 y=361.0 rest=3 pending= score=0 rows=0 level=0
 f1627 in=down piece=4/r1 x=0 y=361.0 rest=4 pending= score=0 rows=0 level=0
@@ -1772,7 +1772,7 @@ f1630 in=down piece=4/r1 x=0 y=361.0 rest=7 pending= score=0 rows=0 level=0
 f1631 in=down piece=4/r1 x=0 y=361.0 rest=8 pending= score=0 rows=0 level=0
 f1632 in=down piece=4/r1 x=0 y=361.0 rest=9 pending= score=0 rows=0 level=0
 f1633 in=rotate_right piece=4/r2 x=0 y=361.2 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceRotateLR
-f1634 in=rotate_right piece=4/r2 x=0 y=361.2 rest=1 pending= score=0 rows=0 level=0
+f1634 in=rotate_right piece=4/r2 x=0 y=361.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1635 in=rotate_right piece=4/r2 x=0 y=361.2 rest=2 pending= score=0 rows=0 level=0
 f1636 in=rotate_right piece=4/r2 x=0 y=361.2 rest=3 pending= score=0 rows=0 level=0
 f1637 in=rotate_right piece=4/r2 x=0 y=361.2 rest=4 pending= score=0 rows=0 level=0
@@ -1788,7 +1788,7 @@ f1646 in=rotate_left piece=4/r1 x=0 y=360.6 rest=0 pending= score=0 rows=0 level
 f1647 in=rotate_left piece=4/r1 x=0 y=360.8 rest=0 pending= score=0 rows=0 level=0
 f1648 in=rotate_left piece=4/r1 x=0 y=361.0 rest=0 pending= score=0 rows=0 level=0
 f1649 in=rotate_left piece=4/r1 x=0 y=361.2 rest=0 pending= score=0 rows=0 level=0
-f1650 in=rotate_left piece=4/r1 x=0 y=361.2 rest=1 pending= score=0 rows=0 level=0
+f1650 in=rotate_left piece=4/r1 x=0 y=361.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1651 in=rotate_left piece=4/r1 x=0 y=361.2 rest=2 pending= score=0 rows=0 level=0
 f1652 in=rotate_left piece=4/r1 x=0 y=361.2 rest=3 pending= score=0 rows=0 level=0
 f1653 in=rotate_left piece=4/r1 x=0 y=361.2 rest=4 pending= score=0 rows=0 level=0
@@ -1975,7 +1975,7 @@ f1813 in=left_down piece=5/r3 x=0 y=239.4 rest=0 pending= score=0 rows=0 level=0
 f1814 in=left_down piece=5/r3 x=0 y=248.6 rest=0 pending= score=0 rows=0 level=0
 f1815 in=left_down piece=5/r3 x=0 y=257.8 rest=0 pending= score=0 rows=0 level=0
 f1816 in=left_down piece=5/r3 x=0 y=267.0 rest=0 pending= score=0 rows=0 level=0
-f1817 in=left_down piece=5/r3 x=0 y=270.0 rest=1 pending= score=0 rows=0 level=0
+f1817 in=left_down piece=5/r3 x=0 y=270.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f1818 in=left_down piece=5/r3 x=0 y=270.0 rest=2 pending= score=0 rows=0 level=0
 f1819 in=left_down piece=5/r3 x=0 y=270.0 rest=3 pending= score=0 rows=0 level=0
 f1820 in=left_down piece=5/r3 x=0 y=270.0 rest=4 pending= score=0 rows=0 level=0
@@ -2183,19 +2183,19 @@ f2001 in=none piece=0/r0 x=90 y=360.6 rest=0 pending= score=0 rows=0 level=0
 f2002 in=none piece=0/r0 x=90 y=360.8 rest=0 pending= score=0 rows=0 level=0
 f2003 in=none piece=0/r0 x=90 y=361.0 rest=0 pending= score=0 rows=0 level=0
 f2004 in=none piece=0/r0 x=90 y=361.2 rest=0 pending= score=0 rows=0 level=0
-f2005 in=none piece=0/r0 x=90 y=361.2 rest=1 pending= score=0 rows=0 level=0
+f2005 in=none piece=0/r0 x=90 y=361.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2006 in=right piece=0/r0 x=120 y=360.2 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
 f2007 in=right piece=0/r0 x=120 y=360.4 rest=0 pending= score=0 rows=0 level=0
 f2008 in=right piece=0/r0 x=120 y=360.6 rest=0 pending= score=0 rows=0 level=0
 f2009 in=left piece=0/r0 x=90 y=360.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
 f2010 in=left piece=0/r0 x=90 y=361.0 rest=0 pending= score=0 rows=0 level=0
-f2011 in=right_down piece=0/r0 x=120 y=361.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
+f2011 in=right_down piece=0/r0 x=120 y=361.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR,SFX_PieceTouchDown
 f2012 in=right_down piece=0/r0 x=120 y=361.0 rest=2 pending= score=0 rows=0 level=0
 f2013 in=right_down piece=0/r0 x=120 y=361.0 rest=3 pending= score=0 rows=0 level=0
 f2014 in=right_down piece=0/r0 x=120 y=361.0 rest=4 pending= score=0 rows=0 level=0
 f2015 in=right_down piece=0/r0 x=120 y=361.0 rest=5 pending= score=0 rows=0 level=0
 f2016 in=none piece=0/r0 x=120 y=361.2 rest=0 pending= score=0 rows=0 level=0
-f2017 in=none piece=0/r0 x=120 y=361.2 rest=1 pending= score=0 rows=0 level=0
+f2017 in=none piece=0/r0 x=120 y=361.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2018 in=none piece=0/r0 x=120 y=361.2 rest=2 pending= score=0 rows=0 level=0
 f2019 in=none piece=0/r0 x=120 y=361.2 rest=3 pending= score=0 rows=0 level=0
 f2020 in=none piece=0/r0 x=120 y=361.2 rest=4 pending= score=0 rows=0 level=0
@@ -2372,11 +2372,11 @@ f2170 in=left_down piece=2/r3 x=60 y=327.4 rest=0 pending= score=0 rows=0 level=
 f2171 in=left_down piece=2/r3 x=60 y=336.6 rest=0 pending= score=0 rows=0 level=0
 f2172 in=left_down piece=2/r3 x=60 y=345.8 rest=0 pending= score=0 rows=0 level=0
 f2173 in=left_down piece=2/r3 x=60 y=355.0 rest=0 pending= score=0 rows=0 level=0
-f2174 in=left_down piece=2/r3 x=60 y=361.0 rest=1 pending= score=0 rows=0 level=0
+f2174 in=left_down piece=2/r3 x=60 y=361.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2175 in=left_down piece=2/r3 x=60 y=361.0 rest=2 pending= score=0 rows=0 level=0
 f2176 in=left_down piece=2/r3 x=60 y=361.0 rest=3 pending= score=0 rows=0 level=0
 f2177 in=rotate_left piece=2/r3 x=60 y=361.2 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceRotateFail
-f2178 in=rotate_left piece=2/r3 x=60 y=361.2 rest=1 pending= score=0 rows=0 level=0
+f2178 in=rotate_left piece=2/r3 x=60 y=361.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2179 in=rotate_left piece=2/r3 x=60 y=361.2 rest=2 pending= score=0 rows=0 level=0
 f2180 in=rotate_left piece=2/r3 x=60 y=361.2 rest=3 pending= score=0 rows=0 level=0
 f2181 in=rotate_left piece=2/r3 x=60 y=361.2 rest=4 pending= score=0 rows=0 level=0
@@ -2502,7 +2502,7 @@ f2280 in=down piece=0/r1 x=120 y=236.2 rest=0 pending= score=0 rows=0 level=0
 f2281 in=down piece=0/r1 x=120 y=245.4 rest=0 pending= score=0 rows=0 level=0
 f2282 in=down piece=0/r1 x=120 y=254.6 rest=0 pending= score=0 rows=0 level=0
 f2283 in=down piece=0/r1 x=120 y=263.8 rest=0 pending= score=0 rows=0 level=0
-f2284 in=down piece=0/r1 x=120 y=270.8 rest=1 pending= score=0 rows=0 level=0
+f2284 in=down piece=0/r1 x=120 y=270.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2285 in=down piece=0/r1 x=120 y=270.8 rest=2 pending= score=0 rows=0 level=0
 f2286 in=down piece=0/r1 x=120 y=270.8 rest=3 pending= score=0 rows=0 level=0
 f2287 in=down piece=0/r1 x=120 y=270.8 rest=4 pending= score=0 rows=0 level=0
@@ -2566,7 +2566,7 @@ f2324 in=left_down piece=5/r3 x=30 y=151.8 rest=0 pending= score=0 rows=0 level=
 f2325 in=left_down piece=5/r3 x=30 y=161.0 rest=0 pending= score=0 rows=0 level=0
 f2326 in=left_down piece=5/r3 x=30 y=170.2 rest=0 pending= score=0 rows=0 level=0
 f2327 in=left_down piece=5/r3 x=30 y=179.4 rest=0 pending= score=0 rows=0 level=0
-f2328 in=left_down piece=5/r3 x=0 y=180.4 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
+f2328 in=left_down piece=5/r3 x=0 y=180.4 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR,SFX_PieceTouchDown
 f2329 in=left_down piece=5/r3 x=0 y=180.4 rest=2 pending= score=0 rows=0 level=0
 f2330 in=left_down piece=5/r3 x=0 y=180.4 rest=3 pending= score=0 rows=0 level=0
 f2331 in=left_down piece=5/r3 x=0 y=180.4 rest=4 pending= score=0 rows=0 level=0
@@ -2622,7 +2622,7 @@ f2360 in=left_down piece=1/r0 x=30 y=87.2 rest=0 pending= score=0 rows=0 level=0
 f2361 in=left_down piece=1/r0 x=30 y=96.4 rest=0 pending= score=0 rows=0 level=0
 f2362 in=left_down piece=1/r0 x=0 y=105.6 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
 f2363 in=left_down piece=1/r0 x=0 y=114.8 rest=0 pending= score=0 rows=0 level=0
-f2364 in=left_down piece=1/r0 x=0 y=120.8 rest=1 pending= score=0 rows=0 level=0
+f2364 in=left_down piece=1/r0 x=0 y=120.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2365 in=left_down piece=1/r0 x=0 y=120.8 rest=2 pending= score=0 rows=0 level=0
 f2366 in=left_down piece=1/r0 x=0 y=120.8 rest=3 pending= score=0 rows=0 level=0
 f2367 in=left_down piece=1/r0 x=0 y=120.8 rest=4 pending= score=0 rows=0 level=0
@@ -2675,7 +2675,7 @@ f2393 in=left_down piece=5/r0 x=30 y=59.6 rest=0 pending= score=0 rows=0 level=0
 f2394 in=left_down piece=5/r0 x=30 y=68.8 rest=0 pending= score=0 rows=0 level=0
 f2395 in=left_down piece=5/r0 x=30 y=78.0 rest=0 pending= score=0 rows=0 level=0
 f2396 in=left_down piece=5/r0 x=30 y=87.2 rest=0 pending= score=0 rows=0 level=0
-f2397 in=left_down piece=5/r0 x=30 y=90.2 rest=1 pending= score=0 rows=0 level=0
+f2397 in=left_down piece=5/r0 x=30 y=90.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2398 in=left_down piece=5/r0 x=30 y=90.2 rest=2 pending= score=0 rows=0 level=0
 f2399 in=left_down piece=5/r0 x=30 y=90.2 rest=3 pending= score=0 rows=0 level=0
 f2400 in=left_down piece=5/r0 x=30 y=90.2 rest=4 pending= score=0 rows=0 level=0
@@ -3183,7 +3183,7 @@ f2441 in=left_down piece=0/r0 x=60 y=-4.8 rest=0 pending= score=0 rows=0 level=0
 f2442 in=left_down piece=0/r0 x=60 y=4.4 rest=0 pending= score=0 rows=0 level=0
 f2443 in=left_down piece=0/r0 x=60 y=13.6 rest=0 pending= score=0 rows=0 level=0
 f2444 in=left_down piece=0/r0 x=60 y=22.8 rest=0 pending= score=0 rows=0 level=0
-f2445 in=left_down piece=0/r0 x=60 y=30.8 rest=1 pending= score=0 rows=0 level=0
+f2445 in=left_down piece=0/r0 x=60 y=30.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2446 in=left_down piece=0/r0 x=60 y=30.8 rest=2 pending= score=0 rows=0 level=0
 f2447 in=left_down piece=0/r0 x=30 y=30.8 rest=3 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
 f2448 in=left_down piece=0/r0 x=30 y=30.8 rest=4 pending= score=0 rows=0 level=0
@@ -3192,14 +3192,14 @@ f2450 in=left_down piece=0/r0 x=30 y=30.8 rest=6 pending= score=0 rows=0 level=0
 f2451 in=left_down piece=0/r0 x=30 y=30.8 rest=7 pending= score=0 rows=0 level=0
 f2452 in=left_down piece=0/r0 x=30 y=30.8 rest=8 pending= score=0 rows=0 level=0
 f2453 in=left piece=0/r0 x=30 y=31.0 rest=0 pending= score=0 rows=0 level=0
-f2454 in=left piece=0/r0 x=30 y=31.0 rest=1 pending= score=0 rows=0 level=0
+f2454 in=left piece=0/r0 x=30 y=31.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2455 in=left piece=0/r0 x=0 y=30.2 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
 f2456 in=left piece=0/r0 x=0 y=30.4 rest=0 pending= score=0 rows=0 level=0
 f2457 in=left piece=0/r0 x=0 y=30.6 rest=0 pending= score=0 rows=0 level=0
 f2458 in=left piece=0/r0 x=0 y=30.8 rest=0 pending= score=0 rows=0 level=0
 f2459 in=left piece=0/r0 x=0 y=31.0 rest=0 pending= score=0 rows=0 level=0
 f2460 in=left piece=0/r0 x=0 y=31.2 rest=0 pending= score=0 rows=0 level=0
-f2461 in=left piece=0/r0 x=0 y=31.2 rest=1 pending= score=0 rows=0 level=0
+f2461 in=left piece=0/r0 x=0 y=31.2 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2462 in=left piece=0/r0 x=0 y=31.2 rest=2 pending= score=0 rows=0 level=0
 f2463 in=left piece=0/r0 x=0 y=31.2 rest=3 pending= score=0 rows=0 level=0
 f2464 in=left piece=0/r0 x=0 y=31.2 rest=4 pending= score=0 rows=0 level=0
@@ -3428,7 +3428,7 @@ f2666 in=none piece=2/r0 x=0 y=-22.2 rest=0 pending= score=0 rows=0 level=0
 f2667 in=none piece=2/r0 x=0 y=-22.0 rest=0 pending= score=0 rows=0 level=0
 f2668 in=left_down piece=2/r0 x=0 y=-12.8 rest=0 pending= score=0 rows=0 level=0
 f2669 in=left_down piece=2/r0 x=0 y=-3.6 rest=0 pending= score=0 rows=0 level=0
-f2670 in=left_down piece=2/r0 x=0 y=-0.6 rest=1 pending= score=0 rows=0 level=0
+f2670 in=left_down piece=2/r0 x=0 y=-0.6 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2671 in=left_down piece=2/r0 x=0 y=-0.6 rest=2 pending= score=0 rows=0 level=0
 f2672 in=left_down piece=2/r0 x=0 y=-0.6 rest=3 pending= score=0 rows=0 level=0
 f2673 in=left_down piece=2/r0 x=0 y=-0.6 rest=4 pending= score=0 rows=0 level=0
@@ -3448,7 +3448,7 @@ f2686 in=none piece=2/r0 x=0 y=0.4 rest=0 pending= score=0 rows=0 level=0
 f2687 in=none piece=2/r0 x=0 y=0.6 rest=0 pending= score=0 rows=0 level=0
 f2688 in=none piece=2/r0 x=0 y=0.8 rest=0 pending= score=0 rows=0 level=0
 f2689 in=none piece=2/r0 x=0 y=1.0 rest=0 pending= score=0 rows=0 level=0
-f2690 in=none piece=2/r0 x=0 y=1.0 rest=1 pending= score=0 rows=0 level=0
+f2690 in=none piece=2/r0 x=0 y=1.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2691 in=none piece=2/r0 x=0 y=1.0 rest=2 pending= score=0 rows=0 level=0
 f2692 in=none piece=2/r0 x=0 y=1.0 rest=3 pending= score=0 rows=0 level=0
 f2693 in=none piece=2/r0 x=0 y=1.0 rest=4 pending= score=0 rows=0 level=0
@@ -3528,12 +3528,12 @@ f2746 in=down piece=6/r0 x=90 y=2.0 rest=0 pending= score=0 rows=0 level=0
 f2747 in=down piece=6/r0 x=90 y=11.2 rest=0 pending= score=0 rows=0 level=0
 f2748 in=down piece=6/r0 x=90 y=20.4 rest=0 pending= score=0 rows=0 level=0
 f2749 in=down piece=6/r0 x=90 y=29.6 rest=0 pending= score=0 rows=0 level=0
-f2750 in=down piece=6/r0 x=90 y=30.6 rest=1 pending= score=0 rows=0 level=0
+f2750 in=down piece=6/r0 x=90 y=30.6 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2751 in=down piece=6/r0 x=90 y=30.6 rest=2 pending= score=0 rows=0 level=0
 f2752 in=down piece=6/r0 x=90 y=30.6 rest=3 pending= score=0 rows=0 level=0
 f2753 in=left piece=6/r0 x=90 y=30.8 rest=0 pending= score=0 rows=0 level=0
 f2754 in=left piece=6/r0 x=90 y=31.0 rest=0 pending= score=0 rows=0 level=0
-f2755 in=left piece=6/r0 x=90 y=31.0 rest=1 pending= score=0 rows=0 level=0
+f2755 in=left piece=6/r0 x=90 y=31.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2756 in=left piece=6/r0 x=90 y=31.0 rest=2 pending= score=0 rows=0 level=0
 f2757 in=left piece=6/r0 x=90 y=31.0 rest=3 pending= score=0 rows=0 level=0
 f2758 in=left piece=6/r0 x=90 y=31.0 rest=4 pending= score=0 rows=0 level=0
@@ -3573,7 +3573,7 @@ f2771 in=down piece=1/r0 x=90 y=-60 rest=15 pending= score=0 rows=0 level=0
 f2772 in=down piece=1/r0 x=90 y=-50.8 rest=0 pending= score=0 rows=0 level=0
 f2773 in=down piece=1/r0 x=90 y=-41.6 rest=0 pending= score=0 rows=0 level=0
 f2774 in=left_down piece=1/r0 x=90 y=-32.4 rest=0 pending= score=0 rows=0 level=0
-f2775 in=left_down piece=1/r0 x=90 y=-30.4 rest=1 pending= score=0 rows=0 level=0
+f2775 in=left_down piece=1/r0 x=90 y=-30.4 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2776 in=left_down piece=1/r0 x=90 y=-30.4 rest=2 pending= score=0 rows=0 level=0
 f2777 in=left_down piece=1/r0 x=90 y=-30.4 rest=3 pending= score=0 rows=0 level=0
 f2778 in=left_down piece=1/r0 x=90 y=-30.4 rest=4 pending= score=0 rows=0 level=0
@@ -3658,7 +3658,7 @@ f2816 in=rotate_right piece=4/r3 x=60 y=-115.6 rest=0 pending= score=0 rows=0 le
 f2817 in=rotate_right piece=4/r3 x=60 y=-115.4 rest=0 pending= score=0 rows=0 level=0
 f2818 in=left_down piece=4/r3 x=30 y=-106.2 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
 f2819 in=left_down piece=4/r3 x=30 y=-97.0 rest=0 pending= score=0 rows=0 level=0
-f2820 in=left_down piece=4/r3 x=30 y=-91.0 rest=1 pending= score=0 rows=0 level=0
+f2820 in=left_down piece=4/r3 x=30 y=-91.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2821 in=left_down piece=4/r3 x=30 y=-91.0 rest=2 pending= score=0 rows=0 level=0
 f2822 in=left_down piece=4/r3 x=30 y=-91.0 rest=3 pending= score=0 rows=0 level=0
 f2823 in=left_down piece=4/r3 x=30 y=-91.0 rest=4 pending= score=0 rows=0 level=0
@@ -3669,11 +3669,11 @@ f2827 in=right piece=4/r3 x=60 y=-90.6 rest=0 pending= score=0 rows=0 level=0
 f2828 in=right piece=4/r3 x=60 y=-90.4 rest=0 pending= score=0 rows=0 level=0
 f2829 in=right piece=4/r3 x=60 y=-90.2 rest=0 pending= score=0 rows=0 level=0
 f2830 in=right piece=4/r3 x=60 y=-90.0 rest=0 pending= score=0 rows=0 level=0
-f2831 in=right piece=4/r3 x=60 y=-90.0 rest=1 pending= score=0 rows=0 level=0
+f2831 in=right piece=4/r3 x=60 y=-90.0 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2832 in=right piece=4/r3 x=60 y=-90.0 rest=2 pending= score=0 rows=0 level=0
 f2833 in=right piece=4/r3 x=60 y=-90.0 rest=3 pending= score=0 rows=0 level=0
 f2834 in=right piece=4/r3 x=90 y=-89.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
-f2835 in=right piece=4/r3 x=90 y=-89.8 rest=1 pending= score=0 rows=0 level=0
+f2835 in=right piece=4/r3 x=90 y=-89.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2836 in=right piece=4/r3 x=90 y=-89.8 rest=2 pending= score=0 rows=0 level=0
 f2837 in=right piece=4/r3 x=90 y=-89.8 rest=3 pending= score=0 rows=0 level=0
 f2838 in=right piece=4/r3 x=90 y=-89.8 rest=4 pending= score=0 rows=0 level=0
@@ -3681,14 +3681,14 @@ f2839 in=right piece=4/r3 x=90 y=-89.8 rest=5 pending= score=0 rows=0 level=0
 f2840 in=right piece=4/r3 x=90 y=-89.8 rest=6 pending= score=0 rows=0 level=0
 f2841 in=right piece=4/r3 x=90 y=-89.8 rest=7 pending= score=0 rows=0 level=0
 f2842 in=right piece=4/r3 x=120 y=-89.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
-f2843 in=right piece=4/r3 x=120 y=-89.8 rest=1 pending= score=0 rows=0 level=0
+f2843 in=right piece=4/r3 x=120 y=-89.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2844 in=left_down piece=4/r3 x=90 y=-90 rest=2 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
 f2845 in=left_down piece=4/r3 x=90 y=-90 rest=3 pending= score=0 rows=0 level=0
 f2846 in=left_down piece=4/r3 x=90 y=-90 rest=4 pending= score=0 rows=0 level=0
 f2847 in=left_down piece=4/r3 x=90 y=-90 rest=5 pending= score=0 rows=0 level=0
 f2848 in=left_down piece=4/r3 x=90 y=-90 rest=6 pending= score=0 rows=0 level=0
 f2849 in=rotate_left piece=4/r2 x=90 y=-89.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceRotateLR
-f2850 in=rotate_left piece=4/r2 x=90 y=-89.8 rest=1 pending= score=0 rows=0 level=0
+f2850 in=rotate_left piece=4/r2 x=90 y=-89.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2851 in=rotate_left piece=4/r2 x=90 y=-89.8 rest=2 pending= score=0 rows=0 level=0
 f2852 in=rotate_left piece=4/r2 x=90 y=-89.8 rest=3 pending= score=0 rows=0 level=0
 f2853 in=rotate_left piece=4/r2 x=90 y=-89.8 rest=4 pending= score=0 rows=0 level=0
@@ -3698,7 +3698,7 @@ f2856 in=rotate_left piece=4/r2 x=90 y=-89.8 rest=7 pending= score=0 rows=0 leve
 f2857 in=rotate_left piece=4/r2 x=90 y=-89.8 rest=8 pending= score=0 rows=0 level=0
 f2858 in=rotate_left piece=4/r2 x=90 y=-89.8 rest=9 pending= score=0 rows=0 level=0
 f2859 in=rotate_right piece=4/r3 x=90 y=-89.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceRotateLR
-f2860 in=rotate_right piece=4/r3 x=90 y=-89.8 rest=1 pending= score=0 rows=0 level=0
+f2860 in=rotate_right piece=4/r3 x=90 y=-89.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2861 in=rotate_right piece=4/r3 x=90 y=-89.8 rest=2 pending= score=0 rows=0 level=0
 f2862 in=rotate_right piece=4/r3 x=90 y=-89.8 rest=3 pending= score=0 rows=0 level=0
 f2863 in=rotate_right piece=4/r3 x=90 y=-89.8 rest=4 pending= score=0 rows=0 level=0
@@ -3736,7 +3736,7 @@ f2874 in=rotate_right piece=- pending=apply_gravity,clear_rows score=0 rows=0 le
 f2875 in=rotate_right piece=- pending=apply_gravity score=0 rows=0 level=0
 f2876 in=rotate_right piece=0/r0 x=90 y=-60 rest=15 pending= score=0 rows=0 level=0
 f2877 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=0 pending= score=0 rows=0 level=0
-f2878 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=1 pending= score=0 rows=0 level=0
+f2878 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2879 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=2 pending= score=0 rows=0 level=0
 f2880 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=3 pending= score=0 rows=0 level=0
 f2881 in=rotate_left piece=0/r0 x=90 y=-59.8 rest=4 pending= score=0 rows=0 level=0 sounds=SFX_PieceRotateFail
@@ -3774,7 +3774,7 @@ f2892 in=rotate_left piece=- pending=apply_gravity,clear_rows score=0 rows=0 lev
 f2893 in=rotate_left piece=- pending=apply_gravity score=0 rows=0 level=0
 f2894 in=rotate_left piece=0/r0 x=90 y=-60 rest=15 pending= score=0 rows=0 level=0
 f2895 in=rotate_left piece=0/r0 x=90 y=-59.8 rest=0 pending= score=0 rows=0 level=0
-f2896 in=rotate_left piece=0/r0 x=90 y=-59.8 rest=1 pending= score=0 rows=0 level=0
+f2896 in=rotate_left piece=0/r0 x=90 y=-59.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2897 in=rotate_left piece=0/r0 x=90 y=-59.8 rest=2 pending= score=0 rows=0 level=0
 f2898 in=rotate_right piece=0/r1 x=120 y=-59.6 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceRotateLR
 f2899 in=rotate_right piece=0/r1 x=120 y=-59.4 rest=0 pending= score=0 rows=0 level=0
@@ -3844,7 +3844,7 @@ f2962 in=down piece=0/r1 x=120 y=241.2 rest=0 pending= score=0 rows=0 level=0
 f2963 in=down piece=0/r1 x=120 y=250.4 rest=0 pending= score=0 rows=0 level=0
 f2964 in=down piece=0/r1 x=120 y=259.6 rest=0 pending= score=0 rows=0 level=0
 f2965 in=down piece=0/r1 x=120 y=268.8 rest=0 pending= score=0 rows=0 level=0
-f2966 in=down piece=0/r1 x=120 y=270.8 rest=1 pending= score=0 rows=0 level=0
+f2966 in=down piece=0/r1 x=120 y=270.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2967 in=down piece=0/r1 x=120 y=270.8 rest=2 pending= score=0 rows=0 level=0
 f2968 in=down piece=0/r1 x=120 y=270.8 rest=3 pending= score=0 rows=0 level=0
 f2969 in=down piece=0/r1 x=120 y=270.8 rest=4 pending= score=0 rows=0 level=0
@@ -3882,7 +3882,7 @@ f2980 in=down piece=- pending=apply_gravity,clear_rows score=0 rows=0 level=0 so
 f2981 in=left piece=- pending=apply_gravity score=0 rows=0 level=0
 f2982 in=left piece=5/r0 x=90 y=-60 rest=15 pending= score=0 rows=0 level=0
 f2983 in=left piece=5/r0 x=60 y=-59.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
-f2984 in=left piece=5/r0 x=60 y=-59.8 rest=1 pending= score=0 rows=0 level=0
+f2984 in=left piece=5/r0 x=60 y=-59.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2985 in=left piece=5/r0 x=60 y=-59.8 rest=2 pending= score=0 rows=0 level=0
 f2986 in=left piece=5/r0 x=60 y=-59.8 rest=3 pending= score=0 rows=0 level=0
 f2987 in=left piece=5/r0 x=60 y=-59.8 rest=4 pending= score=0 rows=0 level=0
@@ -3890,7 +3890,7 @@ f2988 in=left piece=5/r0 x=60 y=-59.8 rest=5 pending= score=0 rows=0 level=0
 f2989 in=left piece=5/r0 x=60 y=-59.8 rest=6 pending= score=0 rows=0 level=0
 f2990 in=left piece=5/r0 x=60 y=-59.8 rest=7 pending= score=0 rows=0 level=0
 f2991 in=left piece=5/r0 x=30 y=-59.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
-f2992 in=left piece=5/r0 x=30 y=-59.8 rest=1 pending= score=0 rows=0 level=0
+f2992 in=left piece=5/r0 x=30 y=-59.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f2993 in=left piece=5/r0 x=30 y=-59.8 rest=2 pending= score=0 rows=0 level=0
 f2994 in=left piece=5/r0 x=30 y=-59.8 rest=3 pending= score=0 rows=0 level=0
 f2995 in=left piece=5/r0 x=30 y=-59.8 rest=4 pending= score=0 rows=0 level=0
@@ -3898,12 +3898,12 @@ f2996 in=left piece=5/r0 x=30 y=-59.8 rest=5 pending= score=0 rows=0 level=0
 f2997 in=left piece=5/r0 x=30 y=-59.8 rest=6 pending= score=0 rows=0 level=0
 f2998 in=left piece=5/r0 x=30 y=-59.8 rest=7 pending= score=0 rows=0 level=0
 f2999 in=left piece=5/r0 x=0 y=-59.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
-f3000 in=left piece=5/r0 x=0 y=-59.8 rest=1 pending= score=0 rows=0 level=0
+f3000 in=left piece=5/r0 x=0 y=-59.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f3001 in=left piece=5/r0 x=0 y=-59.8 rest=2 pending= score=0 rows=0 level=0
 f3002 in=left piece=5/r0 x=0 y=-59.8 rest=3 pending= score=0 rows=0 level=0
 f3003 in=left piece=5/r0 x=0 y=-59.8 rest=4 pending= score=0 rows=0 level=0
 f3004 in=rotate_left piece=5/r3 x=0 y=-59.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceRotateLR
-f3005 in=rotate_left piece=5/r3 x=0 y=-59.8 rest=1 pending= score=0 rows=0 level=0
+f3005 in=rotate_left piece=5/r3 x=0 y=-59.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f3006 in=rotate_left piece=5/r3 x=0 y=-59.8 rest=2 pending= score=0 rows=0 level=0
 f3007 in=rotate_left piece=5/r3 x=0 y=-59.8 rest=3 pending= score=0 rows=0 level=0
 f3008 in=rotate_left piece=5/r3 x=0 y=-59.8 rest=4 pending= score=0 rows=0 level=0
@@ -3914,7 +3914,7 @@ f3012 in=left_down piece=5/r3 x=0 y=-59.8 rest=8 pending= score=0 rows=0 level=0
 f3013 in=left_down piece=5/r3 x=0 y=-59.8 rest=9 pending= score=0 rows=0 level=0
 f3014 in=left_down piece=5/r3 x=0 y=-59.8 rest=10 pending= score=0 rows=0 level=0
 f3015 in=rotate_right piece=5/r0 x=0 y=-59.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceRotateLR
-f3016 in=rotate_right piece=5/r0 x=0 y=-59.8 rest=1 pending= score=0 rows=0 level=0
+f3016 in=rotate_right piece=5/r0 x=0 y=-59.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f3017 in=rotate_right piece=5/r0 x=0 y=-59.8 rest=2 pending= score=0 rows=0 level=0
 f3018 in=rotate_right piece=5/r0 x=0 y=-59.8 rest=3 pending= score=0 rows=0 level=0
 f3019 in=rotate_right piece=5/r0 x=0 y=-59.8 rest=4 pending= score=0 rows=0 level=0
@@ -3952,13 +3952,13 @@ f3030 in=rotate_right piece=- pending=apply_gravity,clear_rows score=0 rows=0 le
 f3031 in=rotate_right piece=- pending=apply_gravity score=0 rows=0 level=0
 f3032 in=rotate_right piece=0/r0 x=90 y=-60 rest=15 pending= score=0 rows=0 level=0
 f3033 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=0 pending= score=0 rows=0 level=0
-f3034 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=1 pending= score=0 rows=0 level=0
+f3034 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f3035 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=2 pending= score=0 rows=0 level=0
 f3036 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=3 pending= score=0 rows=0 level=0
 f3037 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=4 pending= score=0 rows=0 level=0
 f3038 in=rotate_right piece=0/r0 x=90 y=-59.8 rest=5 pending= score=0 rows=0 level=0
 f3039 in=right piece=0/r0 x=120 y=-59.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
-f3040 in=right piece=0/r0 x=120 y=-59.8 rest=1 pending= score=0 rows=0 level=0
+f3040 in=right piece=0/r0 x=120 y=-59.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f3041 in=right piece=0/r0 x=120 y=-59.8 rest=2 pending= score=0 rows=0 level=0
 f3042 in=right piece=0/r0 x=120 y=-59.8 rest=3 pending= score=0 rows=0 level=0
 f3043 in=right piece=0/r0 x=120 y=-59.8 rest=4 pending= score=0 rows=0 level=0
@@ -3966,7 +3966,7 @@ f3044 in=right piece=0/r0 x=120 y=-59.8 rest=5 pending= score=0 rows=0 level=0
 f3045 in=right piece=0/r0 x=120 y=-59.8 rest=6 pending= score=0 rows=0 level=0
 f3046 in=right piece=0/r0 x=120 y=-59.8 rest=7 pending= score=0 rows=0 level=0
 f3047 in=right piece=0/r0 x=150 y=-59.8 rest=0 pending= score=0 rows=0 level=0 sounds=SFX_PieceMoveLR
-f3048 in=right piece=0/r0 x=150 y=-59.8 rest=1 pending= score=0 rows=0 level=0
+f3048 in=right piece=0/r0 x=150 y=-59.8 rest=1 pending= score=0 rows=0 level=0 sounds=SFX_PieceTouchDown
 f3049 in=right piece=0/r0 x=150 y=-59.8 rest=2 pending= score=0 rows=0 level=0
 f3050 in=right piece=0/r0 x=150 y=-59.8 rest=3 pending= score=0 rows=0 level=0
 f3051 in=right piece=0/r0 x=150 y=-59.8 rest=4 pending= score=0 rows=0 level=0

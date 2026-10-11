@@ -349,9 +349,9 @@ class MainBoard < Widget
         @cursor_y += 1
       end
 
+      Sounds::SFX_PieceTouchDown.play if @current_piece_resting_for == 0
       @current_piece_resting_for += 1
 
-      Sounds::SFX_PieceTouchDown.play if @current_piece_resting_for == 0
       if @current_piece_resting_for >= Tunables.lock_delay
         Sounds::SFX_PieceLockdown.play
         _place_piece

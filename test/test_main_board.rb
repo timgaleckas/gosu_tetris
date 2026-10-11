@@ -1,4 +1,5 @@
 require_relative './test_helper'
+require_relative './support/simulation'
 
 describe MainBoard do
   def game_state
@@ -178,6 +179,34 @@ describe MainBoard do
         end
       end
       test_window.show
+    end
+  end
+
+  describe "landing" do
+    it "plays touch down once when the piece lands and lockdown after the lock delay" do
+      g = game_state
+      g.speed_level = 10
+      m = MainBoard.new(274,592,g)
+      m.current_piece = Piece::O.with_game_state(g)
+
+      sounds_by_frame = []
+      Simulation.running = true
+      begin
+        300.times do
+          Simulation.sounds_played = []
+          m.update
+          sounds_by_frame << Simulation.sounds_played
+          break unless m.current_piece
+        end
+      ensure
+        Simulation.running = false
+      end
+
+      touch_down_frame = sounds_by_frame.index { |s| s.include?('SFX_PieceTouchDown') }
+      lockdown_frame = sounds_by_frame.index { |s| s.include?('SFX_PieceLockdown') }
+      _(touch_down_frame).wont_be_nil
+      _(sounds_by_frame.flatten.count('SFX_PieceTouchDown')).must_equal 1
+      _(lockdown_frame - touch_down_frame).must_equal Tunables.lock_delay - 1
     end
   end
 
