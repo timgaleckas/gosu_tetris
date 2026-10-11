@@ -210,6 +210,35 @@ describe MainBoard do
     end
   end
 
+  describe "wall kicks" do
+    # T in spawn orientation over a square that blocks rotating in place in
+    # either direction; either a left or a right kick would fit.
+    def blocked_t
+      g = game_state
+      m = MainBoard.new(274,592,g)
+      m.current_piece = Piece::T.with_game_state(g)
+      m.instance_variable_set(:@cursor_x, 90)
+      m.instance_variable_set(:@cursor_y, 300)
+      m._rows[12][4] = Square.new(1,g)
+      m._relink_and_relock_squares
+      m
+    end
+
+    it "kicks right when rotating left from spawn" do
+      m = blocked_t
+      m._rotate_piece_left
+      _(m.current_piece._rotation).must_equal 3
+      _(m.instance_variable_get(:@cursor_x)).must_equal 120
+    end
+
+    it "kicks left when rotating right from spawn" do
+      m = blocked_t
+      m._rotate_piece_right
+      _(m.current_piece._rotation).must_equal 1
+      _(m.instance_variable_get(:@cursor_x)).must_equal 60
+    end
+  end
+
   describe "action stack" do
     it "acts like a stack" do
       g = game_state
