@@ -7,6 +7,12 @@ module Screens
   FONT = 'assets/fonts/pacifico/pacifico-regular.ttf'.freeze
   BUTTON_FONT = 'assets/fonts/courgette/courgette-regular.ttf'.freeze
 
+  # Draws a screen's title centred across the top. Pacifico's slant carries its ink right
+  # of the glyph boxes, so centring the boxes alone leaves the word right of centre.
+  def self.title(canvas, y, text, size)
+    canvas.text(WIDTH / 2 - size * 0.045, y, text, size, FONT, align: 0.5)
+  end
+
   # The settings for a fresh game in each mode.
   module Modes
     def self.classic(speed_level)
@@ -143,14 +149,14 @@ module Screens
         [Button.new('Start Game', WIDTH / 2, 250) { Menu.modes }],
         [Button.new('Controls', WIDTH / 2, 370) { Controls.new(Menu.main) }],
         [Button.new('Options', WIDTH / 2, 490) { Menu.options }]
-      ]) { |canvas| canvas.text(40, 0, 'Timtris', 200, FONT) }
+      ]) { |canvas| Screens.title(canvas, 0, 'Timtris', 200) }
     end
 
     def self.modes
       new([
         [Button.new('Classic', WIDTH / 2, HEIGHT / 5 * 2.5) { Menu.levels(:classic) }],
         [Button.new('Next', WIDTH / 2, HEIGHT / 5 * 4) { Menu.levels(:next) }]
-      ], back: -> { Menu.main }) { |canvas| canvas.text(40, 0, 'Modes', 200, FONT) }
+      ], back: -> { Menu.main }) { |canvas| Screens.title(canvas, 0, 'Modes', 200) }
     end
 
     # The starting levels for mode (:classic or :next), remembered between games.
@@ -166,7 +172,7 @@ module Screens
       rows << [start]
       title = mode == :next ? 'Next' : 'Classic'
       new(rows, back: -> { Menu.modes }, focus: start) do |canvas|
-        canvas.text(WIDTH / 2, 0, title, 150, FONT, align: 0.5)
+        Screens.title(canvas, 0, title, 150)
       end
     end
 
@@ -174,7 +180,7 @@ module Screens
       new([
         [Stepper.new('Volume', 0..10, :volume, 250, zero: 'Off') { DrAudio.play($args.outputs, 'SFX_PieceMoveLR') }],
         [Button.new('Back', WIDTH / 2, 470) { Menu.main }]
-      ], back: -> { Menu.main }) { |canvas| canvas.text(WIDTH / 2, 0, 'Options', 150, FONT, align: 0.5) }
+      ], back: -> { Menu.main }) { |canvas| Screens.title(canvas, 0, 'Options', 150) }
     end
 
     # rows: the buttons, laid out in a grid for keyboard and gamepad navigation.
@@ -291,7 +297,7 @@ module Screens
 
     def draw(args, canvas)
       canvas.rect(0, 0, WIDTH, HEIGHT, Menu::BACKGROUND)
-      canvas.text(WIDTH / 2, 0, 'Controls', 90, FONT, align: 0.5)
+      Screens.title(canvas, 0, 'Controls', 90)
       _section(canvas, 'Keyboard', 1, 125)
       _section(canvas, 'Gamepad', 2, 335)
       canvas.text(WIDTH / 2, 590, 'Press any key to go back', 24, BUTTON_FONT, TEXT_COLOR, align: 0.5, valign: 1)
@@ -388,7 +394,7 @@ module Screens
         [Button.new('Controls', WIDTH / 2, 320) { Controls.new(self) }],
         [Button.new('Restart', WIDTH / 2, 425) { Play.new(@new_state) }],
         [Button.new('Quit', WIDTH / 2, 530) { Menu.main }]
-      ], background: [0, 0, 0]) { |canvas| canvas.text(WIDTH / 2, 40, 'Paused', 100, FONT, align: 0.5) }
+      ], background: [0, 0, 0]) { |canvas| Screens.title(canvas, 40, 'Paused', 100) }
     end
 
     def _game_over_menu
@@ -396,7 +402,7 @@ module Screens
         [Button.new('Retry', WIDTH / 2, 390) { Play.new(@new_state) }],
         [Button.new('Menu', WIDTH / 2, 510) { Menu.main }]
       ], background: DIM) do |canvas|
-        canvas.text(WIDTH / 2, 30, 'Game Over', 80, FONT, align: 0.5)
+        Screens.title(canvas, 30, 'Game Over', 80)
         [['Score', @state.score], ['Rows', @state.rows_cleared], ['Level', _level]].each_with_index do |(name, value), i|
           y = 160 + i * 50
           canvas.text(WIDTH / 2 - 10, y, name, 45, FONT, align: 1)
